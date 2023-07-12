@@ -1,8 +1,11 @@
 <script lang="ts">
-import { PerspectiveCamera, DirectionalLight, AmbientLight, Mesh, useFrame, Group } from "@threlte/core";
+import { PerspectiveCamera, DirectionalLight, AmbientLight, useFrame, Group, Instance, InstancedMesh } from "@threlte/core";
 import { useTexture } from "@threlte/core";
 import { MeshBasicMaterial } from "three";
 import { BoxGeometry, RepeatWrapping } from "three";
+import { positionMapStore } from "./positionMapStore";
+
+//
 
 function range(start: number, stop: number, step: number = 1): Array<number> {
     let returnArray = [];
@@ -10,6 +13,10 @@ function range(start: number, stop: number, step: number = 1): Array<number> {
         returnArray.push(i);
     }
     return returnArray;
+}
+
+function getCoordsFromIndex(index: number): {x: number, y: number, z: number} {
+    return {x: Math.floor(index / 16) - 7.5, y: 0, z: (index % 16) - 7.5};
 }
 
 const pillarGeometry = new BoxGeometry(1, 10, 1);
@@ -34,15 +41,25 @@ const pillarMaterialMap = [
 ];
 
 var pillarRotation = 0;
-const pillarRotationModifier = 0.0025
+const pillarRotationModifier = 0.0025;
 
 useFrame(() => { pillarRotation += pillarRotationModifier});
 
-console.log(document.getElementById("mesh"));
+//
+
+let positionMap: {x: number, y: number, z: number}[] = [];
+
+let positions: number[] = Array(256).fill(0);
+
+for (let i = 0; i < 256; i++) {
+    positionMap.push(getCoordsFromIndex(i));
+}
+
+positionMapStore.set(positions);
 </script>
 
 <PerspectiveCamera
-    position={{y: 25, z: 30}}
+    position={{y: 15, z: 25}}
     lookAt={{x: 0, y: 0, z: 0}}
 ></PerspectiveCamera>
 
@@ -54,13 +71,11 @@ console.log(document.getElementById("mesh"));
 />
 
 <Group rotation={{y: pillarRotation}}>
-    {#each range(-8.5, 8.5) as xPosition, index (index)}
-        {#each range(-8.5, 8.5) as zPosition, index (index)}
-            <Mesh
-            geometry={pillarGeometry}
-            material={pillarMaterialMap}
-            position={{x: xPosition, y: 0, z: zPosition}}
+    <InstancedMesh geometry={pillarGeometry} material={pillarMaterialMap}>
+        {#each range(0, 255) as _, index (index)}
+            <Instance
+                position={{x: positionMap[index].x, y: $positionMapStore[index], z: positionMap[index].z}}
             />
         {/each}
-    {/each}
+    </InstancedMesh>
 </Group>
