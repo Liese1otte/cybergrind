@@ -1,5 +1,5 @@
 <script lang="ts">
-import { heightMap, isRotating } from "./stores";
+import { heightMap, isRotating, enableDamping } from "./stores";
 
 function updateHeightMap(index: number, value: number): void {
     $heightMap[index] += value;
@@ -17,6 +17,8 @@ function updateHeightMap(index: number, value: number): void {
     <div class="control-menu">
         <input type="checkbox" id="isRotating" bind:checked={$isRotating}>
         <label for="isRotating">Rotate?</label>
+        <input type="checkbox" id="enableDamping" bind:checked={$enableDamping}>
+        <label for="enableDamping">Damping?</label>
     </div>
 </div>
 

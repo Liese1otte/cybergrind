@@ -17,9 +17,14 @@ export const rotationAngle = createPersistentStore("rotationAngle", 0);
 
 export const cameraPosition = createPersistentStore("cameraPosition", {x: 0, y: 15, z: 20});
 
+export const cameraRotation = createPersistentStore("cameraRotation", {x: 0, y: 0, z: 0});
+
+export const enableDamping = createPersistentStore("enableDamping", false);
+
 // Stored values:
 // height map (done)
 // current rotation (done)
 // rotation state (done)
-// camera position
-// camera view angle
+// camera position (done)
+// camera view angle (done)
+

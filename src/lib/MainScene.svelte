@@ -3,7 +3,7 @@ import { PerspectiveCamera, DirectionalLight, AmbientLight, Group, InstancedMesh
 import * as THRELTE from "@threlte/core";
 import * as THREE from "three";
 
-import { heightMap, isRotating, rotationAngle, cameraPosition } from "./stores";
+import { heightMap, isRotating, rotationAngle, cameraPosition, cameraRotation, enableDamping } from "./stores";
 
 function range(start: number, stop: number, step: number = 1): number[] {
     let outputArray: number[] = [];
@@ -50,14 +50,20 @@ for (let i = 0; i < 256; i++) {
 
 const { camera } = THRELTE.useThrelte();
 
-window.onbeforeunload = () => { $cameraPosition = {x: $camera.position.x, y: $camera.position.y, z: $camera.position.z }; };
+window.onbeforeunload = (e) => {
+    $cameraPosition = {x: $camera.position.x, y: $camera.position.y, z: $camera.position.z };
+    $cameraRotation = {
+        x: $camera.userData.orbitControls.target.x,
+        y: $camera.userData.orbitControls.target.y,
+        z: $camera.userData.orbitControls.target.z,
+    };
+};
 </script>
 
 <PerspectiveCamera
     position={$cameraPosition}
-    lookAt={{x: 0, y: 0, z: 0}}
 >
-    <OrbitControls enableDamping />
+    <OrbitControls enableDamping={$enableDamping} target={$cameraRotation} />
 </PerspectiveCamera>
 
 <DirectionalLight />
