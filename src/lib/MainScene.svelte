@@ -3,7 +3,7 @@ import { PerspectiveCamera, DirectionalLight, AmbientLight, Group, InstancedMesh
 import * as THRELTE from "@threlte/core";
 import * as THREE from "three";
 
-import { heightMap, isRotating } from "./stores";
+import { heightMap, isRotating, rotationAngle } from "./stores";
 
 function range(start: number, stop: number, step: number = 1): number[] {
     let outputArray: number[] = [];
@@ -38,10 +38,9 @@ const pillarMaterialMap = [
     verticalMaterial
 ];
 
-var pillarRotation = 0;
 const pillarRotationModifier = 0.0025;
 
-THRELTE.useFrame(() => { if($isRotating) {pillarRotation += pillarRotationModifier} });
+THRELTE.useFrame(() => { if($isRotating) {$rotationAngle += pillarRotationModifier} });
 
 let horizontalPositionMap: THREE.Vector2[] = [];
 
@@ -50,8 +49,6 @@ for (let i = 0; i < 256; i++) {
 }
 
 const { camera } = THRELTE.useThrelte();
-
-window.onbeforeunload = () => {};
 </script>
 
 <PerspectiveCamera
@@ -68,7 +65,7 @@ window.onbeforeunload = () => {};
     intensity={0}
 />
 
-<Group rotation={{y: pillarRotation}}>
+<Group rotation={{y: $rotationAngle}}>
     <InstancedMesh geometry={pillarGeometry} material={pillarMaterialMap}>
         {#each range(0, 255) as _, index (index)}
             <Instance

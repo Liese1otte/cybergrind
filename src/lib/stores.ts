@@ -11,11 +11,13 @@ export function createPersistentStore<T>(storageKey: string, startValue: T): Wri
 
 export const isRotating = createPersistentStore("isRotating", true);
 
-export const heightMap = createPersistentStore("heightMap", Array<number>());
+export const heightMap = createPersistentStore("heightMap", Array(256).fill(0));
+
+export const rotationAngle = createPersistentStore("rotationAngle", 0);
 
 // Stored values:
-// height map
-// current rotation
-// rotation state
+// height map (done)
+// current rotation (done)
+// rotation state (done)
 // camera position
 // camera view angle
