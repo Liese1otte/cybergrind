@@ -1,13 +1,9 @@
 <script lang="ts">
-import { heightMap } from "./heightMap";
+import { heightMap } from "./stores";
 
 function updateHeightMap(index: number, value: number): void {
     $heightMap[index] += value;
 }
-
-let localHeightMapCopy: number[] = Array();
-
-heightMap.subscribe((heightMap) => { localHeightMapCopy = heightMap });
 </script>
 
 <!-- ### -->
@@ -15,7 +11,7 @@ heightMap.subscribe((heightMap) => { localHeightMapCopy = heightMap });
 <div class="menu-background">
     <div class="height-map" on:contextmenu={(e) => { e.preventDefault(); }}>
         {#each Array(256) as _, index (index)}
-            <button class="map-cell" id={index.toString()} on:click={() => { updateHeightMap(index, 0.5); }} on:contextmenu={() => { updateHeightMap(index, -0.5); }}>{localHeightMapCopy[index] / 0.5}</button>
+            <button class="map-cell" id={index.toString()} on:click={() => { updateHeightMap(index, 0.5); }} on:contextmenu={() => { updateHeightMap(index, -0.5); }}>{$heightMap[index] / 0.5}</button>
         {/each}
     </div>
 </div>

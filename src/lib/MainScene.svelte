@@ -3,7 +3,7 @@ import { PerspectiveCamera, DirectionalLight, AmbientLight, Group, InstancedMesh
 import * as THRELTE from "@threlte/core";
 import * as THREE from "three";
 
-import { heightMap } from "./heightMap";
+import { heightMap, isRotating } from "./stores";
 
 function range(start: number, stop: number, step: number = 1): number[] {
     let outputArray: number[] = [];
@@ -41,7 +41,7 @@ const pillarMaterialMap = [
 var pillarRotation = 0;
 const pillarRotationModifier = 0.0025;
 
-THRELTE.useFrame(() => { pillarRotation += pillarRotationModifier});
+THRELTE.useFrame(() => { if($isRotating) {pillarRotation += pillarRotationModifier} });
 
 let horizontalPositionMap: THREE.Vector2[] = [];
 
@@ -49,12 +49,13 @@ for (let i = 0; i < 256; i++) {
     horizontalPositionMap.push(indexToCoordinates(i));
 }
 
-let localHeightMapCopy: number[] = Array(256).fill(0);
-$heightMap = localHeightMapCopy;
+const { camera } = THRELTE.useThrelte();
+
+window.onbeforeunload = () => {};
 </script>
 
 <PerspectiveCamera
-    position={{y: 15, z: 20}}
+    position={{y: 15, z: 25}}
     lookAt={{x: 0, y: 0, z: 0}}
 >
     <OrbitControls />
