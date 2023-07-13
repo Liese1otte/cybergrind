@@ -15,6 +15,8 @@ export const heightMap = createPersistentStore("heightMap", Array(256).fill(0));
 
 export const rotationAngle = createPersistentStore("rotationAngle", 0);
 
+export const cameraPosition = createPersistentStore("cameraPosition", {x: 0, y: 15, z: 20});
+
 // Stored values:
 // height map (done)
 // current rotation (done)

@@ -16,6 +16,7 @@
 </div>
 
 <!-- TODO: background radial gradient shift with menu slide -->
+<!-- TODO: hightlight cell when hovered on the corresponding pillar -->
 
 <style>
 	.wrapper {
