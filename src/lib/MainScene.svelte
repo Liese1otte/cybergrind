@@ -1,5 +1,5 @@
 <script lang="ts">
-import { PerspectiveCamera, DirectionalLight, AmbientLight, Group, InstancedMesh, Instance} from "@threlte/core";
+import { PerspectiveCamera, DirectionalLight, AmbientLight, Group, InstancedMesh, Instance, OrbitControls } from "@threlte/core";
 import * as THRELTE from "@threlte/core";
 import * as THREE from "three";
 
@@ -54,9 +54,11 @@ $heightMap = localHeightMapCopy;
 </script>
 
 <PerspectiveCamera
-    position={{y: 15, z: 25}}
+    position={{y: 15, z: 20}}
     lookAt={{x: 0, y: 0, z: 0}}
-></PerspectiveCamera>
+>
+    <OrbitControls />
+</PerspectiveCamera>
 
 <DirectionalLight />
 

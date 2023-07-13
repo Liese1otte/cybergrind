@@ -13,9 +13,9 @@ heightMap.subscribe((heightMap) => { localHeightMapCopy = heightMap });
 <!-- ### -->
 
 <div class="menu-background">
-    <div class="height-map">
+    <div class="height-map" on:contextmenu={(e) => { e.preventDefault(); }}>
         {#each Array(256) as _, index (index)}
-            <button class="map-cell" id={index.toString()} on:click={() => { updateHeightMap(index, 0.5); }} on:contextmenu={() => { updateHeightMap(index, -0.5); }}>{localHeightMapCopy[index]}</button>
+            <button class="map-cell" id={index.toString()} on:click={() => { updateHeightMap(index, 0.5); }} on:contextmenu={() => { updateHeightMap(index, -0.5); }}>{localHeightMapCopy[index] / 0.5}</button>
         {/each}
     </div>
 </div>
@@ -28,13 +28,15 @@ heightMap.subscribe((heightMap) => { localHeightMapCopy = heightMap });
 }
 .height-map {
     display: grid;
-    width: 100%;
+    width: calc(100% - 10px);
     aspect-ratio: 1 / 1;
     grid-template-columns: repeat(16, 1fr);
     grid-template-rows: repeat(16, 1fr);
-    gap: 1px;
+    gap: 5px;
+    padding: 5px;
 }
 .map-cell {
     background: #222222;
+    color: #999999;
 }
 </style>
