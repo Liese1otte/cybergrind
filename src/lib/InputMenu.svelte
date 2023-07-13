@@ -1,5 +1,5 @@
 <script lang="ts">
-import { heightMap } from "./stores";
+import { heightMap, isRotating } from "./stores";
 
 function updateHeightMap(index: number, value: number): void {
     $heightMap[index] += value;
@@ -13,6 +13,10 @@ function updateHeightMap(index: number, value: number): void {
         {#each Array(256) as _, index (index)}
             <button class="map-cell" id={index.toString()} on:click={() => { updateHeightMap(index, 0.5); }} on:contextmenu={() => { updateHeightMap(index, -0.5); }}>{$heightMap[index] / 0.5}</button>
         {/each}
+    </div>
+    <div class="control-menu">
+        <input type="checkbox" id="isRotating" bind:checked={$isRotating}>
+        <label for="isRotating">Rotate?</label>
     </div>
 </div>
 
