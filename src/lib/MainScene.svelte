@@ -14,7 +14,7 @@ function range(start: number, stop: number, step: number = 1): number[] {
 }
 
 function indexToCoordinates(index: number): THREE.Vector2 {
-    return new THREE.Vector2(Math.floor(index / 16) - 7.5, (index % 16) - 7.5);
+    return new THREE.Vector2((index % 16) - 7.5, Math.floor(index / 16) - 7.5);
 }
 
 const pillarGeometry = new THREE.BoxGeometry(1, 10, 1);
@@ -58,6 +58,10 @@ window.onbeforeunload = (e) => {
         z: $camera.userData.orbitControls.target.z,
     };
 };
+
+let localHeightMap: number[][] = Array(16).fill(new Array(16).fill(0));
+
+heightMap.subscribe((value) => {localHeightMap = value});
 </script>
 
 <PerspectiveCamera
@@ -77,7 +81,7 @@ window.onbeforeunload = (e) => {
     <InstancedMesh geometry={pillarGeometry} material={pillarMaterialMap}>
         {#each range(0, 255) as _, index (index)}
             <Instance
-                position={{x: horizontalPositionMap[index].x, y: $heightMap[index], z: horizontalPositionMap[index].y}}
+                position={{x: horizontalPositionMap[index].x, y: $heightMap[Math.floor(index / 16)][index % 16], z: horizontalPositionMap[index].y}}
             />
         {/each}
     </InstancedMesh>

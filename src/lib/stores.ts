@@ -11,7 +11,7 @@ export function createPersistentStore<T>(storageKey: string, startValue: T): Wri
 
 export const isRotating = createPersistentStore("isRotating", true);
 
-export const heightMap = createPersistentStore("heightMap", Array(256).fill(0));
+export const heightMap = createPersistentStore<number[][]>("heightMap", Array.from(Array(16), _ => Array(16).fill(0)));
 
 export const rotationAngle = createPersistentStore("rotationAngle", 0);
 
