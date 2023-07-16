@@ -106,8 +106,8 @@ let mirroringState = [false, false, false];
                 {#if mirroringState[0]}
                     <button class="mirror-selector fourth" on:click={() => { mirrorFourth(1); }}></button>
                     <button class="mirror-selector fourth" on:click={() => { mirrorFourth(0); }}></button>
-                    <button class="mirror-selector fourth" on:click={() => { mirrorFourth(3); }}></button>
                     <button class="mirror-selector fourth" on:click={() => { mirrorFourth(2); }}></button>
+                    <button class="mirror-selector fourth" on:click={() => { mirrorFourth(3); }}></button>
                 {/if}
                 {#if mirroringState[1]}
                     <button class="mirror-selector half vertical" on:click={() => { mirrorHalf(3); }}></button>
