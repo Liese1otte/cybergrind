@@ -1,13 +1,13 @@
 <script lang="ts">
-    import { Canvas } from '@threlte/core';
-    import MainScene from '../lib/MainScene.svelte';
-	import InputMenu from '$lib/InputMenu.svelte';
+import { Canvas } from '@threlte/core';
+import InputMenu from '$lib/InputMenu.svelte';
+import PatternPreview from '$lib/PatternPreview.svelte';
 </script>
 
 <div class="wrapper">
 	<div class="canvas">
 		<Canvas>
-			<MainScene />
+			<PatternPreview />
 		</Canvas>
 	</div>
 	<div class="menu">

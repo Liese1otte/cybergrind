@@ -37,7 +37,7 @@ export const rotationAngle = createPersistentSessionStore('rotationAngle', 0);
 
 export const cameraPosition = createPersistentSessionStore('cameraPosition', { x: 0, y: 15, z: 20 });
 
-export const cameraRotation = createPersistentSessionStore('cameraRotation', { x: 0, y: 0, z: 0 });
+export const cameraTarget = createPersistentSessionStore('cameraRotation', { x: 0, y: 0, z: 0 });
 
 export const enableDamping = createPersistentSessionStore('enableDamping', false);
 

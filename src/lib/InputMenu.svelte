@@ -1,6 +1,6 @@
 <script lang="ts">
 import { browser } from "$app/environment";
-import { heightMap, isRotating, enableDamping, cameraPosition, cameraRotation, rotationAngle, prefabMap } from "./stores";
+import { heightMap, isRotating, enableDamping, cameraPosition, cameraTarget, rotationAngle, prefabMap } from "./stores";
 
 function updateMap(index: number, value: number): void {
     if (currentMap == 0) {
@@ -140,7 +140,7 @@ let mirroringState = [false, false, false];
         <input type="checkbox" id="enableDamping" bind:checked={$enableDamping}>
         <label for="enableDamping">Damping?</label>
         <button class="height-reset" on:click={() => { $heightMap = Array.from(Array(16), () => Array(16).fill(0)); }}>Reset Pattern</button>
-        <button class="camera-reset" on:click={() => { $cameraPosition = {x: 0, y: 15, z: 20}; $cameraRotation = {x: 0, y: 0, z:0}; $rotationAngle = 0; }}>Reset Camera</button>
+        <button class="camera-reset" on:click={() => { $cameraPosition = {x: 0, y: 15, z: 20}; $cameraTarget = {x: 0, y: 0, z:0}; $rotationAngle = 0; }}>Reset Camera</button>
         <br />
         <button class="mirror-fourth" on:click={() => { enterMirroringState(0); }}>Mirror 4th</button>
         <button class="mirror-half-vertical" on:click={() => { enterMirroringState(1); }}>Mirror half (v)</button>
