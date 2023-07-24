@@ -1,29 +1,5 @@
 <script lang="ts">
-import { browser } from "$app/environment";
-import { heightMap, isRotating, enableDamping, cameraPosition, cameraTarget, rotationAngle, prefabMap } from "./stores";
-
-function updateMap(index: number, value: number): void {
-    if (currentMap == 0) {
-        $heightMap[Math.floor(index / 16)][index % 16] += value * 0.5;
-    } else {
-        let currentPrefab = $prefabMap[Math.floor(index / 16)][index % 16];
-        let nextPrefab = (prefabOptions.indexOf(currentPrefab) + value) % prefabOptions.length
-        nextPrefab = nextPrefab == -1 ? prefabOptions.length - 1 : nextPrefab;
-        $prefabMap[Math.floor(index / 16)][index % 16] = prefabOptions[nextPrefab];
-    }
-}
-
-const prefabOptions = [0, "n", "p", "J", "s", "H"];
-
-let currentMap = 0;
-
-let localHeightMap: number[][] = Array.from(Array(16), () => Array(16).fill(0));
-
-if (browser) {
-    heightMap.subscribe((value) => {localHeightMap = value});
-}
-
-let maps = [localHeightMap, $prefabMap];
+import { isRotating, enableDamping, cameraPosition, cameraTarget, rotationAngle, newHeightMapStore, newPrefabMapStore, type heightMapStoreType, type prefabMapStoreType } from "./stores";
 
 function enterMirroringState(index: number): void {
     for (let i = 0; i < 3; i++) {
@@ -71,9 +47,9 @@ function mirrorHalf(direction: number): void {
     for (i; loopCheckI(i); (i as number) += incrementFunction) {
         for (j; loopCheckJ(j); (j as number) += incrementFunction) {
             if (ignoreAxis == 0) {
-                (maps[currentMap])[i as number][15 - (j as number)] = (maps[currentMap])[i as number][j as number];
+                $currentMapStore[i as number][15 - (j as number)] = $currentMapStore[i as number][j as number];
             } else {
-                (maps[currentMap])[15 - (i as number)][j as number] = (maps[currentMap])[i as number][j as number];
+                $currentMapStore[15 - (i as number)][j as number] = $currentMapStore[i as number][j as number];
             }
         }
         j = c;
@@ -103,6 +79,17 @@ function mirrorFourth(index: number): void {
 }
 
 let mirroringState = [false, false, false];
+
+let currentMapStore: heightMapStoreType | prefabMapStoreType = newHeightMapStore;
+
+function swapMaps(): void {
+    currentMapStore = currentMapStore == newHeightMapStore ? newPrefabMapStore : newHeightMapStore;
+}
+
+let displayMap = Array.from(Array(16), () => Array(16).fill(0));
+
+newHeightMapStore.subscribe((value) => { displayMap = value; });
+newPrefabMapStore.subscribe((value) => { displayMap = value; });
 </script>
 
 <!-- ### -->
@@ -111,7 +98,7 @@ let mirroringState = [false, false, false];
     <div class="maps">
         <div class="map" on:contextmenu={(e) => { e.preventDefault(); }}>
             {#each Array(256) as _, index (index)}
-                <button class="map-cell" id={index.toString()} on:click={() => { updateMap(index, 1); }} on:contextmenu={() => { updateMap(index, -1); }}>{currentMap ? $prefabMap[Math.floor(index / 16)][index % 16] : localHeightMap[Math.floor(index / 16)][index % 16] / 0.5}</button>
+                <button class="map-cell" id={index.toString()} on:click={() => { currentMapStore.updateMap(index, 1); }} on:contextmenu={() => { currentMapStore.updateMap(index, -1); }}>{displayMap[Math.floor(index / 16)] === undefined ? 0 : displayMap[Math.floor(index / 16)][index % 16]}</button>
             {/each}
         </div>
         {#if mirroringState[0] || mirroringState[1] || mirroringState[2]}
@@ -134,12 +121,12 @@ let mirroringState = [false, false, false];
         {/if}
     </div>
     <div class="control-menu">
-        <button class="toggle-maps" on:click={() => { currentMap = (currentMap + 1) % 2}}>Switch Maps</button>
+        <button class="toggle-maps" on:click={() => { swapMaps(); }}>Switch Maps</button>
         <input type="checkbox" id="isRotating" bind:checked={$isRotating}>
         <label for="isRotating">Rotate?</label>
         <input type="checkbox" id="enableDamping" bind:checked={$enableDamping}>
         <label for="enableDamping">Damping?</label>
-        <button class="height-reset" on:click={() => { $heightMap = Array.from(Array(16), () => Array(16).fill(0)); }}>Reset Pattern</button>
+        <button class="height-reset" on:click={() => { $currentMapStore = Array.from(Array(16), () => Array(16).fill(0)); }}>Reset Pattern</button>
         <button class="camera-reset" on:click={() => { $cameraPosition = {x: 0, y: 15, z: 20}; $cameraTarget = {x: 0, y: 0, z:0}; $rotationAngle = 0; }}>Reset Camera</button>
         <br />
         <button class="mirror-fourth" on:click={() => { enterMirroringState(0); }}>Mirror 4th</button>

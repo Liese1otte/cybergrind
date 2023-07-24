@@ -2,9 +2,9 @@
 import { InstancedMesh, Instance } from '@threlte/core';
 import * as THRELTE from '@threlte/core';
 import * as THREE from 'three';
-import { heightMap, isRotating, rotationAngle } from '../stores';
+import { newHeightMapStore, isRotating, rotationAngle } from '../stores';
 
-// ###
+// ### Pillar material
 
 const pillarGeometry = new THREE.BoxGeometry(1, 10, 1);
 
@@ -29,11 +29,10 @@ const pillarMaterialMap = [
 	verticalMaterial
 ];
 
-// ###
+// ### Horizontal coordinates
 
 type Point2D = { x: number; z: number };
 
-// TODO: Refactor into a generator function if no other use for this is found.
 function generateHorizontalCoordinates(): Point2D[] {
     let outputArray: Point2D[] = [];
     for (let i = 0; i < 256; i++) {
@@ -44,7 +43,7 @@ function generateHorizontalCoordinates(): Point2D[] {
 
 const horizontalCoordinatesMap = generateHorizontalCoordinates();
 
-// ###
+// ### Rotation
 
 const pillarRotationModifier = 0.0025;
 
@@ -60,7 +59,7 @@ THRELTE.useFrame(() => {
 		<Instance
 			position={{
 				x: horizontalCoordinatesMap[i].x,
-				y: $heightMap[Math.floor(i / 16)][i % 16],
+				y: $newHeightMapStore[Math.floor(i / 16)][i % 16] * 0.5,
 				z: horizontalCoordinatesMap[i].z
 			}}
 		/>

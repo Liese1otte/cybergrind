@@ -14,7 +14,7 @@ import { cameraPosition, cameraTarget, enableDamping, rotationAngle } from '$lib
 
 const { camera } = THRELTE.useThrelte();
 
-window.onbeforeunload = (e) => {
+window.onbeforeunload = () => {
     $cameraPosition = {x: $camera.position.x, y: $camera.position.y, z: $camera.position.z };
     $cameraTarget = {
         x: $camera.userData.orbitControls.target.x,
