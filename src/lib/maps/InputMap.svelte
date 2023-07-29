@@ -91,6 +91,7 @@ function swapMaps(): void {
 </script>
 
 <div class="maps">
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div class="map" on:contextmenu={(e) => { e.preventDefault(); }}>
         {#each Array(256) as _, index (index)}
             <button class="map-cell" id={index.toString()} on:click={() => { currentMapStore.updateMap(index, 1); }} on:contextmenu={() => { currentMapStore.updateMap(index, -1); }}>{$currentMapStore[Math.floor(index / 16)] === undefined ? 0 : $currentMapStore[Math.floor(index / 16)][index % 16]}</button>

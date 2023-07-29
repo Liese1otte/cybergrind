@@ -1,39 +1,30 @@
 <script lang="ts">
-import {
-	PerspectiveCamera,
-	DirectionalLight,
-	AmbientLight,
-	Group,
-	OrbitControls
-} from '@threlte/core';
-import * as THRELTE from "@threlte/core";
+import { T } from '@threlte/core';
+import { OrbitControls } from '@threlte/extras'
 import Arena from '$lib/models/Arena.svelte';
 import { cameraPosition, cameraTarget, enableDamping, rotationAngle } from '$lib/stores';
 
 // ### 
 
-const { camera } = THRELTE.useThrelte();
+// const { camera } = THRELTE.useThrelte();
 
-window.onbeforeunload = () => {
-    $cameraPosition = {x: $camera.position.x, y: $camera.position.y, z: $camera.position.z };
-    $cameraTarget = {
-        x: $camera.userData.orbitControls.target.x,
-        y: $camera.userData.orbitControls.target.y,
-        z: $camera.userData.orbitControls.target.z,
-    };
-};
+// window.onbeforeunload = () => {
+//     $cameraPosition = {x: $camera.position.x, y: $camera.position.y, z: $camera.position.z };
+//     $cameraTarget = {
+//         x: $camera.userData.orbitControls.target.x,
+//         y: $camera.userData.orbitControls.target.y,
+//         z: $camera.userData.orbitControls.target.z,
+//     };
+// };
 </script>
 
-<PerspectiveCamera position={$cameraPosition}>
+<T.PerspectiveCamera makeDefault position={$cameraPosition} >
 	<OrbitControls enableDamping={$enableDamping} target={$cameraTarget} />
-</PerspectiveCamera>
+</T.PerspectiveCamera>
 
 <!-- ??? -->
-<DirectionalLight />
+<T.AmbientLight color="white" intensity={0.2} position={[0, 0, 0]}/>
 
-<!-- ??? -->
-<AmbientLight color="white" intensity={0} />
-
-<Group rotation={{ y: $rotationAngle }}>
+<T.Group rotation={[0, $rotationAngle, 0]}>
 	<Arena />
-</Group>
+</T.Group>

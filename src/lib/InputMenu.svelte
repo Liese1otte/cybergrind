@@ -12,7 +12,7 @@ import InputMap from "./maps/InputMap.svelte";
         <label for="isRotating">Rotate?</label>
         <input type="checkbox" id="enableDamping" bind:checked={$enableDamping}>
         <label for="enableDamping">Damping?</label>
-        <button class="camera-reset" on:click={() => { $cameraPosition = defaultCameraPosition; $cameraTarget = {x: 0, y: 0, z:0}; $rotationAngle = 0; }}>Reset Camera</button>
+        <button class="camera-reset" on:click={() => { $cameraPosition = defaultCameraPosition; $cameraTarget = [0, 0, 0]; $rotationAngle = 0; }}>Reset Camera</button>
         <br />
     </div>
 </div>

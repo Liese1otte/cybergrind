@@ -28,15 +28,15 @@ export const isRotating = createPersistentSessionStore('isRotating', true);
 
 export const rotationAngle = createPersistentSessionStore('rotationAngle', 0);
 
-export const defaultCameraPosition = {
-	x: 0,
-	y: 20,
-	z: 25
-};
+export const defaultCameraPosition: [x: number, y: number, z: number] = [
+	0,
+	20,
+	25
+];
 
 export const cameraPosition = createPersistentSessionStore('cameraPosition', defaultCameraPosition);
 
-export const cameraTarget = createPersistentSessionStore('cameraRotation', { x: 0, y: 0, z: 0 });
+export const cameraTarget = createPersistentSessionStore<[x: number, y: number, z: number]>('cameraRotation', [0, 0, 0]);
 
 export const enableDamping = createPersistentSessionStore('enableDamping', false);
 
