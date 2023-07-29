@@ -2,7 +2,7 @@
 import { InstancedMesh, Instance } from '@threlte/core';
 import * as THRELTE from '@threlte/core';
 import * as THREE from 'three';
-import { newHeightMapStore, isRotating, rotationAngle } from '../stores';
+import { newHeightMapStore, isRotating, rotationAngle } from '$lib/stores';
 
 // ### Pillar material
 

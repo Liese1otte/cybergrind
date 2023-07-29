@@ -28,11 +28,13 @@ export const isRotating = createPersistentSessionStore('isRotating', true);
 
 export const rotationAngle = createPersistentSessionStore('rotationAngle', 0);
 
-export const cameraPosition = createPersistentSessionStore('cameraPosition', {
+export const defaultCameraPosition = {
 	x: 0,
-	y: 15,
-	z: 20
-});
+	y: 20,
+	z: 25
+};
+
+export const cameraPosition = createPersistentSessionStore('cameraPosition', defaultCameraPosition);
 
 export const cameraTarget = createPersistentSessionStore('cameraRotation', { x: 0, y: 0, z: 0 });
 
