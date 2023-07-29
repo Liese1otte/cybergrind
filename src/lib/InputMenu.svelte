@@ -90,6 +90,8 @@ let displayMap = Array.from(Array(16), () => Array(16).fill(0));
 
 newHeightMapStore.subscribe((value) => { displayMap = value; });
 newPrefabMapStore.subscribe((value) => { displayMap = value; });
+
+// map updates wonky
 </script>
 
 <!-- ### -->
