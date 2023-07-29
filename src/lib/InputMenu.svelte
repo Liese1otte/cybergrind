@@ -8,7 +8,6 @@ function enterMirroringState(index: number): void {
 }
 
 function mirrorHalf(direction: number): void {
-    console.log(direction);
     let loopCheckI: CallableFunction = () => {};
     let loopCheckJ: CallableFunction = () => {};
     let incrementFunction = 0;
@@ -83,13 +82,12 @@ let mirroringState = [false, false, false];
 let currentMapStore: heightMapStoreType | prefabMapStoreType = newHeightMapStore;
 
 function swapMaps(): void {
-    currentMapStore = currentMapStore == newHeightMapStore ? newPrefabMapStore : newHeightMapStore;
+    if (currentMapStore == newHeightMapStore) {
+        currentMapStore = newPrefabMapStore;
+    } else {
+        currentMapStore = newHeightMapStore;
+    }
 }
-
-let displayMap = Array.from(Array(16), () => Array(16).fill(0));
-
-newHeightMapStore.subscribe((value) => { displayMap = value; });
-newPrefabMapStore.subscribe((value) => { displayMap = value; });
 
 // map updates wonky
 </script>
@@ -100,7 +98,7 @@ newPrefabMapStore.subscribe((value) => { displayMap = value; });
     <div class="maps">
         <div class="map" on:contextmenu={(e) => { e.preventDefault(); }}>
             {#each Array(256) as _, index (index)}
-                <button class="map-cell" id={index.toString()} on:click={() => { currentMapStore.updateMap(index, 1); }} on:contextmenu={() => { currentMapStore.updateMap(index, -1); }}>{displayMap[Math.floor(index / 16)] === undefined ? 0 : displayMap[Math.floor(index / 16)][index % 16]}</button>
+                <button class="map-cell" id={index.toString()} on:click={() => { currentMapStore.updateMap(index, 1); }} on:contextmenu={() => { currentMapStore.updateMap(index, -1); }}>{$currentMapStore[Math.floor(index / 16)] === undefined ? 0 : $currentMapStore[Math.floor(index / 16)][index % 16]}</button>
             {/each}
         </div>
         {#if mirroringState[0] || mirroringState[1] || mirroringState[2]}
