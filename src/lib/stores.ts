@@ -36,7 +36,7 @@ export const defaultCameraPosition: [x: number, y: number, z: number] = [0, 20, 
 
 export const cameraPosition = createPersistentSessionStore('cameraPosition', defaultCameraPosition);
 
-export const enableDamping = createPersistentSessionStore('enableDamping', false);
+export const enableDamping = createPersistentSessionStore('enableDamping', true);
 
 // Stored values:
 // height map (done)

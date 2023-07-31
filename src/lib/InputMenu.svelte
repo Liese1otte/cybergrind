@@ -6,7 +6,7 @@ import {
 	cameraPosition,
 	arenaRotationAngle,
 	defaultCameraPosition,
-	cameraTarget,
+	cameraTarget
 } from '$lib/stores';
 import InputMap from './maps/InputMap.svelte';
 </script>
@@ -30,8 +30,6 @@ import InputMap from './maps/InputMap.svelte';
 				$cameraTarget = [0, 0, 0];
 			}}>Reset Camera</button
 		>
-		<br />
-		<input type="file" accept=".cgp" />
 	</div>
 </div>
 

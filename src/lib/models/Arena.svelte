@@ -84,8 +84,6 @@ const dragWizard = {
 		drag = true;
 	},
 	onUp: (e: Event) => {
-		console.log(drag ? "drag" : "click");
-		console.log(e.nativeEvent.button);
 		if (!drag) {
 			return {click: true, increment: 1 * ((e.nativeEvent.button == 0) ? 1 : -1)};
 		} else {
@@ -131,7 +129,7 @@ const dragWizard = {
 					on:pointerleave={() => {$lastHighlightedPillar = $highlightedPillar}}
 					on:pointerenter={(e) => {$highlightedPillar = e.instanceId}}
 					on:pointermove={() => {dragWizard.onMove();}}
-					on:pointerup={(e) => {let {click, increment} = dragWizard.onUp(e); if (click) currentMapStore.updateMap(i, increment); console.log(e); }}
+					on:pointerup={(e) => {let {click, increment} = dragWizard.onUp(e); if (click) currentMapStore.updateMap(i, increment); }}
 					on:pointerdown={() => {dragWizard.onDown();}}
 				/>
 			{/each}
