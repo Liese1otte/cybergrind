@@ -24,19 +24,17 @@ export function createPersistentLocalStore<T>(storageKey: string, startValue: T)
 	return store;
 }
 
-export const isRotating = createPersistentSessionStore('isRotating', true);
+export const cameraTarget = createPersistentSessionStore<[x: number, y: number, z: number]>('cameraTarget', [0, 0, 0]);
 
-export const rotationAngle = createPersistentSessionStore('rotationAngle', 0);
+export const isGeneratingMipmaps = createPersistentSessionStore('mipMaps', false);
 
-export const defaultCameraPosition: [x: number, y: number, z: number] = [
-	0,
-	20,
-	25
-];
+export const isArenaRotating = createPersistentSessionStore('isRotating', true);
+
+export const arenaRotationAngle = createPersistentSessionStore('rotationAngle', 0);
+
+export const defaultCameraPosition: [x: number, y: number, z: number] = [0, 20, 25];
 
 export const cameraPosition = createPersistentSessionStore('cameraPosition', defaultCameraPosition);
-
-export const cameraTarget = createPersistentSessionStore<[x: number, y: number, z: number]>('cameraRotation', [0, 0, 0]);
 
 export const enableDamping = createPersistentSessionStore('enableDamping', false);
 
@@ -47,7 +45,10 @@ export const enableDamping = createPersistentSessionStore('enableDamping', false
 // camera position (done)
 // camera view angle (done)
 
-export const newHeightMap = createPersistentLocalStore<number[][]>("heightMap", Array.from(Array(16), () => Array(16).fill(0)));
+export const newHeightMap = createPersistentLocalStore<number[][]>(
+	'heightMap',
+	Array.from(Array(16), () => Array(16).fill(0))
+);
 
 export const newHeightMapStore: Writable<number[][]> & {
 	updateMap: (index: number, increment: number) => void;
@@ -65,7 +66,10 @@ export const newHeightMapStore: Writable<number[][]> & {
 
 const prefabTypes = [0, 's', 'n', 'j'];
 
-export const newPrefabMap = createPersistentLocalStore<number[][]>("prefabMap", Array.from(Array(16), () => Array(16).fill(0)));
+export const newPrefabMap = createPersistentLocalStore<number[][]>(
+	'prefabMap',
+	Array.from(Array(16), () => Array(16).fill(0))
+);
 
 export const newPrefabMapStore: Writable<number[][]> & {
 	updateMap: (index: number, increment: number) => void;
@@ -75,7 +79,8 @@ export const newPrefabMapStore: Writable<number[][]> & {
 	update: newPrefabMap.update,
 	updateMap: (index: number, increment: number) => {
 		newPrefabMap.update((value) => {
-			let nextPrefab = (value[Math.floor(index / 16)][index % 16] + increment) % prefabTypes.length;
+			let nextPrefab =
+				(value[Math.floor(index / 16)][index % 16] + increment) % prefabTypes.length;
 			nextPrefab = nextPrefab == -1 ? prefabTypes.length - 1 : nextPrefab;
 			value[Math.floor(index / 16)][index % 16] = nextPrefab;
 			return value;
@@ -84,8 +89,13 @@ export const newPrefabMapStore: Writable<number[][]> & {
 };
 
 export type heightMapStoreType = Writable<number[][]> & {
-	updateMap: (index: number, increment: number) => void; };
+	updateMap: (index: number, increment: number) => void;
+};
 
 export type prefabMapStoreType = Writable<(number | string)[][]> & {
 	updateMap: (index: number, increment: number) => void;
 };
+
+export const highlightedPillar = writable(0);
+
+export const lastHighlightedPillar = writable(0);

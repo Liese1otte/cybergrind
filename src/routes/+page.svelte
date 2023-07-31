@@ -6,7 +6,7 @@ import PatternPreview from '$lib/PatternPreview.svelte';
 
 <div class="wrapper">
 	<div class="canvas">
-		<Canvas>
+		<Canvas toneMapping={0} colorSpace={'srgb-linear'} colorManagementEnabled={false}>
 			<PatternPreview />
 		</Canvas>
 	</div>
@@ -19,18 +19,20 @@ import PatternPreview from '$lib/PatternPreview.svelte';
 <!-- TODO: hightlight cell when hovered on the corresponding pillar -->
 
 <style>
-	.wrapper {
-		width: 100%;
-		height: 100%;
-		display: flex;
-	}
-    .canvas {
-        flex: 1;
-		background: radial-gradient(#282828, #171717);
-		background-attachment: fixed;
-    }
-	.menu {
-		width: 33.3%;
-		height: 100%;
-	}
+@import "../styles/globals.css";
+
+.wrapper {
+	width: 100%;
+	height: 100%;
+	display: flex;
+}
+.canvas {
+	flex: 1;
+	background: radial-gradient(#282828, #171717);
+	background-attachment: fixed;
+}
+.menu {
+	width: 33.3%;
+	height: 100%;
+}
 </style>

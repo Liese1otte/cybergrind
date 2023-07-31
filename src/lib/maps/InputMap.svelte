@@ -1,5 +1,6 @@
 <script lang="ts">
-import { newHeightMapStore, newPrefabMapStore, type heightMapStoreType, type prefabMapStoreType } from "$lib/stores";
+import { browser } from "$app/environment";
+import { newHeightMapStore, newPrefabMapStore, type heightMapStoreType, type prefabMapStoreType, highlightedPillar, lastHighlightedPillar } from "$lib/stores";
 
 function enterMirroringState(index: number): void {
     for (let i = 0; i < 3; i++) {
@@ -88,6 +89,16 @@ function swapMaps(): void {
         currentMapStore = newHeightMapStore;
     }
 }
+
+highlightedPillar.subscribe((value) => {
+    if (!browser) { return }
+    (document.getElementById(value.toString()) as HTMLElement).style.outline = "2px solid red";
+});
+
+lastHighlightedPillar.subscribe((value) => {
+    if (!browser) { return }
+    (document.getElementById(value.toString()) as HTMLElement).style.outline = "";
+})
 </script>
 
 <div class="maps">

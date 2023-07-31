@@ -1,24 +1,34 @@
 <script lang="ts">
-import { InstancedMesh, Instance } from '@threlte/extras';
-import { useLoader } from '@threlte/core';
+import { InstancedMesh, Instance, useTexture } from '@threlte/extras';
 import * as THRELTE from '@threlte/core';
 import * as THREE from 'three';
 import { T } from '@threlte/core';
-import { newHeightMapStore, isRotating, rotationAngle } from '$lib/stores';
+import { newHeightMapStore, isArenaRotating, arenaRotationAngle, isGeneratingMipmaps, highlightedPillar, lastHighlightedPillar } from '$lib/stores';
+import { interactivity } from '@threlte/extras'
+
+interactivity({
+    filter: (hits) => {
+      // Only return the first hit
+      return hits.slice(0, 1)
+    }
+})
 
 // ### Pillar material
 
-const textureFilePath: string = '/virtualgriddark.png';
+const textureFilePathTheFirst: string = '/virtualgriddark.png';
+const textureFilePathTheSecond: string = '/virtualgriddark_1.png';
 
-const verticalTexture = useLoader(THREE.TextureLoader).load(textureFilePath).then(
-	(texture) => {
-		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-		texture.repeat.set(1, 10);
-		return texture;
-	}
-);
+const verticalTexture = useTexture(textureFilePathTheFirst).then((texture) => {
+	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+	texture.repeat.set(1, 10);
+	texture.generateMipmaps = $isGeneratingMipmaps;
+	return texture;
+});
 
-const horizontalTexture = useLoader(THREE.TextureLoader).load(textureFilePath);
+const horizontalTexture = useTexture(textureFilePathTheSecond).then((texture) => {
+	texture.generateMipmaps = $isGeneratingMipmaps;
+	return texture;
+}); // la la la I'm a giggly glaggle
 
 // ### Horizontal coordinates
 
@@ -36,11 +46,11 @@ const horizontalCoordinatesMap = generateHorizontalCoordinates();
 
 // ### Rotation
 
-const pillarRotationModifier = 0.0025;
+const pillarRotationModifier = -0.0025;
 
 THRELTE.useFrame(() => {
-	if ($isRotating) {
-		$rotationAngle += pillarRotationModifier;
+	if ($isArenaRotating) {
+		$arenaRotationAngle += pillarRotationModifier;
 	}
 });
 </script>
@@ -49,27 +59,27 @@ THRELTE.useFrame(() => {
 	{#await verticalTexture then value2}
 		<InstancedMesh>
 			<T.BoxGeometry args={[1, 10, 1]}/>
-			<T.MeshStandardMaterial map={value2} attach={(parent, self) => {
+			<T.MeshBasicMaterial map={value2} attach={(parent, self) => {
 				if (Array.isArray(parent.material)) parent.material = [...parent.material, self]
 				else parent.material = [self]
 			}} />
-			<T.MeshStandardMaterial map={value2} attach={(parent, self) => {
+			<T.MeshBasicMaterial map={value2} attach={(parent, self) => {
 				if (Array.isArray(parent.material)) parent.material = [...parent.material, self]
 				else parent.material = [self]
 			}} />
-			<T.MeshStandardMaterial map={value1} attach={(parent, self) => {
+			<T.MeshBasicMaterial map={value1} attach={(parent, self) => {
 				if (Array.isArray(parent.material)) parent.material = [...parent.material, self]
 				else parent.material = [self]
 			}} />
-			<T.MeshStandardMaterial map={value2} attach={(parent, self) => {
+			<T.MeshBasicMaterial map={value1} attach={(parent, self) => {
 				if (Array.isArray(parent.material)) parent.material = [...parent.material, self]
 				else parent.material = [self]
 			}} />
-			<T.MeshStandardMaterial map={value2} attach={(parent, self) => {
+			<T.MeshBasicMaterial map={value2} attach={(parent, self) => {
 				if (Array.isArray(parent.material)) parent.material = [...parent.material, self]
 				else parent.material = [self]
 			}} />
-			<T.MeshStandardMaterial map={value2} attach={(parent, self) => {
+			<T.MeshBasicMaterial map={value2} attach={(parent, self) => {
 				if (Array.isArray(parent.material)) parent.material = [...parent.material, self]
 				else parent.material = [self]
 			}} />
@@ -78,6 +88,10 @@ THRELTE.useFrame(() => {
 					position.x={horizontalCoordinatesMap[i].x}
 					position.y={$newHeightMapStore[Math.floor(i / 16)][i % 16] * 0.5}
 					position.z={horizontalCoordinatesMap[i].z}
+					on:pointerleave={(e) => {$lastHighlightedPillar = $highlightedPillar}}
+					on:pointerenter={(e) => {$highlightedPillar = e.instanceId}}
+					on:click={(e) => {console.log(e);}}
+					on:contextmenu={(e) => {}}
 				/>
 			{/each}
 		</InstancedMesh>
