@@ -1,6 +1,6 @@
 <script lang="ts">
 import { browser } from "$app/environment";
-import { newHeightMapStore, newPrefabMapStore, type heightMapStoreType, type prefabMapStoreType, highlightedPillar, lastHighlightedPillar } from "$lib/stores";
+import { highlightedPillar, lastHighlightedPillar, resolveStore, currentStoreIndex } from "$lib/stores";
 
 function enterMirroringState(index: number): void {
     for (let i = 0; i < 3; i++) {
@@ -80,14 +80,8 @@ function mirrorFourth(index: number): void {
 
 let mirroringState = [false, false, false];
 
-let currentMapStore: heightMapStoreType | prefabMapStoreType = newHeightMapStore;
-
 function swapMaps(): void {
-    if (currentMapStore == newHeightMapStore) {
-        currentMapStore = newPrefabMapStore;
-    } else {
-        currentMapStore = newHeightMapStore;
-    }
+    $currentStoreIndex = $currentStoreIndex == 0 ? 1 : 0; 
 }
 
 highlightedPillar.subscribe((value) => {
@@ -99,6 +93,8 @@ lastHighlightedPillar.subscribe((value) => {
     if (!browser) { return }
     (document.getElementById(value.toString()) as HTMLElement).style.outline = "";
 })
+
+$: currentMapStore = resolveStore($currentStoreIndex);
 </script>
 
 <div class="maps">

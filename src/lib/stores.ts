@@ -99,3 +99,19 @@ export type prefabMapStoreType = Writable<(number | string)[][]> & {
 export const highlightedPillar = writable(0);
 
 export const lastHighlightedPillar = writable(0);
+
+export const currentStoreIndex = createPersistentSessionStore("currentStoreIndex", 0);
+
+let trackableCurrentStoreIndex: number;
+
+currentStoreIndex.subscribe((value) => {trackableCurrentStoreIndex = value});
+
+export function resolveStore(storeIndex: number): Writable<number[][]> & {
+	updateMap: (index: number, increment: number) => void;
+} {
+	if (storeIndex == 0) {
+		return newHeightMapStore;
+	} else {
+		return newPrefabMapStore;
+	}
+}

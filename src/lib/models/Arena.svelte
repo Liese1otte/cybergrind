@@ -1,10 +1,23 @@
 <script lang="ts">
-import { InstancedMesh, Instance, useTexture } from '@threlte/extras';
+import { InstancedMesh, Instance, useTexture, type DomEvent } from '@threlte/extras';
 import * as THRELTE from '@threlte/core';
 import * as THREE from 'three';
 import { T } from '@threlte/core';
-import { newHeightMapStore, isArenaRotating, arenaRotationAngle, isGeneratingMipmaps, highlightedPillar, lastHighlightedPillar } from '$lib/stores';
+import { newHeightMapStore, isArenaRotating, arenaRotationAngle, isGeneratingMipmaps, highlightedPillar, lastHighlightedPillar, newPrefabMapStore, resolveStore, currentStoreIndex } from '$lib/stores';
 import { interactivity } from '@threlte/extras'
+
+type Event = THREE.Intersection & {
+  intersections: THREE.Intersection[] // The first intersection of each intersected object
+  object: THREE.Object3D // The object that was actually hit
+  eventObject: THREE.Object3D // The object that registered the event
+  camera: THREE.Camera // The camera used for raycasting
+  delta: THREE.Vector2 //  Distance between mouse down and mouse up event in pixels
+  nativeEvent: MouseEvent | PointerEvent | WheelEvent // The native browser event
+  pointer: THREE.Vector2 // The pointer position in normalized device coordinates
+  ray: THREE.Ray // The ray used for raycasting
+  stopPropagation: () => void // Function to stop propagation of the event
+  stopped: Boolean // Whether the event propagation has been stopped
+}
 
 interactivity({
     filter: (hits) => {
@@ -53,6 +66,33 @@ THRELTE.useFrame(() => {
 		$arenaRotationAngle += pillarRotationModifier;
 	}
 });
+
+$: currentMapStore = resolveStore($currentStoreIndex);
+
+let drag = false;
+
+document.addEventListener('mousedown', () => drag = false);
+document.addEventListener('mousemove', () => drag = true);
+document.addEventListener('mouseup', () => {if (!drag) {}});
+
+const dragWizard = {
+	drag: false,
+	onDown: () => {
+		drag = false;
+	},
+	onMove: () => {
+		drag = true;
+	},
+	onUp: (e: Event) => {
+		console.log(drag ? "drag" : "click");
+		console.log(e.nativeEvent.button);
+		if (!drag) {
+			return {click: true, increment: 1 * ((e.nativeEvent.button == 0) ? 1 : -1)};
+		} else {
+			return {click: false, increment: 69420};
+		}
+	}
+}
 </script>
 
 {#await horizontalTexture then value1}
@@ -88,10 +128,11 @@ THRELTE.useFrame(() => {
 					position.x={horizontalCoordinatesMap[i].x}
 					position.y={$newHeightMapStore[Math.floor(i / 16)][i % 16] * 0.5}
 					position.z={horizontalCoordinatesMap[i].z}
-					on:pointerleave={(e) => {$lastHighlightedPillar = $highlightedPillar}}
+					on:pointerleave={() => {$lastHighlightedPillar = $highlightedPillar}}
 					on:pointerenter={(e) => {$highlightedPillar = e.instanceId}}
-					on:click={(e) => {console.log(e);}}
-					on:contextmenu={(e) => {}}
+					on:pointermove={() => {dragWizard.onMove();}}
+					on:pointerup={(e) => {let {click, increment} = dragWizard.onUp(e); if (click) currentMapStore.updateMap(i, increment); console.log(e); }}
+					on:pointerdown={() => {dragWizard.onDown();}}
 				/>
 			{/each}
 		</InstancedMesh>
