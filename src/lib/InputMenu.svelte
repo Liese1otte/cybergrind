@@ -6,7 +6,8 @@ import {
 	cameraPosition,
 	arenaRotationAngle,
 	defaultCameraPosition,
-	cameraTarget
+	cameraTarget,
+	showKillZone
 } from '$lib/stores';
 import InputMap from './maps/InputMap.svelte';
 </script>
@@ -30,6 +31,8 @@ import InputMap from './maps/InputMap.svelte';
 				$cameraTarget = [0, 0, 0];
 			}}>Reset Camera</button
 		>
+		<input type="checkbox" id="showKillZone" bind:checked={$showKillZone} />
+		<label for="showKillZone">Kill Zone?</label>
 	</div>
 </div>
 

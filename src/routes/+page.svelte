@@ -6,7 +6,7 @@ import PatternPreview from '$lib/PatternPreview.svelte';
 
 <div class="wrapper">
 	<div class="canvas">
-		<Canvas toneMapping={0} colorSpace={'srgb-linear'} colorManagementEnabled={false}>
+		<Canvas toneMapping={0} colorSpace={'srgb-linear'}>
 			<PatternPreview />
 		</Canvas>
 	</div>
@@ -15,11 +15,8 @@ import PatternPreview from '$lib/PatternPreview.svelte';
 	</div>
 </div>
 
-<!-- TODO: background radial gradient shift with menu slide -->
-<!-- TODO: hightlight cell when hovered on the corresponding pillar -->
-
 <style>
-@import "../styles/globals.css";
+@import "/src/styles/globals.css";
 
 .wrapper {
 	width: 100%;

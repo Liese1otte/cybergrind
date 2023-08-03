@@ -24,6 +24,17 @@ export function createPersistentLocalStore<T>(storageKey: string, startValue: T)
 	return store;
 }
 
+export function createPersistentStore<T>(storageKey: string, startValue: T, storageType: Storage): Writable<T> {
+	const storedValue = browser && storageType.getItem(storageKey);
+	const store: Writable<T> = writable(
+		storedValue === null ? startValue : JSON.parse(storedValue as string)
+	);
+	store.subscribe((value: T) => {
+		browser && storageType.setItem(storageKey, JSON.stringify(value));
+	});
+	return store;
+}
+
 export const cameraTarget = createPersistentSessionStore<[x: number, y: number, z: number]>('cameraTarget', [0, 0, 0]);
 
 export const isGeneratingMipmaps = createPersistentSessionStore('mipMaps', false);
@@ -64,7 +75,7 @@ export const newHeightMapStore: Writable<number[][]> & {
 	}
 };
 
-const prefabTypes = [0, 's', 'n', 'j'];
+const prefabTypes = ['0', 'n', 'p', 'J', 's', 'H'];
 
 export const newPrefabMap = createPersistentLocalStore<number[][]>(
 	'prefabMap',
@@ -102,10 +113,6 @@ export const lastHighlightedPillar = writable(0);
 
 export const currentStoreIndex = createPersistentSessionStore("currentStoreIndex", 0);
 
-let trackableCurrentStoreIndex: number;
-
-currentStoreIndex.subscribe((value) => {trackableCurrentStoreIndex = value});
-
 export function resolveStore(storeIndex: number): Writable<number[][]> & {
 	updateMap: (index: number, increment: number) => void;
 } {
@@ -115,3 +122,5 @@ export function resolveStore(storeIndex: number): Writable<number[][]> & {
 		return newPrefabMapStore;
 	}
 }
+
+export const showKillZone = createPersistentSessionStore("showKillZone", true);
