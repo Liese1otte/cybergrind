@@ -2,13 +2,13 @@
 import { Canvas } from '@threlte/core';
 
 import InputMenu from '$lib/InputMenu.svelte';
-import PatternPreview from '$lib/PatternPreview.svelte';
+import MainScene from '$src/lib/MainScene.svelte';
 </script>
 
 <div class="wrapper">
 	<div class="canvas">
 		<Canvas toneMapping={0} colorSpace={'srgb-linear'}>
-			<PatternPreview />
+			<MainScene />
 		</Canvas>
 	</div>
 	<div class="menu">
