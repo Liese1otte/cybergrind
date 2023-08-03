@@ -1,23 +1,8 @@
+import { prefabWithAnIndexOf, prefabWithASymbolOf } from "$utils";
+import type { prefabIndex, prefabSymbol } from "$utils";
+
 const cgpFormatRegex =
 	/^(([0-9]|\((-[1-9]|-[1-4][0-9]|[1-4][0-9]|-?50)\)){16}(\r?\n){1}){16}(\r?\n){1}([0nsJHp]{16}(\r?\n){1}){15}([0nsJHp]{16}){1}$/g;
-
-const prefabSymbolToIndex = {
-	"0": 0,
-	"n": 1,
-	"p": 2,
-	"J": 3,
-	"s": 4,
-	"H": 5
-} as const;
-
-const prefabIndexToSymbol = {
-	0: '0',
-	1: 'n',
-	2: 'p',
-	3: 'J',
-	4: 's',
-	5: 'H'
-} as const;
 
 const parensEscapeIncrement = 3;
 
@@ -30,8 +15,8 @@ function parseCGPRow(row: string): number[] {
 		})
 	];
 	for (let i = 0; i < row.length; i++) {
-		if (row[i] in prefabSymbolToIndex) {
-			outArray.push(prefabSymbolToIndex[row[i] as keyof typeof prefabSymbolToIndex]);
+		if (row[i] in prefabWithASymbolOf) {
+			outArray.push(prefabWithASymbolOf[row[i] as prefabSymbol]);
             continue;
 		}
 		if (matchIndicies.includes(i)) {
@@ -77,7 +62,7 @@ export function getCGPStringFromMapArrays(arrays: [number[][], number[][]]): str
 		.map((r) => {
 			return r
 				.map((e) => {
-					return prefabIndexToSymbol[e as keyof typeof prefabIndexToSymbol];
+					return prefabWithAnIndexOf[e as prefabIndex];
 				})
 				.join();
 		})

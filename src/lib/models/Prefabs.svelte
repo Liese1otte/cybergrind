@@ -2,24 +2,24 @@
 import { T } from '@threlte/core';
 import { InstancedMesh, useTexture, Instance } from '@threlte/extras';
 import * as THREE from 'three';
-import { newPrefabMapStore, isGeneratingMipmaps, newHeightMapStore } from '$lib/stores';
+import { prefabMap, mipMapsEnabled, heightMap } from '$stores';
 
 const meleePrefabTexture = useTexture('/melee.png').then((texture) => {
-	texture.generateMipmaps = $isGeneratingMipmaps;
+	texture.generateMipmaps = $mipMapsEnabled;
 	return texture;
 });
 
 const projectilePrefabTexture = useTexture('/projectile.png').then((texture) => {
-	texture.generateMipmaps = $isGeneratingMipmaps;
+	texture.generateMipmaps = $mipMapsEnabled;
 	return texture;
 });
 
 const hideousPrefabTexture = useTexture('/hideous.png').then((texture) => {
-	texture.generateMipmaps = $isGeneratingMipmaps;
+	texture.generateMipmaps = $mipMapsEnabled;
 	return texture;
 });
 
-function generateEnemyPrefabConfig(prefabs) {
+function generateEnemyPrefabConfig(prefabs: number[][]) {
 	let outArray: { i: number; j: number; type: number }[] = [];
 	for (let i = 0; i < prefabs.length; i++) {
 		for (let j = 0; j < prefabs[i].length; j++) {
@@ -33,7 +33,7 @@ function generateEnemyPrefabConfig(prefabs) {
 
 let enemyPrefabConfig: { i: number; j: number; type: number }[];
 
-$: enemyPrefabConfig = generateEnemyPrefabConfig($newPrefabMapStore);
+$: enemyPrefabConfig = generateEnemyPrefabConfig($prefabMap);
 </script>
 
 {#await meleePrefabTexture then texture}
@@ -43,12 +43,13 @@ $: enemyPrefabConfig = generateEnemyPrefabConfig($newPrefabMapStore);
 		{#each enemyPrefabConfig as enemyPrefab}
 			{#if enemyPrefab.type == 1}
 				<Instance
+					
 					position={[
 						enemyPrefab.j - 7.5,
-						$newHeightMapStore[enemyPrefab.i][enemyPrefab.j] * 0.5 + 5.25,
+						$heightMap[enemyPrefab.i][enemyPrefab.j] * 0.5 + 5.25,
 						enemyPrefab.i - 7.5
 					]}
-					scale={[0.8, 0.8, 1]}
+					scale={[0.5, 0.5, 1]}
 					rotation.x={1.570796}
 				/>
 			{/if}
@@ -62,12 +63,13 @@ $: enemyPrefabConfig = generateEnemyPrefabConfig($newPrefabMapStore);
 		{#each enemyPrefabConfig as enemyPrefab}
 			{#if enemyPrefab.type == 2}
 				<Instance
+					
 					position={[
 						enemyPrefab.j - 7.5,
-						$newHeightMapStore[enemyPrefab.i][enemyPrefab.j] * 0.5 + 5.25,
+						$heightMap[enemyPrefab.i][enemyPrefab.j] * 0.5 + 5.25,
 						enemyPrefab.i - 7.5
 					]}
-					scale={[0.8, 0.8, 1]}
+					scale={[0.5, 0.5, 1]}
 					rotation.x={1.570796}
 				/>
 			{/if}
@@ -81,12 +83,13 @@ $: enemyPrefabConfig = generateEnemyPrefabConfig($newPrefabMapStore);
 		{#each enemyPrefabConfig as enemyPrefab}
 			{#if enemyPrefab.type == 5}
 				<Instance
+					
 					position={[
 						enemyPrefab.j - 7.5,
-						$newHeightMapStore[enemyPrefab.i][enemyPrefab.j] * 0.5 + 5.25,
+						$heightMap[enemyPrefab.i][enemyPrefab.j] * 0.5 + 5.25,
 						enemyPrefab.i - 7.5
 					]}
-					scale={[0.8, 0.8, 1]}
+					scale={[0.5, 0.5, 1]}
 					rotation.x={1.570796}
 				/>
 			{/if}

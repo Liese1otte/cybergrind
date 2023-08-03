@@ -1,5 +1,5 @@
 <script lang="ts">
-import { isGeneratingMipmaps, newHeightMapStore, newPrefabMapStore } from '$lib/stores';
+import { mipMapsEnabled, heightMap, prefabMap } from '$stores';
 import { T } from '@threlte/core';
 import { InstancedMeshes, Instance, useGltf } from '@threlte/extras';
 
@@ -14,17 +14,17 @@ function getStairVectorsAt(i: number, j: number): StairVector[] {
 		if (
 			!(
 				relI < 0 ||
-				relI >= $newPrefabMapStore.length ||
+				relI >= $prefabMap.length ||
 				relJ < 0 ||
-				relJ >= $newHeightMapStore[0].length
+				relJ >= $heightMap[0].length
 			) &&
-			$newHeightMapStore[relI][relJ] - $newHeightMapStore[i][j] < 3 &&
-			$newHeightMapStore[relI][relJ] - $newHeightMapStore[i][j] > 0
+			$heightMap[relI][relJ] - $heightMap[i][j] < 3 &&
+			$heightMap[relI][relJ] - $heightMap[i][j] > 0
 		) {
 			stairVectors.push({
 				x: d.j,
 				y: d.i * -1,
-				elevation: $newHeightMapStore[relI][relJ] - $newHeightMapStore[i][j]
+				elevation: $heightMap[relI][relJ] - $heightMap[i][j]
 			});
 		}
 	}
@@ -125,17 +125,17 @@ type StairConfig = {
 
 let stairsDeployed: StairConfig[];
 
-$: stairsDeployed = updateStairConfigs($newHeightMapStore, $newPrefabMapStore);
+$: stairsDeployed = updateStairConfigs($heightMap, $prefabMap);
 
 const straightStairGlb = useGltf('/straightStair.glb').then((gltf) => {
 	gltf.nodes['StraightStair'].material.map.colorSpace = '';
-	gltf.nodes['StraightStair'].material.map.generateMipmaps = $isGeneratingMipmaps;
+	gltf.nodes['StraightStair'].material.map.generateMipmaps = $mipMapsEnabled;
 	return gltf;
 });
 
 const angleStairGlb = useGltf("/angleStair.glb").then((gltf) => {
 	gltf.nodes['AngleStair'].material.map.colorSpace = '';
-	gltf.nodes['AngleStair'].material.map.generateMipmaps = $isGeneratingMipmaps;
+	gltf.nodes['AngleStair'].material.map.generateMipmaps = $mipMapsEnabled;
 	return gltf;
 });
 </script>
@@ -146,9 +146,10 @@ const angleStairGlb = useGltf("/angleStair.glb").then((gltf) => {
 			{#each stairsDeployed as stair}
 				{#if stair.type == StairTypes.Straight}
 					<StraightStair
+						
 						position={[
 							stair.j - 7.5,
-							$newHeightMapStore[stair.i][stair.j] * 0.5 + 5.5 - (stair.elevation % 2) * 0.25,
+							$heightMap[stair.i][stair.j] * 0.5 + 5.5 - (stair.elevation % 2) * 0.25,
 							stair.i - 7.5
 						]}
 						rotation.y={stair.direction * 1.570796}
@@ -157,9 +158,10 @@ const angleStairGlb = useGltf("/angleStair.glb").then((gltf) => {
 				{:else if stair.type == StairTypes.Angled}
 					{console.log("hi")};
 					<AngleStair
+						
 						position={[
 							stair.j - 7.5,
-							$newHeightMapStore[stair.i][stair.j] * 0.5 + 5.5 - (stair.elevation % 2) * 0.25,
+							$heightMap[stair.i][stair.j] * 0.5 + 5.5 - (stair.elevation % 2) * 0.25,
 							stair.i - 7.5
 						]}
 						rotation.y={stair.direction * 1.570796}

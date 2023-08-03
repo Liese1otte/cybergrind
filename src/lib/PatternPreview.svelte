@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { OrbitControls, useTexture } from '@threlte/extras';
 import Arena from '$lib/models/Arena.svelte';
 import Stairs from './models/Stairs.svelte';
-import { cameraPosition, enableDamping, arenaRotationAngle, cameraTarget } from '$lib/stores';
+import { cameraPosition, enableDamping, arenaRotationAngle, cameraTarget } from '$stores';
 import type { OrbitControls as ThreeOrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import JumpPads from './models/JumpPads.svelte';
 import Prefabs from './models/Prefabs.svelte';
@@ -33,11 +33,11 @@ window.onbeforeunload = () => {
 };
 </script>
 
-<T.PerspectiveCamera makeDefault position={$cameraPosition}>
+<T.PerspectiveCamera makeDefault position={$cameraPosition} near={0.1}>
 	<OrbitControls enableDamping={$enableDamping} target={$cameraTarget} bind:ref={controls} />
 </T.PerspectiveCamera>
 
-<!-- Implement camera blocking lmao -->
+<!-- cock blocked by the camera -->
 {#await skyboxTexture then texture}
 	<T.Group rotation={[0, skyboxRotationAngle, 0]}>
 		<T.Mesh>

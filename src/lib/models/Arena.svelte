@@ -4,19 +4,15 @@ import * as THRELTE from '@threlte/core';
 import * as THREE from 'three';
 import { T } from '@threlte/core';
 import {
-	newHeightMapStore,
+	heightMap,
 	isArenaRotating,
 	arenaRotationAngle,
-	isGeneratingMipmaps,
-	highlightedPillar,
-	lastHighlightedPillar,
-	resolveStore,
-	currentStoreIndex,
+	mipMapsEnabled,
+	resolveMap,
+	currentMapId,
 	showKillZone
-} from '$lib/stores';
+} from '$stores';
 import { interactivity } from '@threlte/extras';
-import { text } from '@sveltejs/kit';
-import { horizontalCoordinatesAt } from '../../scripts/utils';
 
 type Event = THREE.Intersection & {
 	intersections: THREE.Intersection[]; // The first intersection of each intersected object
@@ -48,19 +44,19 @@ const killZoneTextureFilePath: string = '/killZone.png';
 const verticalTexture = useTexture(textureFilePathTheFirst).then((texture) => {
 	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 	texture.repeat.set(1, 10);
-	texture.generateMipmaps = $isGeneratingMipmaps;
+	texture.generateMipmaps = $mipMapsEnabled;
 	return texture;
 });
 
 const horizontalTexture = useTexture(textureFilePathTheSecond).then((texture) => {
-	texture.generateMipmaps = $isGeneratingMipmaps;
+	texture.generateMipmaps = $mipMapsEnabled;
 	return texture;
 }); // la la la I'm a giggly glaggle
 
 // ### Kill zone texture
 
 const killZoneTexture = useTexture(killZoneTextureFilePath).then((texture) => {
-	texture.generateMipmaps = $isGeneratingMipmaps;
+	texture.generateMipmaps = $mipMapsEnabled;
 	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 	texture.repeat.set(16, 16);
 	return texture;
@@ -78,6 +74,7 @@ function generateHorizontalCoordinates(): Point2D[] {
 	return outputArray;
 }
 
+// rename to xz
 const horizontalCoordinatesMap = generateHorizontalCoordinates();
 
 // ### Rotation
@@ -90,7 +87,7 @@ THRELTE.useFrame(() => {
 	}
 });
 
-$: currentMapStore = resolveStore($currentStoreIndex);
+$: currentMap = resolveMap($currentMapId);
 
 let drag = false;
 
@@ -187,20 +184,14 @@ const dragWizard = {
 			{#each Array(256) as _, i (i)}
 				<Instance
 					position.x={horizontalCoordinatesMap[i].x}
-					position.y={$newHeightMapStore[Math.floor(i / 16)][i % 16] * 0.5}
+					position.y={$heightMap[Math.floor(i / 16)][i % 16] * 0.5}
 					position.z={horizontalCoordinatesMap[i].z}
-					on:pointerleave={() => {
-						$lastHighlightedPillar = $highlightedPillar;
-					}}
-					on:pointerenter={(e) => {
-						$highlightedPillar = e.instanceId;
-					}}
 					on:pointermove={() => {
 						dragWizard.onMove();
 					}}
 					on:pointerup={(e) => {
 						let { click, increment } = dragWizard.onUp(e);
-						if (click) currentMapStore.updateMap(i, increment);
+						if (click) currentMap.updateMap(i, increment);
 					}}
 					on:pointerdown={() => {
 						dragWizard.onDown();

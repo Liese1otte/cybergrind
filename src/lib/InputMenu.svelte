@@ -2,13 +2,16 @@
 import {
 	isArenaRotating,
 	enableDamping,
-	isGeneratingMipmaps,
+	mipMapsEnabled,
 	cameraPosition,
 	arenaRotationAngle,
 	defaultCameraPosition,
 	cameraTarget,
-	showKillZone
-} from '$lib/stores';
+	showKillZone,
+
+	defaultCameraTarget
+
+} from '$stores';
 import InputMap from './maps/InputMap.svelte';
 </script>
 
@@ -21,20 +24,22 @@ import InputMap from './maps/InputMap.svelte';
 		<label for="isRotating">Rotate?</label>
 		<input type="checkbox" id="enableDamping" bind:checked={$enableDamping} />
 		<label for="enableDamping">Damping?</label>
-		<input type="checkbox" id="isGeneratingMipmaps" bind:checked={$isGeneratingMipmaps} />
+		<input type="checkbox" id="mipMapsEnabled" bind:checked={$mipMapsEnabled} />
 		<label for="enableDamping">Mipmaps? (Reload required)</label>
 		<button
 			class="camera-reset"
 			on:click={() => {
 				$cameraPosition = defaultCameraPosition;
 				$arenaRotationAngle = 0;
-				$cameraTarget = [0, 0, 0];
+				$cameraTarget = defaultCameraTarget;
 			}}>Reset Camera</button
 		>
 		<input type="checkbox" id="showKillZone" bind:checked={$showKillZone} />
 		<label for="showKillZone">Kill Zone?</label>
 	</div>
+	02.cgp does not pass shit wtf lol
 </div>
+
 
 <style lang="less">
 .menu-background {

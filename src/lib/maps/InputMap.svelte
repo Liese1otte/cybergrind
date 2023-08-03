@@ -1,13 +1,10 @@
 <script lang="ts">
-import { browser } from '$app/environment';
 import {
-	highlightedPillar,
-	lastHighlightedPillar,
-	resolveStore,
-	currentStoreIndex,
-	newHeightMapStore,
-	newPrefabMapStore
-} from '$lib/stores';
+	resolveMap,
+	currentMapId,
+	heightMap,
+	prefabMap
+} from '$stores';
 import { getMapArraysFromCGPString, getCGPStringFromMapArrays } from '../../scripts/patternParsing';
 
 function enterMirroringState(index: number): void {
@@ -71,11 +68,11 @@ function mirrorHalf(direction: number): void {
 	for (i; loopCheckI(i); (i as number) += incrementFunction) {
 		for (j; loopCheckJ(j); (j as number) += incrementFunction) {
 			if (ignoreAxis == 0) {
-				$currentMapStore[i as number][15 - (j as number)] =
-					$currentMapStore[i as number][j as number];
+				$currentMap[i as number][15 - (j as number)] =
+					$currentMap[i as number][j as number];
 			} else {
-				$currentMapStore[15 - (i as number)][j as number] =
-					$currentMapStore[i as number][j as number];
+				$currentMap[15 - (i as number)][j as number] =
+					$currentMap[i as number][j as number];
 			}
 		}
 		j = c;
@@ -107,24 +104,10 @@ function mirrorFourth(index: number): void {
 let mirroringState = [false, false, false];
 
 function swapMaps(): void {
-	$currentStoreIndex = $currentStoreIndex == 0 ? 1 : 0;
+	$currentMapId = $currentMapId == 0 ? 1 : 0;
 }
 
-highlightedPillar.subscribe((value) => {
-	if (!browser) {
-		return;
-	}
-	(document.getElementById(value.toString()) as HTMLElement).style.outline = '2px solid red';
-});
-
-lastHighlightedPillar.subscribe((value) => {
-	if (!browser) {
-		return;
-	}
-	(document.getElementById(value.toString()) as HTMLElement).style.outline = '';
-});
-
-$: currentMapStore = resolveStore($currentStoreIndex);
+$: currentMap = resolveMap($currentMapId);
 
 let patternFileInput: HTMLInputElement;
 
@@ -141,15 +124,15 @@ async function parsePattern(): Promise<void> {
 }
 
 function setPatternFromCgp(cgp: string): void {
-	let [heightMap, prefabMap] = getMapArraysFromCGPString(cgp);
-	console.log(heightMap, prefabMap);
-	$newHeightMapStore = heightMap;
-	$newPrefabMapStore = prefabMap;
+	let [heights, prefabs] = getMapArraysFromCGPString(cgp);
+	$heightMap = heights;
+	$prefabMap = prefabs;
 }
 
+// move to utils
 function downloadCurrentPattern(): void {
 	let element = document.createElement('a');
-	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(getCGPStringFromMapArrays([$newHeightMapStore, $newPrefabMapStore])));
+	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(getCGPStringFromMapArrays([$heightMap, $prefabMap])));
 	element.setAttribute('download', currentPatternName + ".cgp");
 
 	element.style.display = 'none';
@@ -164,6 +147,7 @@ let currentPatternName: string;
 </script>
 
 <div class="maps">
+	<!-- resolve this is probably for disabled people -->
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
 		class="map"
@@ -176,14 +160,14 @@ let currentPatternName: string;
 				class="map-cell"
 				id={index.toString()}
 				on:click={() => {
-					currentMapStore.updateMap(index, 1);
+					currentMap.updateMap(index, 1);
 				}}
 				on:contextmenu={() => {
-					currentMapStore.updateMap(index, -1);
+					currentMap.updateMap(index, -1);
 				}}
-				>{$currentMapStore[Math.floor(index / 16)] === undefined
+				>{$currentMap[Math.floor(index / 16)] === undefined
 					? 0
-					: $currentMapStore[Math.floor(index / 16)][index % 16]}</button
+					: $currentMap[Math.floor(index / 16)][index % 16]}</button
 			>
 		{/each}
 	</div>
@@ -255,7 +239,7 @@ let currentPatternName: string;
 <button
 	class="height-reset"
 	on:click={() => {
-		$currentMapStore = Array.from(Array(16), () => Array(16).fill(0));
+		$currentMap = Array.from(Array(16), () => Array(16).fill(0));
 	}}>Reset Pattern</button
 >
 <button
