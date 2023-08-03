@@ -8,15 +8,12 @@ import {
 	defaultCameraPosition,
 	cameraTarget,
 	showKillZone,
-
 	defaultCameraTarget
-
 } from '$stores';
-import InputMap from './maps/InputMap.svelte';
+import InputMap from '$lib/maps/InputMap.svelte';
 </script>
 
-<!-- ### -->
-
+<!-- refactoring when redoing ui -->
 <div class="menu-background">
 	<InputMap />
 	<div class="control-menu">

@@ -5,7 +5,7 @@ import {
 	heightMap,
 	prefabMap
 } from '$stores';
-import { getMapArraysFromCGPString, getCGPStringFromMapArrays } from '../../scripts/patternParsing';
+import { getMapArraysFromCGPString, getCGPStringFromMapArrays } from '$scripts/patternParsing';
 
 function enterMirroringState(index: number): void {
 	for (let i = 0; i < 3; i++) {

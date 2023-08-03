@@ -1,15 +1,16 @@
 <script lang="ts">
 import { T, useFrame, useThrelte} from '@threlte/core';
-import * as THREE from 'three';
 import { OrbitControls, useTexture } from '@threlte/extras';
-import Arena from '$lib/models/Arena.svelte';
-import Stairs from './models/Stairs.svelte';
-import { cameraPosition, enableDamping, arenaRotationAngle, cameraTarget } from '$stores';
 import type { OrbitControls as ThreeOrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import JumpPads from './models/JumpPads.svelte';
-import Prefabs from './models/Prefabs.svelte';
+import { cameraPosition, enableDamping, arenaRotationAngle, cameraTarget } from '$stores';
+import * as THREE from 'three';
 
-// ###
+import Arena from '$lib/models/Arena.svelte';
+import Stairs from '$lib/models/Stairs.svelte';
+import JumpPads from '$lib/models/JumpPads.svelte';
+import Prefabs from '$lib/models/Prefabs.svelte';
+
+// ### Skybox setup
 
 const skyboxTexture = useTexture('skyboxtest_2.png');
 
@@ -20,20 +21,22 @@ useFrame(() => {
 	skyboxRotationAngle += skyboxRotationModifier;
 });
 
+// ### Camera persistence
+
 const { camera } = useThrelte();
 
 let controls: ThreeOrbitControls;
 
 window.onbeforeunload = () => {
 	if (!controls) {
-		throw Error('Whoops something is verily fucketh up!!');
+		throw Error('Orbit controls not initialized at the time of reload');
 	}
 	$cameraTarget = [controls.target.x, controls.target.y, controls.target.z];
 	$cameraPosition = [$camera.position.x, $camera.position.y, $camera.position.z];
 };
 </script>
 
-<T.PerspectiveCamera makeDefault position={$cameraPosition} near={0.1}>
+<T.PerspectiveCamera makeDefault position={$cameraPosition}>
 	<OrbitControls enableDamping={$enableDamping} target={$cameraTarget} bind:ref={controls} />
 </T.PerspectiveCamera>
 

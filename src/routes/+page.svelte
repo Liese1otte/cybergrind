@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Canvas } from '@threlte/core';
+
 import InputMenu from '$lib/InputMenu.svelte';
 import PatternPreview from '$lib/PatternPreview.svelte';
 </script>

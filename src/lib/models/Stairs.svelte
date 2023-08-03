@@ -1,6 +1,5 @@
 <script lang="ts">
 import { mipMapsEnabled, heightMap, prefabMap } from '$stores';
-import { T } from '@threlte/core';
 import { InstancedMeshes, Instance, useGltf } from '@threlte/extras';
 
 // EVERY TIME A COORDINATE IS REFERENCED AS i OR j IT IS A MAP COORDINATE FOR A CELL
@@ -61,7 +60,7 @@ function getConfigFromVectors(i: number, j: number, vectors: StairVector[]): Sta
 		sumVector.x += v.x;
 		sumVector.y += v.y;
 	}
-	if (sumVector.x == 0 && sumVector.y == 0) { // (1)
+	if (sumVector.x == 0 && sumVector.y == 0) {
 		return outConfig;
 	}
 	// Edge case with two adjacent pillars with different elevations:
@@ -72,7 +71,7 @@ function getConfigFromVectors(i: number, j: number, vectors: StairVector[]): Sta
 		outConfig.direction = resolveStraightStairDirection(lowerVector.x, lowerVector.y) as number;
 		return outConfig;
 	}
-	// No other even count of adjacent colors can exist because of (1) so:
+	// No other even count of adjacent colors can exist so:
 	if (vectors.length == 2 && vectors[0].elevation == vectors[1].elevation) {
 		outConfig.type = StairTypes.Angled;
 		outConfig.elevation = vectors[0].elevation;
@@ -156,7 +155,6 @@ const angleStairGlb = useGltf("/angleStair.glb").then((gltf) => {
 						scale.y={stair.elevation * 0.5}
 					/>
 				{:else if stair.type == StairTypes.Angled}
-					{console.log("hi")};
 					<AngleStair
 						
 						position={[

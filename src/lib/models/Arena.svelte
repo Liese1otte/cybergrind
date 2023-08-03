@@ -1,5 +1,5 @@
 <script lang="ts">
-import { InstancedMesh, Instance, useTexture, type DomEvent, useGltf } from '@threlte/extras';
+import { InstancedMesh, Instance, useTexture } from '@threlte/extras';
 import * as THRELTE from '@threlte/core';
 import * as THREE from 'three';
 import { T } from '@threlte/core';
