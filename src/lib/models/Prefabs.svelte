@@ -39,18 +39,17 @@ $: enemyPrefabConfig = generateEnemyPrefabConfig($prefabMap);
 
 {#await meleePrefabTexture then texture}
 	<InstancedMesh>
-		<T.PlaneGeometry args={[1, 1]} />
+		<T.BoxGeometry />
 		<T.MeshBasicMaterial map={texture} transparent={true} side={THREE.DoubleSide} />
 		{#each enemyPrefabConfig as enemyPrefab}
 			{#if enemyPrefab.type == 1}
 				<Instance
-					
 					position={[
 						enemyPrefab.j - 7.5,
-						$heightMap[enemyPrefab.i][enemyPrefab.j] * 0.5 + 5.25,
+						$heightMap[enemyPrefab.i][enemyPrefab.j] * 0.5 + 4.5,
 						enemyPrefab.i - 7.5
 					]}
-					scale={[0.5, 0.5, 1]}
+					scale={1.001}
 					rotation.x={1.570796}
 				/>
 			{/if}
@@ -59,18 +58,17 @@ $: enemyPrefabConfig = generateEnemyPrefabConfig($prefabMap);
 {/await}
 {#await projectilePrefabTexture then texture}
 	<InstancedMesh>
-		<T.PlaneGeometry args={[1, 1]} />
+		<T.BoxGeometry />
 		<T.MeshBasicMaterial map={texture} transparent={true} side={THREE.DoubleSide} />
 		{#each enemyPrefabConfig as enemyPrefab}
 			{#if enemyPrefab.type == 2}
 				<Instance
-					
 					position={[
 						enemyPrefab.j - 7.5,
-						$heightMap[enemyPrefab.i][enemyPrefab.j] * 0.5 + 5.25,
+						$heightMap[enemyPrefab.i][enemyPrefab.j] * 0.5 + 4.5,
 						enemyPrefab.i - 7.5
 					]}
-					scale={[0.5, 0.5, 1]}
+					scale={1.001}
 					rotation.x={1.570796}
 				/>
 			{/if}
@@ -79,18 +77,17 @@ $: enemyPrefabConfig = generateEnemyPrefabConfig($prefabMap);
 {/await}
 {#await hideousPrefabTexture then texture}
 	<InstancedMesh>
-		<T.PlaneGeometry args={[1, 1]} />
+		<T.BoxGeometry />
 		<T.MeshBasicMaterial map={texture} transparent={true} side={THREE.DoubleSide} />
 		{#each enemyPrefabConfig as enemyPrefab}
 			{#if enemyPrefab.type == 5}
 				<Instance
-					
 					position={[
 						enemyPrefab.j - 7.5,
-						$heightMap[enemyPrefab.i][enemyPrefab.j] * 0.5 + 5.25,
+						$heightMap[enemyPrefab.i][enemyPrefab.j] * 0.5 + 4.5,
 						enemyPrefab.i - 7.5
 					]}
-					scale={[0.5, 0.5, 1]}
+					scale={1.001}
 					rotation.x={1.570796}
 				/>
 			{/if}
