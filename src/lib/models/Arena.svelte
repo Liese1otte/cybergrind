@@ -1,8 +1,7 @@
 <script lang="ts">
-import { InstancedMesh, Instance, useTexture } from '@threlte/extras';
-import * as THRELTE from '@threlte/core';
+import { InstancedMesh, Instance, useTexture, interactivity } from '@threlte/extras';
+import { T, useFrame } from '@threlte/core';
 import * as THREE from 'three';
-import { T } from '@threlte/core';
 import {
 	heightMap,
 	isArenaRotating,
@@ -12,31 +11,18 @@ import {
 	currentMapId,
 	showKillZone
 } from '$stores';
-import { interactivity } from '@threlte/extras';
+import type { Event } from '$utils';
 
-type Event = THREE.Intersection & {
-	intersections: THREE.Intersection[]; // The first intersection of each intersected object
-	object: THREE.Object3D; // The object that was actually hit
-	eventObject: THREE.Object3D; // The object that registered the event
-	camera: THREE.Camera; // The camera used for raycasting
-	delta: THREE.Vector2; //  Distance between mouse down and mouse up event in pixels
-	nativeEvent: MouseEvent | PointerEvent | WheelEvent; // The native browser event
-	pointer: THREE.Vector2; // The pointer position in normalized device coordinates
-	ray: THREE.Ray; // The ray used for raycasting
-	stopPropagation: () => void; // Function to stop propagation of the event
-	stopped: Boolean; // Whether the event propagation has been stopped
-};
+// ### Interactivity
 
 interactivity({
 	filter: (hits) => {
-		// Only return the first hit
 		return hits.slice(0, 1);
 	}
 });
 
-// ### Pillar material
+// ### Pillars
 
-// look into cloning it like suggested
 const textureFilePathTheFirst: string = '/cube1.png';
 const textureFilePathTheSecond: string = '/cube2.png';
 const killZoneTextureFilePath: string = '/killZone.png';
@@ -51,7 +37,12 @@ const verticalTexture = useTexture(textureFilePathTheFirst).then((texture) => {
 const horizontalTexture = useTexture(textureFilePathTheSecond).then((texture) => {
 	texture.generateMipmaps = $mipMapsEnabled;
 	return texture;
-}); // la la la I'm a giggly glaggle
+});
+
+const unitCoefficient = 0.5;
+
+const row = (i: number) => { return Math.floor(i / 16); };
+const col = (i: number) => { return i % 16; };
 
 // ### Kill zone texture
 
@@ -64,53 +55,44 @@ const killZoneTexture = useTexture(killZoneTextureFilePath).then((texture) => {
 
 // ### Horizontal coordinates
 
-type Point2D = { x: number; z: number };
-
-function generateHorizontalCoordinates(): Point2D[] {
-	let outputArray: Point2D[] = [];
+function generateHorizontalCoordinates(): { x: number; z: number }[] {
+	let outputArray = [];
 	for (let i = 0; i < 256; i++) {
 		outputArray.push({ x: (i % 16) - 7.5, z: Math.floor(i / 16) - 7.5 });
 	}
 	return outputArray;
 }
 
-// rename to xz
-const horizontalCoordinatesMap = generateHorizontalCoordinates();
+
+const XZCoordinates = generateHorizontalCoordinates();
 
 // ### Rotation
 
 const pillarRotationModifier = -0.0025;
 
-THRELTE.useFrame(() => {
+useFrame(() => {
 	if ($isArenaRotating) {
 		$arenaRotationAngle += pillarRotationModifier;
 	}
 });
 
+// ### Map
+
 $: currentMap = resolveMap($currentMapId);
 
-let drag = false;
+// ### Dragging vs Clicking behaviour
 
-document.addEventListener('mousedown', () => (drag = false));
-document.addEventListener('mousemove', () => (drag = true));
-document.addEventListener('mouseup', () => {
-	if (!drag) {
-	}
-});
-
-const dragWizard = {
+const mouse = {
 	drag: false,
-	onDown: () => {
-		drag = false;
+	down: () => {
+		mouse.drag = false;
 	},
-	onMove: () => {
-		drag = true;
+	move: () => {
+		mouse.drag = true;
 	},
-	onUp: (e: Event) => {
-		if (!drag) {
-			return { click: true, increment: 1 * (e.nativeEvent.button == 0 ? 1 : -1) };
-		} else {
-			return { click: false, increment: 69420 };
+	up: (button: number, index: number) => {
+		if (!mouse.drag) {
+			currentMap.updateMap(index, button == 0 ? 1 : -1);
 		}
 	}
 };
@@ -118,86 +100,83 @@ const dragWizard = {
 
 {#if $showKillZone}
 	{#await killZoneTexture then texture}
-		<T.Mesh position={[0, 3.1, 0]} rotation={[1.570796, 0, 0]}>
+		<T.Mesh position={[0, 3.1, 0]} rotation={[THREE.degToRad(90), 0, 0]}>
 			<T.PlaneGeometry args={[16, 16]} />
 			<T.MeshBasicMaterial map={texture} side={THREE.BackSide} transparent={true} />
 		</T.Mesh>
-		<T.Mesh position={[0, 0.1, 0]} rotation={[1.570796, 0, 0]}>
+		<T.Mesh position={[0, 0.1, 0]} rotation={[THREE.degToRad(90), 0, 0]}>
 			<T.PlaneGeometry args={[16, 16]} />
 			<T.MeshBasicMaterial map={texture} side={THREE.FrontSide} transparent={true} />
 		</T.Mesh>
 	{/await}
 {/if}
 
-{#await horizontalTexture then textureH}
-	{#await verticalTexture then textureV}
-		<InstancedMesh>
-			<T.BoxGeometry args={[1, 10, 1]} />
-			<T.MeshBasicMaterial
-				map={textureV}
-				attach={(parent, self) => {
-					if (Array.isArray(parent.material))
-						parent.material = [...parent.material, self];
-					else parent.material = [self];
+{#await Promise.all([horizontalTexture, verticalTexture]) then [textureH, textureV]}
+	<InstancedMesh>
+		<T.BoxGeometry args={[1, 10, 1]} />
+		<T.MeshBasicMaterial
+			map={textureV}
+			attach={(parent, self) => {
+				if (Array.isArray(parent.material))
+					parent.material = [...parent.material, self];
+				else parent.material = [self];
+			}}
+		/>
+		<T.MeshBasicMaterial
+			map={textureV}
+			attach={(parent, self) => {
+				if (Array.isArray(parent.material))
+					parent.material = [...parent.material, self];
+				else parent.material = [self];
+			}}
+		/>
+		<T.MeshBasicMaterial
+			map={textureH}
+			attach={(parent, self) => {
+				if (Array.isArray(parent.material))
+					parent.material = [...parent.material, self];
+				else parent.material = [self];
+			}}
+		/>
+		<T.MeshBasicMaterial
+			map={textureH}
+			attach={(parent, self) => {
+				if (Array.isArray(parent.material))
+					parent.material = [...parent.material, self];
+				else parent.material = [self];
+			}}
+		/>
+		<T.MeshBasicMaterial
+			map={textureV}
+			attach={(parent, self) => {
+				if (Array.isArray(parent.material))
+					parent.material = [...parent.material, self];
+				else parent.material = [self];
+			}}
+		/>
+		<T.MeshBasicMaterial
+			map={textureV}
+			attach={(parent, self) => {
+				if (Array.isArray(parent.material))
+					parent.material = [...parent.material, self];
+				else parent.material = [self];
+			}}
+		/>
+		{#each Array(256) as _, i (i)}
+			<Instance
+				position.x={XZCoordinates[i].x}
+				position.y={$heightMap[row(i)][col(i)] * unitCoefficient}
+				position.z={XZCoordinates[i].z}
+				on:pointermove={() => {
+					mouse.move();
+				}}
+				on:pointerup={(e) => {
+					mouse.up(e.nativeEvent.button, i);
+				}}
+				on:pointerdown={() => {
+					mouse.down();
 				}}
 			/>
-			<T.MeshBasicMaterial
-				map={textureV}
-				attach={(parent, self) => {
-					if (Array.isArray(parent.material))
-						parent.material = [...parent.material, self];
-					else parent.material = [self];
-				}}
-			/>
-			<T.MeshBasicMaterial
-				map={textureH}
-				attach={(parent, self) => {
-					if (Array.isArray(parent.material))
-						parent.material = [...parent.material, self];
-					else parent.material = [self];
-				}}
-			/>
-			<T.MeshBasicMaterial
-				map={textureH}
-				attach={(parent, self) => {
-					if (Array.isArray(parent.material))
-						parent.material = [...parent.material, self];
-					else parent.material = [self];
-				}}
-			/>
-			<T.MeshBasicMaterial
-				map={textureV}
-				attach={(parent, self) => {
-					if (Array.isArray(parent.material))
-						parent.material = [...parent.material, self];
-					else parent.material = [self];
-				}}
-			/>
-			<T.MeshBasicMaterial
-				map={textureV}
-				attach={(parent, self) => {
-					if (Array.isArray(parent.material))
-						parent.material = [...parent.material, self];
-					else parent.material = [self];
-				}}
-			/>
-			{#each Array(256) as _, i (i)}
-				<Instance
-					position.x={horizontalCoordinatesMap[i].x}
-					position.y={$heightMap[Math.floor(i / 16)][i % 16] * 0.5}
-					position.z={horizontalCoordinatesMap[i].z}
-					on:pointermove={() => {
-						dragWizard.onMove();
-					}}
-					on:pointerup={(e) => {
-						let { click, increment } = dragWizard.onUp(e);
-						if (click) currentMap.updateMap(i, increment);
-					}}
-					on:pointerdown={() => {
-						dragWizard.onDown();
-					}}
-				/>
-			{/each}
-		</InstancedMesh>
-	{/await}
+		{/each}
+	</InstancedMesh>
 {/await}

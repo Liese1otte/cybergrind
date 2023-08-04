@@ -23,3 +23,22 @@ export const prefabWithAnIndexOf = {
 export type prefabIndex = keyof typeof prefabWithAnIndexOf;
 
 export type prefabSymbol = keyof typeof prefabWithASymbolOf;
+
+// ### Three.js event type
+
+export type Event = THREE.Intersection & {
+	intersections: THREE.Intersection[],
+	object: THREE.Object3D,
+	eventObject: THREE.Object3D,
+	camera: THREE.Camera,
+	delta: THREE.Vector2,
+	nativeEvent: MouseEvent | PointerEvent | WheelEvent,
+	pointer: THREE.Vector2,
+	ray: THREE.Ray,
+	stopPropagation: () => void,
+	stopped: Boolean
+};
+
+// ### Rotation 
+
+const degToRad = (d: number) => { return d * (Math.PI / 180 )};
