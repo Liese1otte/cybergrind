@@ -1,7 +1,7 @@
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 
-const dev = "production" === "development";
+const dev = process.argv.includes("dev");
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -18,8 +18,8 @@ const config = {
             assets: "docs"
         }),
 		paths: {
-            // change below to your repo name
             base: dev ? "" : "/cybergrind-pattern-editor-3d",
+			assets: dev ? "" :  "https://liese1otte.github.io/cybergrind-pattern-editor-3d",
         },
 		alias: {
 			"$src": "src/",
