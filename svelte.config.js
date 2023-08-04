@@ -19,7 +19,7 @@ const config = {
         }),
 		paths: {
             // change below to your repo name
-            base: dev ? "" : "/cybergrind",
+            base: dev ? "" : "/cybergrind-pattern-editor-3d",
         },
 		alias: {
 			"$src": "src/",
