@@ -19,7 +19,6 @@ const config = {
         }),
 		paths: {
             base: dev ? "" : "/cybergrind-pattern-editor-3d",
-			assets: dev ? "" :  "https://liese1otte.github.io/cybergrind-pattern-editor-3d",
         },
 		alias: {
 			"$src": "src/",

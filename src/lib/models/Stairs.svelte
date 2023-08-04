@@ -1,4 +1,5 @@
 <script lang="ts">
+import { base } from '$app/paths';
 import { mipMapsEnabled, heightMap, prefabMap } from '$stores';
 import { InstancedMeshes, Instance, useGltf } from '@threlte/extras';
 
@@ -126,13 +127,13 @@ let stairsDeployed: StairConfig[];
 
 $: stairsDeployed = updateStairConfigs($heightMap, $prefabMap);
 
-const straightStairGlb = useGltf('/straightStair.glb').then((gltf) => {
+const straightStairGlb = useGltf(`${base}/straightStair.glb`).then((gltf) => {
 	gltf.nodes['StraightStair'].material.map.colorSpace = '';
 	gltf.nodes['StraightStair'].material.map.generateMipmaps = $mipMapsEnabled;
 	return gltf;
 });
 
-const angleStairGlb = useGltf("/angleStair.glb").then((gltf) => {
+const angleStairGlb = useGltf(`${base}/angleStair.glb`).then((gltf) => {
 	gltf.nodes['AngleStair'].material.map.colorSpace = '';
 	gltf.nodes['AngleStair'].material.map.generateMipmaps = $mipMapsEnabled;
 	return gltf;

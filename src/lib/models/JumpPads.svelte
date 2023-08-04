@@ -2,8 +2,9 @@
 import { T } from "@threlte/core";
 import { mipMapsEnabled, heightMap, prefabMap } from "$stores";
 import { InstancedMeshes, useGltf } from "@threlte/extras";
+import { base } from "$app/paths";
 
-const jumpPadGlb = useGltf("/jumpPad.glb").then((gltf) => {
+const jumpPadGlb = useGltf(`${base}/jumpPad.glb`).then((gltf) => {
     Object.keys(gltf.nodes).forEach((k) => {
         if (gltf.nodes[k].type == "Mesh") {
             gltf.nodes[k].material.map.colorSpace = '';

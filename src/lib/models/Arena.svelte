@@ -11,7 +11,7 @@ import {
 	currentMapId,
 	showKillZone
 } from '$stores';
-import type { Event } from '$utils';
+import { base } from '$app/paths';
 
 // ### Interactivity
 
@@ -23,9 +23,9 @@ interactivity({
 
 // ### Pillars
 
-const textureFilePathTheFirst: string = '/cube1.png';
-const textureFilePathTheSecond: string = '/cube2.png';
-const killZoneTextureFilePath: string = '/killZone.png';
+const textureFilePathTheFirst: string = `${base}/cube1.png`;
+const textureFilePathTheSecond: string = `${base}/cube2.png`;
+const killZoneTextureFilePath: string = `${base}/killZone.png`;
 
 const verticalTexture = useTexture(textureFilePathTheFirst).then((texture) => {
 	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;

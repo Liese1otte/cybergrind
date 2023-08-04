@@ -9,10 +9,11 @@ import Arena from '$lib/models/Arena.svelte';
 import Stairs from '$lib/models/Stairs.svelte';
 import JumpPads from '$lib/models/JumpPads.svelte';
 import Prefabs from '$lib/models/Prefabs.svelte';
+import { base } from '$app/paths';
 
 // ### Skybox setup
 
-const skyboxTexture = useTexture('skyboxtest_2.png');
+const skyboxTexture = useTexture(`${base}/skyboxtest_2.png`);
 
 let skyboxRotationAngle = 0;
 const skyboxRotationModifier = 0.00025;

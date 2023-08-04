@@ -3,18 +3,19 @@ import { T } from '@threlte/core';
 import { InstancedMesh, useTexture, Instance } from '@threlte/extras';
 import * as THREE from 'three';
 import { prefabMap, mipMapsEnabled, heightMap } from '$stores';
+import { base } from '$app/paths';
 
-const meleePrefabTexture = useTexture('/melee.png').then((texture) => {
+const meleePrefabTexture = useTexture(`${base}/melee.png`).then((texture) => {
 	texture.generateMipmaps = $mipMapsEnabled;
 	return texture;
 });
 
-const projectilePrefabTexture = useTexture('/projectile.png').then((texture) => {
+const projectilePrefabTexture = useTexture(`${base}/projectile.png`).then((texture) => {
 	texture.generateMipmaps = $mipMapsEnabled;
 	return texture;
 });
 
-const hideousPrefabTexture = useTexture('/hideous.png').then((texture) => {
+const hideousPrefabTexture = useTexture(`${base}/hideous.png`).then((texture) => {
 	texture.generateMipmaps = $mipMapsEnabled;
 	return texture;
 });
