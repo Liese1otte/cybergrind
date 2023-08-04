@@ -21,7 +21,6 @@ const config = {
             // change below to your repo name
             base: dev ? "" : "/cybergrind",
         },
-		target: "#svelte",
 		alias: {
 			"$src": "src/",
 			"$routes": "src/routes",
