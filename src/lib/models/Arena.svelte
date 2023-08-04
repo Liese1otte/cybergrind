@@ -102,11 +102,11 @@ const mouse = {
 	{#await killZoneTexture then texture}
 		<T.Mesh position={[0, 3.1, 0]} rotation={[1.570796, 0, 0]}>
 			<T.PlaneGeometry args={[16, 16]} />
-			<T.MeshBasicMaterial map={texture} side={THREE.BackSide} transparent={true} />
+			<T.MeshStandardMaterial map={texture} side={THREE.BackSide} transparent={true} />
 		</T.Mesh>
 		<T.Mesh position={[0, 0.1, 0]} rotation={[1.570796, 0, 0]}>
 			<T.PlaneGeometry args={[16, 16]} />
-			<T.MeshBasicMaterial map={texture} side={THREE.FrontSide} transparent={true} />
+			<T.MeshStandardMaterial map={texture} side={THREE.FrontSide} transparent={true} />
 		</T.Mesh>
 	{/await}
 {/if}
@@ -114,7 +114,7 @@ const mouse = {
 {#await Promise.all([horizontalTexture, verticalTexture]) then [textureH, textureV]}
 	<InstancedMesh>
 		<T.BoxGeometry args={[1, 10, 1]} />
-		<T.MeshBasicMaterial
+		<T.MeshStandardMaterial
 			map={textureV}
 			attach={(parent, self) => {
 				if (Array.isArray(parent.material))
@@ -122,7 +122,7 @@ const mouse = {
 				else parent.material = [self];
 			}}
 		/>
-		<T.MeshBasicMaterial
+		<T.MeshStandardMaterial
 			map={textureV}
 			attach={(parent, self) => {
 				if (Array.isArray(parent.material))
@@ -130,7 +130,7 @@ const mouse = {
 				else parent.material = [self];
 			}}
 		/>
-		<T.MeshBasicMaterial
+		<T.MeshStandardMaterial
 			map={textureH}
 			attach={(parent, self) => {
 				if (Array.isArray(parent.material))
@@ -138,7 +138,7 @@ const mouse = {
 				else parent.material = [self];
 			}}
 		/>
-		<T.MeshBasicMaterial
+		<T.MeshStandardMaterial
 			map={textureH}
 			attach={(parent, self) => {
 				if (Array.isArray(parent.material))
@@ -146,7 +146,7 @@ const mouse = {
 				else parent.material = [self];
 			}}
 		/>
-		<T.MeshBasicMaterial
+		<T.MeshStandardMaterial
 			map={textureV}
 			attach={(parent, self) => {
 				if (Array.isArray(parent.material))
@@ -154,7 +154,7 @@ const mouse = {
 				else parent.material = [self];
 			}}
 		/>
-		<T.MeshBasicMaterial
+		<T.MeshStandardMaterial
 			map={textureV}
 			attach={(parent, self) => {
 				if (Array.isArray(parent.material))

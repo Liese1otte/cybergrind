@@ -41,12 +41,14 @@ window.onbeforeunload = () => {
 	<OrbitControls enableDamping={$enableDamping} target={$cameraTarget} bind:ref={controls} />
 </T.PerspectiveCamera>
 
+<T.AmbientLight intensity={1} color="white" />
+
 <!-- cock blocked by the camera -->
 {#await skyboxTexture then texture}
 	<T.Group rotation={[0, skyboxRotationAngle, 0]}>
 		<T.Mesh>
 			<T.SphereGeometry args={[500, 32, 32]} />
-			<T.MeshBasicMaterial map={texture} side={THREE.BackSide} />
+			<T.MeshStandardMaterial map={texture} side={THREE.BackSide} />
 		</T.Mesh>
 	</T.Group>
 {/await}

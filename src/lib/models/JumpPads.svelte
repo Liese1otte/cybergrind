@@ -1,17 +1,14 @@
 <script lang="ts">
 import { T } from "@threlte/core";
 import { mipMapsEnabled, heightMap, prefabMap } from "$stores";
-import { InstancedMeshes, useGltf } from "@threlte/extras";
+import { InstancedMesh, useGltf, Instance } from "@threlte/extras";
 import { base } from "$app/paths";
 
 const jumpPadGlb = useGltf(`${base}/jumpPad.glb`).then((gltf) => {
-    Object.keys(gltf.nodes).forEach((k) => {
-        if (gltf.nodes[k].type == "Mesh") {
-            gltf.nodes[k].material.map.colorSpace = '';
-            gltf.nodes[k].material.map.generateMipmaps = $mipMapsEnabled;
-        }
-    })
-	return gltf.nodes;
+    gltf.nodes["JumpPad"].material.map.colorSpace = '';
+    gltf.nodes["JumpPad"].material.map.generateMipmaps = $mipMapsEnabled;
+    gltf.nodes["JumpPad"].frustumCulled = false; // hey!
+	return gltf.nodes["JumpPad"];
 });
 
 function generateJumpPadConfig(prefabs: number[][]): {i: number, j: number}[] {
@@ -32,18 +29,11 @@ $: jumpPadConfig = generateJumpPadConfig($prefabMap);
 </script>
 
 {#await jumpPadGlb then jumpPadModel}
-    <InstancedMeshes meshes={jumpPadModel} let:components={{Pad0, Pad1, Pad2, Pad3, Pad4, Pad5, Pad6, Pad7}}>
+    <InstancedMesh>
+        <T is={jumpPadModel.geometry} />
+        <T is={jumpPadModel.material} />
         {#each jumpPadConfig as jumpPad}
-            <T.Group position={[jumpPad.j - 7.5, $heightMap[jumpPad.i][jumpPad.j] * 0.5 + 5, jumpPad.i - 7.5]} >
-                <Pad0 />
-                <Pad1 />
-                <Pad2 />
-                <Pad3 />
-                <Pad4 />
-                <Pad5 />
-                <Pad6 />
-                <Pad7 />
-            </T.Group>
+            <Instance position={[jumpPad.j - 7.5, $heightMap[jumpPad.i][jumpPad.j] * 0.5 + 5.05, jumpPad.i - 7.5]} />
         {/each}
-    </InstancedMeshes>
+    </InstancedMesh>
 {/await}
