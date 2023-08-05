@@ -12,6 +12,7 @@ import {
 	showKillZone
 } from '$stores';
 import { base } from '$app/paths';
+import { degToRad } from "$utils";
 
 // ### Interactivity
 
@@ -100,11 +101,11 @@ const mouse = {
 
 {#if $showKillZone}
 	{#await killZoneTexture then texture}
-		<T.Mesh position={[0, 3.1, 0]} rotation={[1.570796, 0, 0]}>
+		<T.Mesh position={[0, 3.1, 0]} rotation={[degToRad(90), 0, 0]}>
 			<T.PlaneGeometry args={[16, 16]} />
 			<T.MeshStandardMaterial map={texture} side={THREE.BackSide} transparent={true} />
 		</T.Mesh>
-		<T.Mesh position={[0, 0.1, 0]} rotation={[1.570796, 0, 0]}>
+		<T.Mesh position={[0, 0.1, 0]} rotation={[degToRad(90), 0, 0]}>
 			<T.PlaneGeometry args={[16, 16]} />
 			<T.MeshStandardMaterial map={texture} side={THREE.FrontSide} transparent={true} />
 		</T.Mesh>

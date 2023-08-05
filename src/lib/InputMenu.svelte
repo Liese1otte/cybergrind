@@ -34,7 +34,6 @@ import InputMap from '$lib/maps/InputMap.svelte';
 		<input type="checkbox" id="showKillZone" bind:checked={$showKillZone} />
 		<label for="showKillZone">Kill Zone?</label>
 	</div>
-	02.cgp does not pass shit wtf lol
 </div>
 
 

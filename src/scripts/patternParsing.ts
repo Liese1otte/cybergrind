@@ -28,7 +28,6 @@ function parseCGPRow(row: string): number[] {
 }
 
 export function getMapArraysFromCGPString(cgp: string): [number[][], number[][]] {
-	console.log(JSON.stringify(cgp.trim()))
 	if (!new RegExp(cgpFormat).test(cgp.trim())) {
 		throw Error('Pattern does not pass RegEx validation');
 	}

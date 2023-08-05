@@ -4,6 +4,7 @@ import { InstancedMesh, useTexture, Instance } from '@threlte/extras';
 import * as THREE from 'three';
 import { prefabMap, mipMapsEnabled, heightMap } from '$stores';
 import { base } from '$app/paths';
+import { degToRad } from '$utils';
 
 const meleePrefabTexture = useTexture(`${base}/melee.png`).then((texture) => {
 	texture.generateMipmaps = $mipMapsEnabled;
@@ -52,7 +53,7 @@ $: enemyPrefabConfig = generateEnemyPrefabConfig($prefabMap);
 						$heightMap[enemyPrefab.i][enemyPrefab.j] * 0.5 + 5.01,
 						enemyPrefab.i - 7.5
 					]}
-					rotation.x={1.570796}
+					rotation.x={degToRad(90)}
 				/>
 			{/if}
 		{/each}
@@ -70,7 +71,7 @@ $: enemyPrefabConfig = generateEnemyPrefabConfig($prefabMap);
 						$heightMap[enemyPrefab.i][enemyPrefab.j] * 0.5 + 5.01,
 						enemyPrefab.i - 7.5
 					]}
-					rotation.x={1.570796}
+					rotation.x={degToRad(90)}
 				/>
 			{/if}
 		{/each}
@@ -88,7 +89,7 @@ $: enemyPrefabConfig = generateEnemyPrefabConfig($prefabMap);
 						$heightMap[enemyPrefab.i][enemyPrefab.j] * 0.5 + 5.01,
 						enemyPrefab.i - 7.5
 					]}
-					rotation.x={1.570796}
+					rotation.x={degToRad(90)}
 				/>
 			{/if}
 		{/each}

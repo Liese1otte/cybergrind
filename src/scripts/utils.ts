@@ -41,4 +41,4 @@ export type Event = THREE.Intersection & {
 
 // ### Rotation 
 
-const degToRad = (d: number) => { return d * (Math.PI / 180 )};
+export const degToRad = (d: number) => { return d * (Math.PI / 180 )};

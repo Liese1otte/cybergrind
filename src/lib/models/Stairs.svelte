@@ -1,7 +1,8 @@
 <script lang="ts">
 import { base } from '$app/paths';
 import { mipMapsEnabled, heightMap, prefabMap } from '$stores';
-import { InstancedMeshes, Instance, useGltf } from '@threlte/extras';
+import { InstancedMeshes, useGltf } from '@threlte/extras';
+import { degToRad } from '$utils';
 
 // EVERY TIME A COORDINATE IS REFERENCED AS i OR j IT IS A MAP COORDINATE FOR A CELL
 // EVERY TIME A COORDINATE IS REFERENCED AS x OR uy IT IS A RELATIVE COORDINATE TO CURRENT i OR j
@@ -152,7 +153,7 @@ const angleStairGlb = useGltf(`${base}/angleStair.glb`).then((gltf) => {
 							$heightMap[stair.i][stair.j] * 0.5 + 5.5 - (stair.elevation % 2) * 0.25,
 							stair.i - 7.5
 						]}
-						rotation.y={stair.direction * 1.570796}
+						rotation.y={stair.direction * degToRad(90)}
 						scale.y={stair.elevation * 0.5}
 					/>
 				{:else if stair.type == StairTypes.Angled}
@@ -163,7 +164,7 @@ const angleStairGlb = useGltf(`${base}/angleStair.glb`).then((gltf) => {
 							$heightMap[stair.i][stair.j] * 0.5 + 5.5 - (stair.elevation % 2) * 0.25,
 							stair.i - 7.5
 						]}
-						rotation.y={stair.direction * 1.570796}
+						rotation.y={stair.direction * degToRad(90)}
 						scale.y={stair.elevation * 0.5}
 					/>
 				{/if}
