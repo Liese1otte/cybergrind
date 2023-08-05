@@ -10,12 +10,12 @@ import {
 	showKillZone,
 	defaultCameraTarget
 } from '$stores';
-import InputMap from '$lib/maps/InputMap.svelte';
+import InputMatrix from '$lib/ui/InputMatrix.svelte';
 </script>
 
 <!-- refactoring when redoing ui -->
 <div class="menu-background">
-	<InputMap />
+	<InputMatrix />
 	<div class="control-menu">
 		<input type="checkbox" id="isRotating" bind:checked={$isArenaRotating} />
 		<label for="isRotating">Rotate?</label>

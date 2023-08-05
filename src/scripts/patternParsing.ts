@@ -1,6 +1,3 @@
-import { prefabWithAnIndexOf, prefabWithASymbolOf } from '$utils';
-import type { prefabIndex, prefabSymbol } from '$utils';
-
 const cgpFormat =
 	/^((\(([0-9]|-?[1-9][0-9]*)\)|[0-9]){16}(\r?\n){1}){16}(\r?\n){1}([JsnHp0]{16}(\r?\n){1}){15}[JsnHp0]{16}(\r?\n)*$/;
 //    |--------------------------------------<height map>-||--------||-<prefab map>---------------------------------|
@@ -68,3 +65,25 @@ export function getCGPStringFromMapArrays(arrays: [number[][], number[][]]): str
 		.join('\n');
 	return (heightMapString + outString + prefabMapString).replaceAll(',', '');
 }
+
+const prefabWithASymbolOf = {
+	"0": 0,
+	"n": 1,
+	"p": 2,
+	"J": 3,
+	"s": 4,
+	"H": 5
+} as const;
+
+const prefabWithAnIndexOf = {
+	0: '0',
+	1: 'n',
+	2: 'p',
+	3: 'J',
+	4: 's',
+	5: 'H'
+} as const;
+
+type prefabIndex = keyof typeof prefabWithAnIndexOf;
+
+type prefabSymbol = keyof typeof prefabWithASymbolOf;
