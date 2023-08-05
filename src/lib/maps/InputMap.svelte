@@ -133,7 +133,9 @@ function setPatternFromCgp(cgp: string): void {
 function downloadCurrentPattern(): void {
 	let element = document.createElement('a');
 	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(getCGPStringFromMapArrays([$heightMap, $prefabMap])));
+	currentPatternName = currentPatternName ? currentPatternName : "myPattern";
 	element.setAttribute('download', currentPatternName + ".cgp");
+	currentPatternName = "";
 
 	element.style.display = 'none';
 	document.body.appendChild(element);

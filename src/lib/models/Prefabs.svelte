@@ -13,11 +13,13 @@ const meleePrefabTexture = useTexture(`${base}/melee.png`).then((texture) => {
 
 const projectilePrefabTexture = useTexture(`${base}/projectile.png`).then((texture) => {
 	texture.generateMipmaps = $mipMapsEnabled;
+	texture.magFilter = THREE.NearestFilter;
 	return texture;
 });
 
 const hideousPrefabTexture = useTexture(`${base}/hideous.png`).then((texture) => {
 	texture.generateMipmaps = $mipMapsEnabled;
+	texture.magFilter = THREE.NearestFilter;
 	return texture;
 });
 

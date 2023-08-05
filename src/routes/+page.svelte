@@ -18,19 +18,15 @@ import MainScene from '$src/lib/MainScene.svelte';
 
 <style>
 @import "/src/styles/globals.css";
-
 .wrapper {
 	width: 100%;
 	height: 100%;
 	display: flex;
 }
+
 .canvas {
 	flex: 1;
 	background: radial-gradient(#282828, #171717);
 	background-attachment: fixed;
-}
-.menu {
-	width: 33.3%;
-	height: 100%;
 }
 </style>

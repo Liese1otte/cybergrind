@@ -7,7 +7,6 @@ import { base } from "$app/paths";
 const jumpPadGlb = useGltf(`${base}/jumpPad.glb`).then((gltf) => {
     gltf.nodes["JumpPad"].material.map.colorSpace = '';
     gltf.nodes["JumpPad"].material.map.generateMipmaps = $mipMapsEnabled;
-    gltf.nodes["JumpPad"].frustumCulled = false; // hey!
 	return gltf.nodes["JumpPad"];
 });
 
@@ -26,6 +25,7 @@ function generateJumpPadConfig(prefabs: number[][]): {i: number, j: number}[] {
 let jumpPadConfig: {i: number, j: number}[];
 
 $: jumpPadConfig = generateJumpPadConfig($prefabMap);
+
 </script>
 
 {#await jumpPadGlb then jumpPadModel}

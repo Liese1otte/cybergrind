@@ -1,10 +1,8 @@
 import { prefabWithAnIndexOf, prefabWithASymbolOf } from "$utils";
 import type { prefabIndex, prefabSymbol } from "$utils";
 
-const cgpFormatRegex =
-	/^(([0-9]|\((-[1-9]|-[1-4][0-9]|[1-4][0-9]|-?50)\)){16}(\r?\n){1}){16}(\r?\n){1}([0nsJHp]{16}(\r?\n){1}){15}([0nsJHp]{16}){1}$/g;
-
-const parensEscapeIncrement = 3;
+//                  |--------------------------------------<height map>-||--------||-<prefab map>---------------------------------|
+const cgpFormat = /^((\(([0-9]|-?[1-9][0-9]*)\)|[0-9]){16}(\r?\n){1}){16}(\r?\n){1}([JsnHp0]{16}(\r?\n){1}){15}[JsnHp0]{16}(\r?\n)*$/
 
 function parseCGPRow(row: string): number[] {
 	let outArray = Array<number>();
@@ -21,7 +19,7 @@ function parseCGPRow(row: string): number[] {
 		}
 		if (matchIndicies.includes(i)) {
 			outArray.push(parseInt(matchArray[matchIndicies.indexOf(i)][0].slice(1, -1)));
-			i += parensEscapeIncrement;
+			i += matchArray[matchIndicies.indexOf(i)][0].length - 1;
 		} else {
 			outArray.push(parseInt(row[i]));
 		}
@@ -30,7 +28,8 @@ function parseCGPRow(row: string): number[] {
 }
 
 export function getMapArraysFromCGPString(cgp: string): [number[][], number[][]] {
-	if (!new RegExp(cgpFormatRegex).test(cgp)) {
+	console.log(JSON.stringify(cgp.trim()))
+	if (!new RegExp(cgpFormat).test(cgp.trim())) {
 		throw Error('Pattern does not pass RegEx validation');
 	}
 	let maps = cgp
