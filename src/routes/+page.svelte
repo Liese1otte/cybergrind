@@ -17,7 +17,7 @@ import MainScene from '$src/lib/MainScene.svelte';
 </div>
 
 <style>
-@import "/src/styles/globals.css";
+@import '/src/styles/globals.css';
 .wrapper {
 	width: 100%;
 	height: 100%;

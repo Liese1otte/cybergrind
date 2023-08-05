@@ -13,12 +13,7 @@ function getStairVectorsAt(i: number, j: number): StairVector[] {
 		let relI = i + d.i,
 			relJ = j + d.j;
 		if (
-			!(
-				relI < 0 ||
-				relI >= $prefabMap.length ||
-				relJ < 0 ||
-				relJ >= $heightMap[0].length
-			) &&
+			!(relI < 0 || relI >= $prefabMap.length || relJ < 0 || relJ >= $heightMap[0].length) &&
 			$heightMap[relI][relJ] - $heightMap[i][j] < 3 &&
 			$heightMap[relI][relJ] - $heightMap[i][j] > 0
 		) {
@@ -38,26 +33,42 @@ const enum StairTypes {
 	None = -1
 }
 
-const resolveStraightStairDirection = (x:number, y: number) => {
-	if (x == 1 && y == 0) { return 0 }
-	if (x == 0 && y == 1) { return 1 }
-	if (x == -1 && y == 0) { return 2 }
-	if (x == 0 && y == -1) { return 3 }
-}
+const resolveStraightStairDirection = (x: number, y: number) => {
+	if (x == 1 && y == 0) {
+		return 0;
+	}
+	if (x == 0 && y == 1) {
+		return 1;
+	}
+	if (x == -1 && y == 0) {
+		return 2;
+	}
+	if (x == 0 && y == -1) {
+		return 3;
+	}
+};
 
 const resolveAngledStairDirection = (x: number, y: number) => {
-	if (x == 1 && y == 1) { return 0 }
-	if (x == -1 && y == 1) { return 1 }
-	if (x == -1 && y == -1) { return 2 }
-	if (x == 1 && y == -1) { return 3 }
-}
+	if (x == 1 && y == 1) {
+		return 0;
+	}
+	if (x == -1 && y == 1) {
+		return 1;
+	}
+	if (x == -1 && y == -1) {
+		return 2;
+	}
+	if (x == 1 && y == -1) {
+		return 3;
+	}
+};
 
 function getConfigFromVectors(i: number, j: number, vectors: StairVector[]): StairConfig {
-	let outConfig: StairConfig = {i: i, j: j, type: StairTypes.None, elevation: 0, direction: 0};
+	let outConfig: StairConfig = { i: i, j: j, type: StairTypes.None, elevation: 0, direction: 0 };
 	if (!vectors.length) {
 		return outConfig;
 	}
-	let sumVector = {x: 0, y: 0};
+	let sumVector = { x: 0, y: 0 };
 	for (let v of vectors) {
 		sumVector.x += v.x;
 		sumVector.y += v.y;
@@ -81,7 +92,9 @@ function getConfigFromVectors(i: number, j: number, vectors: StairVector[]): Sta
 		return outConfig;
 	}
 	outConfig.type = StairTypes.Straight;
-	outConfig.elevation = vectors.filter((v) => {return v.x == sumVector.x && v.y == sumVector.y})[0].elevation;
+	outConfig.elevation = vectors.filter((v) => {
+		return v.x == sumVector.x && v.y == sumVector.y;
+	})[0].elevation;
 	outConfig.direction = resolveStraightStairDirection(sumVector.x, sumVector.y) as number;
 	return outConfig;
 }
@@ -143,11 +156,13 @@ const angleStairGlb = useGltf(`${base}/angleStair.glb`).then((gltf) => {
 
 {#await straightStairGlb then straightStairModel}
 	{#await angleStairGlb then angleStairModel}
-		<InstancedMeshes meshes={{...straightStairModel.nodes, ...angleStairModel.nodes}} let:components={{StraightStair, AngleStair}}>
+		<InstancedMeshes
+			meshes={{ ...straightStairModel.nodes, ...angleStairModel.nodes }}
+			let:components={{ StraightStair, AngleStair }}
+		>
 			{#each stairsDeployed as stair}
 				{#if stair.type == StairTypes.Straight}
 					<StraightStair
-						
 						position={[
 							stair.j - 7.5,
 							$heightMap[stair.i][stair.j] * 0.5 + 5.5 - (stair.elevation % 2) * 0.25,
@@ -158,7 +173,6 @@ const angleStairGlb = useGltf(`${base}/angleStair.glb`).then((gltf) => {
 					/>
 				{:else if stair.type == StairTypes.Angled}
 					<AngleStair
-						
 						position={[
 							stair.j - 7.5,
 							$heightMap[stair.i][stair.j] * 0.5 + 5.5 - (stair.elevation % 2) * 0.25,

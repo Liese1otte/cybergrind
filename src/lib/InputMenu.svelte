@@ -36,7 +36,6 @@ import InputMap from '$lib/maps/InputMap.svelte';
 	</div>
 </div>
 
-
 <style lang="less">
 .menu-background {
 	width: 100%;

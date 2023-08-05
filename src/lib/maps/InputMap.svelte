@@ -1,10 +1,5 @@
 <script lang="ts">
-import {
-	resolveMap,
-	currentMapId,
-	heightMap,
-	prefabMap
-} from '$stores';
+import { resolveMap, currentMapId, heightMap, prefabMap } from '$stores';
 import { getMapArraysFromCGPString, getCGPStringFromMapArrays } from '$scripts/patternParsing';
 
 function enterMirroringState(index: number): void {
@@ -119,7 +114,7 @@ async function parsePattern(): Promise<void> {
 	if (!file || (file && !file.name.endsWith('.cgp'))) {
 		return;
 	}
-	currentPatternName = file.name.replace(/\.[^/.]+$/, "");
+	currentPatternName = file.name.replace(/\.[^/.]+$/, '');
 	setPatternFromCgp(await file.text());
 }
 
@@ -132,10 +127,14 @@ function setPatternFromCgp(cgp: string): void {
 // move to utils
 function downloadCurrentPattern(): void {
 	let element = document.createElement('a');
-	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(getCGPStringFromMapArrays([$heightMap, $prefabMap])));
-	currentPatternName = currentPatternName ? currentPatternName : "myPattern";
-	element.setAttribute('download', currentPatternName + ".cgp");
-	currentPatternName = "";
+	element.setAttribute(
+		'href',
+		'data:text/plain;charset=utf-8,' +
+			encodeURIComponent(getCGPStringFromMapArrays([$heightMap, $prefabMap]))
+	);
+	currentPatternName = currentPatternName ? currentPatternName : 'myPattern';
+	element.setAttribute('download', currentPatternName + '.cgp');
+	currentPatternName = '';
 
 	element.style.display = 'none';
 	document.body.appendChild(element);

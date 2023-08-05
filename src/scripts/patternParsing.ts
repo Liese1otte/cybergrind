@@ -1,8 +1,9 @@
-import { prefabWithAnIndexOf, prefabWithASymbolOf } from "$utils";
-import type { prefabIndex, prefabSymbol } from "$utils";
+import { prefabWithAnIndexOf, prefabWithASymbolOf } from '$utils';
+import type { prefabIndex, prefabSymbol } from '$utils';
 
-//                  |--------------------------------------<height map>-||--------||-<prefab map>---------------------------------|
-const cgpFormat = /^((\(([0-9]|-?[1-9][0-9]*)\)|[0-9]){16}(\r?\n){1}){16}(\r?\n){1}([JsnHp0]{16}(\r?\n){1}){15}[JsnHp0]{16}(\r?\n)*$/
+const cgpFormat =
+	/^((\(([0-9]|-?[1-9][0-9]*)\)|[0-9]){16}(\r?\n){1}){16}(\r?\n){1}([JsnHp0]{16}(\r?\n){1}){15}[JsnHp0]{16}(\r?\n)*$/;
+//    |--------------------------------------<height map>-||--------||-<prefab map>---------------------------------|
 
 function parseCGPRow(row: string): number[] {
 	let outArray = Array<number>();
@@ -15,7 +16,7 @@ function parseCGPRow(row: string): number[] {
 	for (let i = 0; i < row.length; i++) {
 		if (row[i] in prefabWithASymbolOf) {
 			outArray.push(prefabWithASymbolOf[row[i] as prefabSymbol]);
-            continue;
+			continue;
 		}
 		if (matchIndicies.includes(i)) {
 			outArray.push(parseInt(matchArray[matchIndicies.indexOf(i)][0].slice(1, -1)));
@@ -32,16 +33,16 @@ export function getMapArraysFromCGPString(cgp: string): [number[][], number[][]]
 		throw Error('Pattern does not pass RegEx validation');
 	}
 	let maps = cgp
-		.split(/(\r?\n){2}/)            // split two maps apart
+		.split(/(\r?\n){2}/) 		    // split two maps apart
 		.map((s) => {
 			return s.split(/\r?\n/);
-		})                              // split rows inside of each map apart
+		}) 								// split rows inside of each map apart
 		.map((a) => {
 			return a.map((r) => {
 				return parseCGPRow(r);
-			});                         // parse every row of a map
-		});                             // do above for both maps'
-	maps.splice(1, 1);                  // remove the scrunkly in the middle of split maps
+			}); 						// parse every row of a map
+		}); 							// do above for both maps'
+	maps.splice(1, 1); 					// remove the scrunkly in the middle of split maps
 	return maps as [number[][], number[][]];
 }
 

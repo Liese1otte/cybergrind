@@ -12,7 +12,7 @@ import {
 	showKillZone
 } from '$stores';
 import { base } from '$app/paths';
-import { degToRad } from "$utils";
+import { degToRad } from '$utils';
 
 // ### Interactivity
 
@@ -42,8 +42,12 @@ const horizontalTexture = useTexture(textureFilePathTheSecond).then((texture) =>
 
 const unitCoefficient = 0.5;
 
-const row = (i: number) => { return Math.floor(i / 16); };
-const col = (i: number) => { return i % 16; };
+const row = (i: number) => {
+	return Math.floor(i / 16);
+};
+const col = (i: number) => {
+	return i % 16;
+};
 
 // ### Kill zone texture
 
@@ -63,7 +67,6 @@ function generateHorizontalCoordinates(): { x: number; z: number }[] {
 	}
 	return outputArray;
 }
-
 
 const XZCoordinates = generateHorizontalCoordinates();
 
@@ -118,48 +121,42 @@ const mouse = {
 		<T.MeshStandardMaterial
 			map={textureV}
 			attach={(parent, self) => {
-				if (Array.isArray(parent.material))
-					parent.material = [...parent.material, self];
+				if (Array.isArray(parent.material)) parent.material = [...parent.material, self];
 				else parent.material = [self];
 			}}
 		/>
 		<T.MeshStandardMaterial
 			map={textureV}
 			attach={(parent, self) => {
-				if (Array.isArray(parent.material))
-					parent.material = [...parent.material, self];
+				if (Array.isArray(parent.material)) parent.material = [...parent.material, self];
 				else parent.material = [self];
 			}}
 		/>
 		<T.MeshStandardMaterial
 			map={textureH}
 			attach={(parent, self) => {
-				if (Array.isArray(parent.material))
-					parent.material = [...parent.material, self];
+				if (Array.isArray(parent.material)) parent.material = [...parent.material, self];
 				else parent.material = [self];
 			}}
 		/>
 		<T.MeshStandardMaterial
 			map={textureH}
 			attach={(parent, self) => {
-				if (Array.isArray(parent.material))
-					parent.material = [...parent.material, self];
+				if (Array.isArray(parent.material)) parent.material = [...parent.material, self];
 				else parent.material = [self];
 			}}
 		/>
 		<T.MeshStandardMaterial
 			map={textureV}
 			attach={(parent, self) => {
-				if (Array.isArray(parent.material))
-					parent.material = [...parent.material, self];
+				if (Array.isArray(parent.material)) parent.material = [...parent.material, self];
 				else parent.material = [self];
 			}}
 		/>
 		<T.MeshStandardMaterial
 			map={textureV}
 			attach={(parent, self) => {
-				if (Array.isArray(parent.material))
-					parent.material = [...parent.material, self];
+				if (Array.isArray(parent.material)) parent.material = [...parent.material, self];
 				else parent.material = [self];
 			}}
 		/>

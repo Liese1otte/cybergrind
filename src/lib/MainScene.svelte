@@ -1,5 +1,5 @@
 <script lang="ts">
-import { T, useFrame, useThrelte} from '@threlte/core';
+import { T, useFrame, useThrelte } from '@threlte/core';
 import { OrbitControls, useTexture } from '@threlte/extras';
 import type { OrbitControls as ThreeOrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { cameraPosition, enableDamping, arenaRotationAngle, cameraTarget } from '$stores';
