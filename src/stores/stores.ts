@@ -63,7 +63,7 @@ export const arenaRotationAngle = persistent(Storage.Session, 'arenaRotationAngl
 
 const mapSize = 16, prefabCount = 6;
 
-type MapStore = Writable<number[][]> & {
+export type MapStore = Writable<number[][]> & {
 	updateMap: (index: number, increment: number) => void;
 };
 
