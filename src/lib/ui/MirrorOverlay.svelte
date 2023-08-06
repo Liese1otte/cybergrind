@@ -1,9 +1,10 @@
 <script lang="ts">
 import { mirror, Half, Fourth, MirrorState, type MirrorSelector } from '$scripts/mirroring';
-import type { MapStore } from '$stores';
+import { resolveMap, currentMapId } from '$stores';
 
-export let currentMap: MapStore;
 export let mirrorState: MirrorState;
+
+$: currentMap = resolveMap($currentMapId);
 
 function mirrorAction(selector: MirrorSelector): void {
 	$currentMap = mirror($currentMap, selector);
@@ -12,66 +13,66 @@ function mirrorAction(selector: MirrorSelector): void {
 </script>
 
 <div class="mirror-overlay">
-    {#if mirrorState == MirrorState.Fourth}
-        <button
-            class="mirror-selector fourth"
-            on:click={() => {
-                mirrorAction(Fourth.TopLeft);
-            }}
-        ></button>
-        <button
-            class="mirror-selector fourth"
-            on:click={() => {
-                mirrorAction(Fourth.TopRight);
-            }}
-        ></button>
-        <button
-            class="mirror-selector fourth"
-            on:click={() => {
-                mirrorAction(Fourth.BottomLeft);
-            }}
-        ></button>
-        <button
-            class="mirror-selector fourth"
-            on:click={() => {
-                mirrorAction(Fourth.BottomRight);
-            }}
-        ></button>
-    {:else if mirrorState == MirrorState.Horizontal}
-        <button
-            class="mirror-selector half-horizontal"
-            on:click={() => {
-                mirrorAction(Half.Top);
-            }}
-        ></button>
-        <button
-            class="mirror-selector half-horizontal"
-            on:click={() => {
-                mirrorAction(Half.Bottom);
-            }}
-        ></button>
-    {:else if mirrorState == MirrorState.Vertical}
-        <button
-            class="mirror-selector half-vertical"
-            on:click={() => {
-                mirrorAction(Half.Left);
-            }}
-        ></button>
-        <button
-            class="mirror-selector half-vertical"
-            on:click={() => {
-                mirrorAction(Half.Right);
-            }}
-        ></button>
-    {/if}
+	{#if mirrorState == MirrorState.Fourth}
+		<button
+			class="mirror-selector fourth"
+			on:click={() => {
+				mirrorAction(Fourth.TopLeft);
+			}}
+		></button>
+		<button
+			class="mirror-selector fourth"
+			on:click={() => {
+				mirrorAction(Fourth.TopRight);
+			}}
+		></button>
+		<button
+			class="mirror-selector fourth"
+			on:click={() => {
+				mirrorAction(Fourth.BottomLeft);
+			}}
+		></button>
+		<button
+			class="mirror-selector fourth"
+			on:click={() => {
+				mirrorAction(Fourth.BottomRight);
+			}}
+		></button>
+	{:else if mirrorState == MirrorState.Horizontal}
+		<button
+			class="mirror-selector half-horizontal"
+			on:click={() => {
+				mirrorAction(Half.Top);
+			}}
+		></button>
+		<button
+			class="mirror-selector half-horizontal"
+			on:click={() => {
+				mirrorAction(Half.Bottom);
+			}}
+		></button>
+	{:else if mirrorState == MirrorState.Vertical}
+		<button
+			class="mirror-selector half-vertical"
+			on:click={() => {
+				mirrorAction(Half.Left);
+			}}
+		></button>
+		<button
+			class="mirror-selector half-vertical"
+			on:click={() => {
+				mirrorAction(Half.Right);
+			}}
+		></button>
+	{/if}
 </div>
 
 <style lang="less">
 .mirror-overlay {
-    grid-column: 1 / 1;
+	grid-column: 1 / 1;
 	grid-row: 1 / 1;
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-template-rows: 1fr 1fr;

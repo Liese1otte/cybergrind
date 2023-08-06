@@ -14,6 +14,7 @@ $: currentMap = resolveMap($currentMapId);
 
 let patternFileInput: HTMLInputElement;
 
+// move to utils
 async function parsePattern(): Promise<void> {
 	if (patternFileInput.files == null) {
 		return;
@@ -32,7 +33,6 @@ function setPatternFromCgp(cgp: string): void {
 	$prefabMap = prefabs;
 }
 
-// move to utils
 function downloadCurrentPattern(): void {
 	let element = document.createElement('a');
 	element.setAttribute(
@@ -80,7 +80,7 @@ let currentPatternName: string;
 			>
 		{/each}
 	</div>
-	<MirrorOverlay mirrorState={mirrorState} currentMap={currentMap}/>
+	<MirrorOverlay {mirrorState} />
 </div>
 <button
 	class="toggle-maps"
