@@ -28,7 +28,7 @@ jobs:
 
       - name: build
         env:
-          BASE_PATH: '/cybergrind-pattern-editor-3d'
+          BASE_PATH: '/cybergrind'
         run: |
           npm run build
           touch docs/.nojekyll
