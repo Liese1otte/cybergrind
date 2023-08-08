@@ -4,6 +4,8 @@ import { getMapArraysFromCGPString, getCGPStringFromMapArrays } from '$scripts/p
 import { MirrorState } from '$scripts/mirroring';
 import MirrorOverlay from './MirrorOverlay.svelte';
 
+// bad
+
 let mirrorState = MirrorState.None;
 
 function swapMaps(): void {

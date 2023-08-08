@@ -4,6 +4,8 @@ import { mipMapsEnabled, heightMap, prefabMap } from '$stores';
 import { InstancedMeshes, useGltf } from '@threlte/extras';
 import { degToRad } from '$utils';
 
+// bad 
+
 // EVERY TIME A COORDINATE IS REFERENCED AS i OR j IT IS A MAP COORDINATE FOR A CELL
 // EVERY TIME A COORDINATE IS REFERENCED AS x OR uy IT IS A RELATIVE COORDINATE TO CURRENT i OR j
 // FUCK MY LIFE

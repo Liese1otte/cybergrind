@@ -6,6 +6,8 @@ import { prefabMap, mipMapsEnabled, heightMap } from '$stores';
 import { base } from '$app/paths';
 import { degToRad } from '$utils';
 
+// bad
+
 const meleePrefabTexture = useTexture(`${base}/melee.png`).then((texture) => {
 	texture.generateMipmaps = $mipMapsEnabled;
 	texture.magFilter = THREE.NearestFilter;

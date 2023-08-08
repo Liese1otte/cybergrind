@@ -44,7 +44,6 @@ function mirrorFourth(map: number[][], caller: Fourth): number[][] {
 }
 
 function mirrorHalf(map: number[][], caller: Half): number[][] {
-    console.log(caller);
     let stop, indexPair;
     // Is this really the only way?
     switch (caller) {

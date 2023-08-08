@@ -4,6 +4,8 @@ import { mipMapsEnabled, heightMap, prefabMap } from '$stores';
 import { InstancedMesh, useGltf, Instance } from '@threlte/extras';
 import { base } from '$app/paths';
 
+// bad 
+
 const jumpPadGlb = useGltf(`${base}/jumpPad.glb`).then((gltf) => {
 	gltf.nodes['JumpPad'].material.map.colorSpace = '';
 	gltf.nodes['JumpPad'].material.map.generateMipmaps = $mipMapsEnabled;
@@ -14,7 +16,7 @@ function generateJumpPadConfig(prefabs: number[][]): { i: number; j: number }[] 
 	let outArray: { i: number; j: number }[] = [];
 	for (let i = 0; i < prefabs.length; i++) {
 		for (let j = 0; j < prefabs[i].length; j++) {
-			if (prefabs[i][j] == 3) {
+			if (prefabs[i][j] == 3) { // make a prefab enum
 				outArray.push({ i: i, j: j });
 			}
 		}
