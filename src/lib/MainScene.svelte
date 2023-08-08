@@ -5,10 +5,10 @@ import type { OrbitControls as ThreeOrbitControls } from 'three/examples/jsm/con
 import { cameraPosition, enableDamping, arenaRotationAngle, cameraTarget } from '$stores';
 import * as THREE from 'three';
 
-import Arena from '$src/lib/scene/Arena.svelte';
-import Stairs from '$src/lib/scene/Stairs.svelte';
-import JumpPads from '$src/lib/scene/JumpPads.svelte';
-import Enemies from '$src/lib/scene/Enemies.svelte';
+import Arena from '$lib/scene/Arena.svelte';
+import Stairs from '$lib/scene/Stairs.svelte';
+import JumpPads from '$lib/scene/JumpPads.svelte';
+import Enemies from '$lib/scene/Enemies.svelte';
 import { base } from '$app/paths';
 
 // ### Skybox setup

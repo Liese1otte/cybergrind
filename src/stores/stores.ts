@@ -65,14 +65,21 @@ const prefabCount = 6;
 
 type MapStore = Writable<number[][]> & {
 	updateMap: (index: number, increment: number) => void;
+	setMap: (index: number, value: number) => void;
 };
 
 export const heightMap: MapStore = {
 	...persistent<number[][]>(Storage.Local, 'heightMap', blankMap()),
 	updateMap: (index: number, increment: number) => {
-		heightMap.update((value) => {
-			value[Math.floor(index / 16)][index % 16] += increment;
-			return value;
+		heightMap.update((v) => {
+			v[Math.floor(index / 16)][index % 16] += increment;
+			return v;
+		});
+	},
+	setMap: (index: number, value: number) => {
+		heightMap.update((v) => {
+			v[Math.floor(index / 16)][index % 16] = value;
+			return v;
 		});
 	}
 };
@@ -80,11 +87,18 @@ export const heightMap: MapStore = {
 export const prefabMap: MapStore = {
 	...persistent<number[][]>(Storage.Local, 'prefabMap', blankMap()),
 	updateMap: (index: number, increment: number) => {
-		prefabMap.update((value) => {
-			let nextPrefab = (value[Math.floor(index / 16)][index % 16] + increment) % prefabCount;
-			nextPrefab = nextPrefab < 0 ? prefabCount - 1 : nextPrefab;
-			value[Math.floor(index / 16)][index % 16] = nextPrefab;
-			return value;
+		prefabMap.update((v) => {
+			let nextPrefab = (v[Math.floor(index / 16)][index % 16] + increment % prefabCount) % prefabCount;
+			console.log(nextPrefab);
+			v[Math.floor(index / 16)][index % 16] = nextPrefab < 0 ? prefabCount + nextPrefab : nextPrefab;
+			return v;
+		});
+	},
+	setMap: (index: number, value: number) => {
+		prefabMap.update((v) => {
+			value = value % prefabCount;
+			v[Math.floor(index / 16)][index % 16] = value < 0 ? prefabCount + value : value;
+			return v;
 		});
 	}
 };

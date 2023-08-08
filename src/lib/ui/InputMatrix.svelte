@@ -3,6 +3,7 @@ import { resolveMap, currentMapId, heightMap, prefabMap } from '$stores';
 import { getMapArraysFromCGPString, getCGPStringFromMapArrays } from '$scripts/patternParsing';
 import { MirrorState } from '$scripts/mirroring';
 import MirrorOverlay from './MirrorOverlay.svelte';
+import Page from '$src/routes/+page.svelte';
 
 // bad
 
@@ -55,6 +56,28 @@ function downloadCurrentPattern(): void {
 }
 
 let currentPatternName: string;
+
+// ###
+
+const enum BrushType {
+	None = "None",
+	Increment = "Increment", 
+	Set = "Set"
+}
+
+function resolveMapEdit(index: number, sign: -1 | 1): void {
+	if (brushType == BrushType.None || brushValue == null) {
+		currentMap.updateMap(index, 1 * sign);
+	} else if (brushType == BrushType.Increment) {
+		currentMap.updateMap(index, brushValue * sign);
+	} else {
+		currentMap.setMap(index, brushValue * sign);
+	}
+}
+
+let brushValue: number | null = 0;
+
+let brushType: string = BrushType.None;
 </script>
 
 <div class="maps">
@@ -71,10 +94,10 @@ let currentPatternName: string;
 				class="map-cell"
 				id={index.toString()}
 				on:click={() => {
-					currentMap.updateMap(index, 1);
+					resolveMapEdit(index, 1);
 				}}
 				on:contextmenu={() => {
-					currentMap.updateMap(index, -1);
+					resolveMapEdit(index, -1);
 				}}
 				>{$currentMap[Math.floor(index / 16)] === undefined
 					? 0
@@ -138,6 +161,12 @@ let currentPatternName: string;
 		downloadCurrentPattern();
 	}}>Export</button
 >
+<select bind:value={brushType}>
+	<option>None</option>
+	<option>Set</option>
+	<option>Increment</option>
+</select>
+<input type="number" bind:value={brushValue} />
 
 <style lang="less">
 .maps {
