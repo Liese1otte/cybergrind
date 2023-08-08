@@ -154,35 +154,33 @@ const angleStairGlb = useGltf(`${base}/angleStair.glb`).then((gltf) => {
 });
 </script>
 
-{#await straightStairGlb then straightStairModel}
-	{#await angleStairGlb then angleStairModel}
-		<InstancedMeshes
-			meshes={{ ...straightStairModel.nodes, ...angleStairModel.nodes }}
-			let:components={{ StraightStair, AngleStair }}
-		>
-			{#each stairsDeployed as stair}
-				{#if stair.type == StairTypes.Straight}
-					<StraightStair
-						position={[
-							stair.j - 7.5,
-							$heightMap[stair.i][stair.j] * 0.5 + 5.5 - (stair.elevation % 2) * 0.25,
-							stair.i - 7.5
-						]}
-						rotation.y={stair.direction * degToRad(90)}
-						scale.y={stair.elevation * 0.5}
-					/>
-				{:else if stair.type == StairTypes.Angled}
-					<AngleStair
-						position={[
-							stair.j - 7.5,
-							$heightMap[stair.i][stair.j] * 0.5 + 5.5 - (stair.elevation % 2) * 0.25,
-							stair.i - 7.5
-						]}
-						rotation.y={stair.direction * degToRad(90)}
-						scale.y={stair.elevation * 0.5}
-					/>
-				{/if}
-			{/each}
-		</InstancedMeshes>
-	{/await}
+{#await Promise.all([angleStairGlb, straightStairGlb]) then [angleStairModel, straightStairModel]}
+	<InstancedMeshes
+		meshes={{ ...straightStairModel.nodes, ...angleStairModel.nodes }}
+		let:components={{ StraightStair, AngleStair }}
+	>
+		{#each stairsDeployed as stair}
+			{#if stair.type == StairTypes.Straight}
+				<StraightStair
+					position={[
+						stair.j - 7.5,
+						$heightMap[stair.i][stair.j] * 0.5 + 5.5 - (stair.elevation % 2) * 0.25,
+						stair.i - 7.5
+					]}
+					rotation.y={stair.direction * degToRad(90)}
+					scale.y={stair.elevation * 0.5}
+				/>
+			{:else if stair.type == StairTypes.Angled}
+				<AngleStair
+					position={[
+						stair.j - 7.5,
+						$heightMap[stair.i][stair.j] * 0.5 + 5.5 - (stair.elevation % 2) * 0.25,
+						stair.i - 7.5
+					]}
+					rotation.y={stair.direction * degToRad(90)}
+					scale.y={stair.elevation * 0.5}
+				/>
+			{/if}
+		{/each}
+	</InstancedMeshes>
 {/await}
