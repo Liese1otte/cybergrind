@@ -18,7 +18,7 @@ const config = {
             assets: "docs"
         }),
 		paths: {
-            base: dev ? "" : "/cybergrind-pattern-editor-3d",
+            base: dev ? "" : "/cybergrind",
         },
 		alias: {
 			"$src": "src/",
