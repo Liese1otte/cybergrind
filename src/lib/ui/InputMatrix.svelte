@@ -201,7 +201,7 @@ function exportHeatMap(): void {
 	<canvas width="128px" height="128px" bind:this={heatCanvas} />
 	<button on:click={() => { exportHeatMap(); }}>Download</button>
 </div>
-<!-- <button on:click={() => {screenshotManager.ping();}}>Screenshot</button> -->
+<button on:click={() => {screenshotManager.ping();}}>Screenshot</button>
 
 <style lang="less">
 .maps {

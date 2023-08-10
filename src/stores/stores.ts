@@ -113,10 +113,10 @@ export function resolveMap(mapId: MapId): MapStore {
 
 // ### Screenshot event dispatcher
 
-type Subscriber = () => void;
+type Subscriber = (params?: any) => void;
 type Unsubscriber = () => void;
 
-function notifying(): { subscribe: (run: Subscriber) => Unsubscriber, ping: () => void } {
+function notifying(): { subscribe: (run: Subscriber) => Unsubscriber, ping: (params?: any) => void } {
 	const subscribers = new Set<Subscriber>();
 	function subscribe(run: Subscriber): Unsubscriber {
 		subscribers.add(run);
@@ -124,9 +124,9 @@ function notifying(): { subscribe: (run: Subscriber) => Unsubscriber, ping: () =
 			subscribers.delete(run);
 		}
 	}
-	function ping(): void {
+	function ping(params?: any): void {
 		for (let subscriber of subscribers) {
-			subscriber();
+			subscriber(params);
 		}
 	}
 	return { subscribe, ping };

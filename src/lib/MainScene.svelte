@@ -24,7 +24,7 @@ useFrame(() => {
 
 // ### Camera persistence
 
-const { camera } = useThrelte();
+const { camera, renderer } = useThrelte();
 
 let controls: ThreeOrbitControls;
 
@@ -36,9 +36,12 @@ window.onbeforeunload = () => {
 	$cameraPosition = $camera.position.toArray();
 };
 
-// screenshotManager.subscribe(() => {
-// 	console.log("hii");
-// })
+screenshotManager.subscribe(() => {
+	let link = document.createElement("a");
+	link.download = "screenshot.png";
+	link.href = (renderer as THREE.WebGL1Renderer).domElement.toDataURL("image/png");
+	link.click();
+})
 </script>
 
 <T.PerspectiveCamera makeDefault position={$cameraPosition}>
