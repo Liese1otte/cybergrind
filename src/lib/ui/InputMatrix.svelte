@@ -1,5 +1,5 @@
 <script lang="ts">
-import { resolveMap, currentMapId, heightMap, prefabMap } from '$stores';
+import { resolveMap, currentMapId, heightMap, prefabMap, screenshotManager } from '$stores';
 import { getMapArraysFromCGPString, getCGPStringFromMapArrays } from '$scripts/patternParsing';
 import { MirrorState } from '$scripts/mirroring';
 import MirrorOverlay from './MirrorOverlay.svelte';
@@ -85,8 +85,6 @@ let brushType: string = BrushType.None;
 let heatCanvas: HTMLCanvasElement;
 
 onMount(() => {
-	console.log(heatCanvas);
-
 	function redrawHeatCanvas(heightMap: number[][]): void {
 		let heatContext = heatCanvas.getContext('2d') as CanvasRenderingContext2D;
 		for (let i = 0; i < heightMap.length; i++) {
@@ -203,6 +201,7 @@ function exportHeatMap(): void {
 	<canvas width="128px" height="128px" bind:this={heatCanvas} />
 	<button on:click={() => { exportHeatMap(); }}>Download</button>
 </div>
+<!-- <button on:click={() => {screenshotManager.ping();}}>Screenshot</button> -->
 
 <style lang="less">
 .maps {

@@ -110,3 +110,26 @@ export const currentMapId = persistent<MapId>(Storage.Session, 'currentMapId', 0
 export function resolveMap(mapId: MapId): MapStore {
 	return mapId == 0 ? heightMap : prefabMap;
 }
+
+// ### Screenshot event dispatcher
+
+type Subscriber = () => void;
+type Unsubscriber = () => void;
+
+function notifying(): { subscribe: (run: Subscriber) => Unsubscriber, ping: () => void } {
+	const subscribers = new Set<Subscriber>();
+	function subscribe(run: Subscriber): Unsubscriber {
+		subscribers.add(run);
+		return () => {
+			subscribers.delete(run);
+		}
+	}
+	function ping(): void {
+		for (let subscriber of subscribers) {
+			subscriber();
+		}
+	}
+	return { subscribe, ping };
+}
+
+export const screenshotManager = notifying();

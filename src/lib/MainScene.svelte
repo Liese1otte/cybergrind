@@ -2,7 +2,7 @@
 import { T, useFrame, useThrelte } from '@threlte/core';
 import { OrbitControls, useTexture } from '@threlte/extras';
 import type { OrbitControls as ThreeOrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { cameraPosition, enableDamping, arenaRotationAngle, cameraTarget } from '$stores';
+import { cameraPosition, enableDamping, arenaRotationAngle, cameraTarget, screenshotManager } from '$stores';
 import * as THREE from 'three';
 
 import Arena from '$lib/scene/Arena.svelte';
@@ -35,6 +35,10 @@ window.onbeforeunload = () => {
 	$cameraTarget = controls.target.toArray();
 	$cameraPosition = $camera.position.toArray();
 };
+
+// screenshotManager.subscribe(() => {
+// 	console.log("hii");
+// })
 </script>
 
 <T.PerspectiveCamera makeDefault position={$cameraPosition}>
