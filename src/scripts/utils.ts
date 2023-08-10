@@ -1,5 +1,5 @@
-export const blankMap: () => 0[][] = () => {
-	return Array.from(Array(16), () => Array(16).fill(0));
+export const blankMap: <T>(v: T) => T[][] = <T>(v: T) => {
+	return Array.from(Array(16), () => Array(16).fill(v));
 };
 
 export const degToRad = (d: number) => {

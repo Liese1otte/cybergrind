@@ -53,7 +53,7 @@ export const enableDamping = persistent(Storage.Session, 'enableDamping', true);
 
 export const showKillZone = persistent(Storage.Session, 'showKillZone', true);
 
-export const isArenaRotating = persistent(Storage.Session, 'isArenaRotating', true);
+export const isArenaRotating = persistent(Storage.Session, 'isArenaRotating', false);
 
 export const arenaRotationAngle = persistent(Storage.Session, 'arenaRotationAngle', 0);
 
@@ -69,7 +69,7 @@ type MapStore = Writable<number[][]> & {
 };
 
 export const heightMap: MapStore = {
-	...persistent<number[][]>(Storage.Local, 'heightMap', blankMap()),
+	...persistent<number[][]>(Storage.Local, 'heightMap', blankMap(0)),
 	updateMap: (index: number, increment: number) => {
 		heightMap.update((v) => {
 			v[Math.floor(index / 16)][index % 16] += increment;
@@ -85,7 +85,7 @@ export const heightMap: MapStore = {
 };
 
 export const prefabMap: MapStore = {
-	...persistent<number[][]>(Storage.Local, 'prefabMap', blankMap()),
+	...persistent<number[][]>(Storage.Local, 'prefabMap', blankMap(0)),
 	updateMap: (index: number, increment: number) => {
 		prefabMap.update((v) => {
 			let nextPrefab = (v[Math.floor(index / 16)][index % 16] + increment % prefabCount) % prefabCount;

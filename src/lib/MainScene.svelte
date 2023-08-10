@@ -32,13 +32,14 @@ window.onbeforeunload = () => {
 	if (!controls) {
 		throw Error('Orbit controls not initialized at the time of reload');
 	}
-	$cameraTarget = [controls.target.x, controls.target.y, controls.target.z];
-	$cameraPosition = [$camera.position.x, $camera.position.y, $camera.position.z];
+	$cameraTarget = controls.target.toArray();
+	$cameraPosition = $camera.position.toArray();
 };
 </script>
 
 <T.PerspectiveCamera makeDefault position={$cameraPosition}>
-	<OrbitControls enableDamping={$enableDamping} target={$cameraTarget} bind:ref={controls} />
+	<!-- using damping factor as a hack to force controls updates until I figure out a better solution -->
+	<OrbitControls enableDamping target={$cameraTarget} bind:ref={controls} dampingFactor={$enableDamping ? 0.05 : 1} />
 </T.PerspectiveCamera>
 
 <T.AmbientLight intensity={1} color="white" />

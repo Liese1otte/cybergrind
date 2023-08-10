@@ -7,7 +7,13 @@ import MainScene from '$src/lib/MainScene.svelte';
 
 <div class="wrapper">
 	<div class="canvas">
-		<Canvas toneMapping={0} colorSpace={'srgb-linear'}>
+		<Canvas
+			toneMapping={0}
+			colorSpace={'srgb-linear'}
+			rendererParameters={{
+				preserveDrawingBuffer: true
+			}}
+		>
 			<MainScene />
 		</Canvas>
 	</div>

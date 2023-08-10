@@ -3,7 +3,8 @@ import { resolveMap, currentMapId, heightMap, prefabMap } from '$stores';
 import { getMapArraysFromCGPString, getCGPStringFromMapArrays } from '$scripts/patternParsing';
 import { MirrorState } from '$scripts/mirroring';
 import MirrorOverlay from './MirrorOverlay.svelte';
-import Page from '$src/routes/+page.svelte';
+import { heatColorOf } from '$scripts/heatMap';
+import { onMount } from 'svelte';
 
 // bad
 
@@ -43,9 +44,7 @@ function downloadCurrentPattern(): void {
 		'data:text/plain;charset=utf-8,' +
 			encodeURIComponent(getCGPStringFromMapArrays([$heightMap, $prefabMap]))
 	);
-	currentPatternName = currentPatternName ? currentPatternName : 'myPattern';
-	element.setAttribute('download', currentPatternName + '.cgp');
-	currentPatternName = '';
+	element.setAttribute('download', currentPatternName ? currentPatternName : 'myPattern' + '.cgp');
 
 	element.style.display = 'none';
 	document.body.appendChild(element);
@@ -59,10 +58,12 @@ let currentPatternName: string;
 
 // ###
 
+// In-canvas edits do not support brushes obviously
+
 const enum BrushType {
-	None = "None",
-	Increment = "Increment", 
-	Set = "Set"
+	None = 'None',
+	Increment = 'Increment',
+	Set = 'Set'
 }
 
 function resolveMapEdit(index: number, sign: -1 | 1): void {
@@ -78,6 +79,35 @@ function resolveMapEdit(index: number, sign: -1 | 1): void {
 let brushValue: number | null = 0;
 
 let brushType: string = BrushType.None;
+
+// ### Heat Map
+
+let heatCanvas: HTMLCanvasElement;
+
+onMount(() => {
+	console.log(heatCanvas);
+
+	function redrawHeatCanvas(heightMap: number[][]): void {
+		let heatContext = heatCanvas.getContext('2d') as CanvasRenderingContext2D;
+		for (let i = 0; i < heightMap.length; i++) {
+			for (let j = 0; j < heightMap[i].length; j++) {
+				heatContext.fillStyle = heatColorOf(heightMap[i][j]);
+				heatContext.fillRect(8 * j, 8 * i, 8, 8);
+			}
+		}
+	}
+
+	heightMap.subscribe((v) => {
+		redrawHeatCanvas(v);
+	});
+});
+
+function exportHeatMap(): void {
+	let link = document.createElement("a");
+	link.download = currentPatternName ? currentPatternName : 'myPattern' + ".png";
+	link.href = heatCanvas.toDataURL();
+	link.click();
+}
 </script>
 
 <div class="maps">
@@ -167,6 +197,12 @@ let brushType: string = BrushType.None;
 	<option>Increment</option>
 </select>
 <input type="number" bind:value={brushValue} />
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div class="heat-map-canvas-container">
+	<canvas width="128px" height="128px" bind:this={heatCanvas} />
+	<button on:click={() => { exportHeatMap(); }}>Download</button>
+</div>
 
 <style lang="less">
 .maps {
