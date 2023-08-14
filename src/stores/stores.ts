@@ -47,15 +47,15 @@ export const cameraTarget = persistent<cameraTarget>(
 
 export const mipMapsEnabled = persistent(Storage.Session, 'mipMapsEnabled', true);
 
-export const enableDamping = persistent(Storage.Session, 'enableDamping', true);
+export const enableDamping = persistent(Storage.Session, 'enableDamping', false);
 
 // ### Arena settings
 
 export const showKillZone = persistent(Storage.Session, 'showKillZone', true);
 
-export const isArenaRotating = persistent(Storage.Session, 'isArenaRotating', false);
+export const isGridRotating = persistent(Storage.Session, 'isGridRotating', false);
 
-export const arenaRotationAngle = persistent(Storage.Session, 'arenaRotationAngle', 0);
+export const gridRotationAngle = persistent(Storage.Session, 'gridRotationAngle', 0);
 
 // Possibly create another store for skybox rotation so it is configurable?
 
@@ -89,7 +89,6 @@ export const prefabMap: MapStore = {
 	updateMap: (index: number, increment: number) => {
 		prefabMap.update((v) => {
 			let nextPrefab = (v[Math.floor(index / 16)][index % 16] + increment % prefabCount) % prefabCount;
-			console.log(nextPrefab);
 			v[Math.floor(index / 16)][index % 16] = nextPrefab < 0 ? prefabCount + nextPrefab : nextPrefab;
 			return v;
 		});
@@ -110,26 +109,3 @@ export const currentMapId = persistent<MapId>(Storage.Session, 'currentMapId', 0
 export function resolveMap(mapId: MapId): MapStore {
 	return mapId == 0 ? heightMap : prefabMap;
 }
-
-// ### Screenshot event dispatcher
-
-type Subscriber = (params?: any) => void;
-type Unsubscriber = () => void;
-
-function notifying(): { subscribe: (run: Subscriber) => Unsubscriber, ping: (params?: any) => void } {
-	const subscribers = new Set<Subscriber>();
-	function subscribe(run: Subscriber): Unsubscriber {
-		subscribers.add(run);
-		return () => {
-			subscribers.delete(run);
-		}
-	}
-	function ping(params?: any): void {
-		for (let subscriber of subscribers) {
-			subscriber(params);
-		}
-	}
-	return { subscribe, ping };
-}
-
-export const screenshotManager = notifying();
