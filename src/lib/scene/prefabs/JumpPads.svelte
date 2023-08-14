@@ -11,13 +11,15 @@ import type { PrefabInstance } from '$userTypes';
 
 export let instances: PrefabInstance[];
 
-// ### Model ### //
+// ### Models ### //
 
 const jumpPadGlb = useGltf(`${base}/models/jumpPad.glb`).then((gltf) => {
 	gltf.nodes['JumpPad'].material.map.colorSpace = '';
 	gltf.nodes['JumpPad'].material.map.generateMipmaps = $mipMapsEnabled;
 	return gltf.nodes['JumpPad'];
 });
+
+// ### Shift consts ### //
 
 const XZOffset = 7.5;
 const unitCoefficient = 0.5;

@@ -30,16 +30,16 @@ export function getMapArraysFromCGPString(cgp: string): [number[][], number[][]]
 		throw Error('Pattern does not pass RegEx validation');
 	}
 	let maps = cgp
-		.split(/(\r?\n){2}/) // split two maps apart
+		.split(/(\r?\n){2}/) 				  // split two maps apart
 		.map((s) => {
 			return s.split(/\r?\n/);
-		}) // split rows inside of each map apart
+		}) 									  // split rows inside of each map apart
 		.map((a) => {
 			return a.map((r) => {
 				return parseCGPRow(r);
-			}); // parse every row of a map
-		}); // do above for both maps'
-	maps.splice(1, 1); // remove the scrunkly in the middle of split maps
+			}); 							  // parse every row of a map
+		}); 								  // do above for both maps
+	maps.splice(1, 1); 						  // remove the scrunkly in the middle of split maps
 	return maps as [number[][], number[][]];
 }
 

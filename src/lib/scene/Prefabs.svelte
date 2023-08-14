@@ -16,7 +16,7 @@ const isEnemyPrefab = (prefab: number): prefab is TYPES.EnemyPrefab => {
     return EnemyPrefabs.indexOf(prefab) != -1;
 }
 
-// Refactor this to account for future prefab types
+// Refactor this to account for future prefab types.
 function updatePrefabInstances(prefabs: number[][]): PrefabInstances {
     let prefabInstances: PrefabInstances = {enemy: [], pad: [], stair: []};
     for (let i = 0; i < prefabs.length; i++) {

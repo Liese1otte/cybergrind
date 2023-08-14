@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 import { blankMap } from '$utils';
 
-// ### Persistent store setup
+// ### Persistent store setup ### //
 
 const enum Storage {
 	Session = 0,
@@ -25,7 +25,7 @@ function persistent<T>(type: Storage, key: string, startValue: T): Writable<T> {
 	return store;
 }
 
-// ### Camera settings
+// ### Camera settings ### //
 
 type cameraPosition = [x: number, y: number, z: number];
 export const defaultCameraPosition: [x: 0, y: 20, z: 25] = [0, 20, 25];
@@ -43,13 +43,13 @@ export const cameraTarget = persistent<cameraTarget>(
 	defaultCameraTarget
 );
 
-// ### Display settings
+// ### Display settings ### //
 
 export const mipMapsEnabled = persistent(Storage.Session, 'mipMapsEnabled', true);
 
 export const enableDamping = persistent(Storage.Session, 'enableDamping', false);
 
-// ### Arena settings
+// ### Arena settings ### //
 
 export const showKillZone = persistent(Storage.Session, 'showKillZone', true);
 
@@ -57,9 +57,7 @@ export const isGridRotating = persistent(Storage.Session, 'isGridRotating', fals
 
 export const gridRotationAngle = persistent(Storage.Session, 'gridRotationAngle', 0);
 
-// Possibly create another store for skybox rotation so it is configurable?
-
-// ### Map stores
+// ### Map stores ### //
 
 const prefabCount = 6;
 
