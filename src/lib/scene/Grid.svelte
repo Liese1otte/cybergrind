@@ -118,7 +118,7 @@ const killZoneLowerY = 0.1;
 {/if}
 
 {#await Promise.all([horizontalTexture, verticalTexture]) then [textureH, textureV]}
-	<InstancedMesh>
+	<InstancedMesh frustumCulled={false}>
 		<T.BoxGeometry args={[1, 10, 1]} />
 		<T.MeshStandardMaterial
 			map={textureV}
