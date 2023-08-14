@@ -13,7 +13,7 @@ export let instances: PrefabInstance[];
 
 // ### Model ### //
 
-const jumpPadGlb = useGltf(`${base}/jumpPad.glb`).then((gltf) => {
+const jumpPadGlb = useGltf(`${base}/models/jumpPad.glb`).then((gltf) => {
 	gltf.nodes['JumpPad'].material.map.colorSpace = '';
 	gltf.nodes['JumpPad'].material.map.generateMipmaps = $mipMapsEnabled;
 	return gltf.nodes['JumpPad'];
@@ -25,7 +25,7 @@ const YOffset = 5.05;
 </script>
 
 {#await jumpPadGlb then jumpPadModel}
-	<InstancedMesh>
+	<InstancedMesh frustumCulled={false}>
 		<T is={jumpPadModel.geometry} />
 		<T is={jumpPadModel.material} />
 		{#each instances as pad}

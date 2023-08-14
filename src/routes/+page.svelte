@@ -9,7 +9,7 @@ import { base } from '$app/paths';
 
 <svelte:head>
 	<title>Cybegrind 3D Editor</title>
-	<link rel="icon" type="image/x-icon" href="{base}/cube.png" />
+	<link rel="icon" type="image/x-icon" href="{base}/favicon.png" />
 </svelte:head>
 
 <!-- mirroring fourth then switching maps then mirroring fourth again doesn't work lol -->

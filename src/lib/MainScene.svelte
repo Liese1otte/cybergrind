@@ -14,7 +14,7 @@ import { base } from "$app/paths";
 
 // ### Skybox setup (needs rework) ### //
 
-const skyboxTexture = useTexture(`${base}/skyboxtest_2.png`);
+const skyboxTexture = useTexture(`${base}/textures/skybox.png`);
 
 let skyboxRotationAngle = 0;
 const skyboxRotationModifier = 0.00025;

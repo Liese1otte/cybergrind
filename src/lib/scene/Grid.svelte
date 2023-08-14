@@ -27,8 +27,8 @@ interactivity({
 
 // ### Pillars ### //
 
-const pillarPath: string = `${base}/cube.png`;
-const killZonePath: string = `${base}/killZone.png`;
+const pillarPath: string = `${base}/textures/cube.png`;
+const killZonePath: string = `${base}/textures/killZone.png`;
 
 const verticalTexture = useTexture(pillarPath).then((texture) => {
 	texture = texture.clone();
@@ -47,9 +47,10 @@ const horizontalTexture = useTexture(pillarPath).then((texture) => {
 // ### Kill zone ### //
 
 const killZoneTexture = useTexture(killZonePath).then((texture) => {
-	texture.generateMipmaps = $mipMapsEnabled;
 	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 	texture.repeat.set(16, 16);
+	texture.generateMipmaps = $mipMapsEnabled;
+	texture.magFilter = THREE.NearestFilter;
 	return texture;
 });
 
