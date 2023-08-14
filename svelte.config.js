@@ -27,7 +27,8 @@ const config = {
 			"$styles": "src/styles",
 			"$stores": "src/stores/stores.ts",
 			"$utils": "src/scripts/utils.ts",
-			"$consts": "src/consts/consts.ts"
+			"$consts": "src/consts/consts.ts",
+			"$userTypes": "src/types/types.ts"
 		}	
 	}
 };
