@@ -42,8 +42,6 @@ function constructMeshes(textures: THREE.Texture[]): THREE.Mesh[] {
 		material.transparent = true;
 		material.side = THREE.DoubleSide;
 		let mesh = new THREE.Mesh(new THREE.PlaneGeometry(), material);
-		// This SHOULD be redundant, however, I'll leave this for now for testing purposes.
-		mesh.frustumCulled = false;
 		return mesh;
 	});
 }
@@ -70,6 +68,7 @@ const YOffset = 5.01;
 						enemy.i - XZOffset
 					]}
 					rotation.x={ninetyInRads}
+					frustumCulled={false}
 				/>
 			{:else if enemy.type == PrefabTypes.Projectile}
 				<Projectile
@@ -79,6 +78,7 @@ const YOffset = 5.01;
 						enemy.i - XZOffset
 					]}
 					rotation.x={ninetyInRads}
+					frustumCulled={false}
 				/>
 			{:else}
 				<Hideous
@@ -88,6 +88,7 @@ const YOffset = 5.01;
 						enemy.i - XZOffset
 					]}
 					rotation.x={ninetyInRads}
+					frustumCulled={false}
 				/>
 			{/if}
 		{/each}

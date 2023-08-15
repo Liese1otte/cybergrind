@@ -69,12 +69,14 @@ type MapStore = Writable<number[][]> & {
 export const heightMap: MapStore = {
 	...persistent<number[][]>(Storage.Local, 'heightMap', blankMap(0)),
 	updateMap: (index: number, increment: number) => {
+		increment = increment > 99 ? 99 : increment < -99 ? -99 : increment;
 		heightMap.update((v) => {
 			v[Math.floor(index / 16)][index % 16] += increment;
 			return v;
 		});
 	},
 	setMap: (index: number, value: number) => {
+		value = value > 99 ? 99 : value < -99 ? -99 : value;
 		heightMap.update((v) => {
 			v[Math.floor(index / 16)][index % 16] = value;
 			return v;
@@ -100,10 +102,13 @@ export const prefabMap: MapStore = {
 	}
 };
 
-type MapId = 0 | 1;
+export const enum MapType {
+	Height,
+	Prefab
+}
 
-export const currentMapId = persistent<MapId>(Storage.Session, 'currentMapId', 0);
+export const currentMapId = persistent<MapType>(Storage.Session, 'currentMapId', 0);
 
-export function resolveMap(mapId: MapId): MapStore {
-	return mapId == 0 ? heightMap : prefabMap;
+export function resolveMap(mapId: MapType): MapStore {
+	return mapId == MapType.Height ? heightMap : prefabMap;
 }

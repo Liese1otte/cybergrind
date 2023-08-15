@@ -176,6 +176,7 @@ const killZoneLowerY = 0.1;
 				on:pointerdown={() => {
 					mouse.down();
 				}}
+				frustumCulled={false}
 			/>
 		{/each}
 	</InstancedMesh>

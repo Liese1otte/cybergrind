@@ -186,6 +186,7 @@ const YOffset = 5.5;
 					]}
 					rotation.y={stair.direction * ninetyInRads * -1}
 					scale.y={stair.elevation}
+					frustumCulled={false}
 				/>
 			{:else}
 				<AngleStair
@@ -196,6 +197,7 @@ const YOffset = 5.5;
 					]}
 					rotation.y={stair.direction * ninetyInRads * -1}
 					scale.y={stair.elevation}
+					frustumCulled={false}
 				/>
 			{/if}
 		{/each}

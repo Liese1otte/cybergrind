@@ -16,7 +16,8 @@ function parseCGPRow(row: string): number[] {
 			continue;
 		}
 		if (matchIndicies.includes(i)) {
-			outArray.push(parseInt(matchArray[matchIndicies.indexOf(i)][0].slice(1, -1)));
+			let rawHeight = parseInt(matchArray[matchIndicies.indexOf(i)][0].slice(1, -1));
+			outArray.push(rawHeight > 99 ? 99 : rawHeight < -99 ? -99 : rawHeight);
 			i += matchArray[matchIndicies.indexOf(i)][0].length - 1;
 		} else {
 			outArray.push(parseInt(row[i]));

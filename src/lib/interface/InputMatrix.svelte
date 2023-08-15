@@ -1,12 +1,8 @@
 <script lang="ts">
-import { resolveMap, currentMapId, heightMap, prefabMap, screenshotManager } from '$stores';
+import { resolveMap, currentMapId, heightMap, prefabMap } from '$stores';
 import { getMapArraysFromCGPString, getCGPStringFromMapArrays } from '$scripts/patternParsing';
 import { MirrorState } from '$scripts/mirroring';
 import MirrorOverlay from './MirrorOverlay.svelte';
-import { heatColorOf } from '$scripts/heatMap';
-import { onMount } from 'svelte';
-
-// bad
 
 let mirrorState = MirrorState.None;
 
@@ -16,7 +12,7 @@ function swapMaps(): void {
 
 $: currentMap = resolveMap($currentMapId);
 
-let patternFileInput: HTMLInputElement;
+
 
 // move to utils
 async function parsePattern(): Promise<void> {
@@ -37,6 +33,7 @@ function setPatternFromCgp(cgp: string): void {
 	$prefabMap = prefabs;
 }
 
+// .cgp is not appended
 function downloadCurrentPattern(): void {
 	let element = document.createElement('a');
 	element.setAttribute(
@@ -54,7 +51,7 @@ function downloadCurrentPattern(): void {
 	document.body.removeChild(element);
 }
 
-let currentPatternName: string;
+
 
 // ###
 
@@ -79,33 +76,6 @@ function resolveMapEdit(index: number, sign: -1 | 1): void {
 let brushValue: number | null = 0;
 
 let brushType: string = BrushType.None;
-
-// ### Heat Map
-
-let heatCanvas: HTMLCanvasElement;
-
-onMount(() => {
-	function redrawHeatCanvas(heightMap: number[][]): void {
-		let heatContext = heatCanvas.getContext('2d') as CanvasRenderingContext2D;
-		for (let i = 0; i < heightMap.length; i++) {
-			for (let j = 0; j < heightMap[i].length; j++) {
-				heatContext.fillStyle = heatColorOf(heightMap[i][j]);
-				heatContext.fillRect(8 * j, 8 * i, 8, 8);
-			}
-		}
-	}
-
-	heightMap.subscribe((v) => {
-		redrawHeatCanvas(v);
-	});
-});
-
-function exportHeatMap(): void {
-	let link = document.createElement("a");
-	link.download = currentPatternName ? currentPatternName : 'myPattern' + ".png";
-	link.href = heatCanvas.toDataURL();
-	link.click();
-}
 </script>
 
 <div class="maps">
@@ -117,25 +87,25 @@ function exportHeatMap(): void {
 			e.preventDefault();
 		}}
 	>
-		{#each Array(256) as _, index (index)}
+		{#each Array(256) as _, i (i)}
 			<button
 				class="map-cell"
-				id={index.toString()}
+				id={i.toString()}
 				on:click={() => {
-					resolveMapEdit(index, 1);
+					resolveMapEdit(i, 1);
 				}}
 				on:contextmenu={() => {
-					resolveMapEdit(index, -1);
+					resolveMapEdit(i, -1);
 				}}
-				>{$currentMap[Math.floor(index / 16)] === undefined
+				>{$currentMap[Math.floor(i / 16)] === undefined
 					? 0
-					: $currentMap[Math.floor(index / 16)][index % 16]}</button
+					: $currentMap[Math.floor(i / 16)][i % 16]}</button
 			>
 		{/each}
 	</div>
 	<MirrorOverlay {mirrorState} />
 </div>
-<button
+<!-- <button
 	class="toggle-maps"
 	on:click={() => {
 		swapMaps();
@@ -194,14 +164,7 @@ function exportHeatMap(): void {
 	<option>Set</option>
 	<option>Increment</option>
 </select>
-<input type="number" bind:value={brushValue} />
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="heat-map-canvas-container">
-	<canvas width="128px" height="128px" bind:this={heatCanvas} />
-	<button on:click={() => { exportHeatMap(); }}>Download</button>
-</div>
-<button on:click={() => {screenshotManager.ping();}}>Screenshot</button>
+<input type="number" bind:value={brushValue} /> -->
 
 <style lang="less">
 .maps {
@@ -214,13 +177,13 @@ function exportHeatMap(): void {
 	aspect-ratio: 1 / 1;
 	grid-template-columns: repeat(16, 1fr);
 	grid-template-rows: repeat(16, 1fr);
-	gap: 5px;
-	padding: 5px;
+	gap: 3px;
+	padding: 3px;
 	grid-column: 1 / 1;
 	grid-row: 1 / 1;
+	border: 3px solid rgba(200, 200, 200, 1);
 }
 .map-cell {
-	background: #222222;
-	color: #999999;
+	background: rgba(50, 50, 50, 1);
 }
 </style>

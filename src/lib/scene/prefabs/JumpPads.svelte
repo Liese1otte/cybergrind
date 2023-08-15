@@ -37,6 +37,7 @@ const YOffset = 5.05;
 					$heightMap[pad.i][pad.j] * unitCoefficient + YOffset,
 					pad.i - XZOffset
 				]}
+				frustumCulled={false}
 			/>
 		{/each}
 	</InstancedMesh>
