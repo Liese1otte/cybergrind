@@ -12,47 +12,6 @@ function swapMaps(): void {
 
 $: currentMap = resolveMap($currentMapId);
 
-
-
-// move to utils
-async function parsePattern(): Promise<void> {
-	if (patternFileInput.files == null) {
-		return;
-	}
-	let [file] = patternFileInput.files;
-	if (!file || (file && !file.name.endsWith('.cgp'))) {
-		return;
-	}
-	currentPatternName = file.name.replace(/\.[^/.]+$/, '');
-	setPatternFromCgp(await file.text());
-}
-
-function setPatternFromCgp(cgp: string): void {
-	let [heights, prefabs] = getMapArraysFromCGPString(cgp);
-	$heightMap = heights;
-	$prefabMap = prefabs;
-}
-
-// .cgp is not appended
-function downloadCurrentPattern(): void {
-	let element = document.createElement('a');
-	element.setAttribute(
-		'href',
-		'data:text/plain;charset=utf-8,' +
-			encodeURIComponent(getCGPStringFromMapArrays([$heightMap, $prefabMap]))
-	);
-	element.setAttribute('download', currentPatternName ? currentPatternName : 'myPattern' + '.cgp');
-
-	element.style.display = 'none';
-	document.body.appendChild(element);
-
-	element.click();
-
-	document.body.removeChild(element);
-}
-
-
-
 // ###
 
 // In-canvas edits do not support brushes obviously
