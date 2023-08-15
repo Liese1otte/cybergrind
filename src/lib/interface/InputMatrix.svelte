@@ -64,66 +64,6 @@ let brushType: string = BrushType.None;
 	</div>
 	<MirrorOverlay {mirrorState} />
 </div>
-<!-- <button
-	class="toggle-maps"
-	on:click={() => {
-		swapMaps();
-	}}>Switch Maps</button
->
-<button
-	class="height-reset"
-	on:click={() => {
-		$currentMap = Array.from(Array(16), () => Array(16).fill(0));
-	}}>Reset Pattern</button
->
-<button
-	class="mirror-fourth"
-	on:click={() => {
-		mirrorState = MirrorState.Fourth;
-	}}>Mirror 4th</button
->
-<button
-	class="mirror-half-vertical"
-	on:click={() => {
-		mirrorState = MirrorState.Vertical;
-	}}>Mirror half (v)</button
->
-<button
-	class="mirror-half-hprizontal"
-	on:click={() => {
-		mirrorState = MirrorState.Horizontal;
-	}}>Mirror half(h)</button
->
-{#if mirrorState != MirrorState.None}
-	<button
-		class="mirror-cancel"
-		on:click={() => {
-			mirrorState = MirrorState.None;
-		}}>Cancel</button
-	>
-{/if}
-<input
-	type="file"
-	on:change={() => {
-		parsePattern();
-	}}
-	bind:this={patternFileInput}
-	accept=".cgp"
-/>
-<br />
-<input type="text" id="patternName" bind:value={currentPatternName} />
-<label for="patternName">Pattern Name</label>
-<button
-	on:click={() => {
-		downloadCurrentPattern();
-	}}>Export</button
->
-<select bind:value={brushType}>
-	<option>None</option>
-	<option>Set</option>
-	<option>Increment</option>
-</select>
-<input type="number" bind:value={brushValue} /> -->
 
 <style lang="less">
 .maps {
@@ -132,7 +72,7 @@ let brushType: string = BrushType.None;
 }
 .map {
 	display: grid;
-	width: calc(100% - 10px);
+	width: calc(100% - 12px);
 	aspect-ratio: 1 / 1;
 	grid-template-columns: repeat(16, 1fr);
 	grid-template-rows: repeat(16, 1fr);

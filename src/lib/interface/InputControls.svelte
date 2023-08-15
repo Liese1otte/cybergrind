@@ -1,12 +1,12 @@
 <script lang="ts">
-import Pattern from "$src/lib/interface/File.svelte";
+import File from "$src/lib/interface/File.svelte";
 import Edit from "$lib/interface/Edit.svelte";
 import View from "$lib/interface/View.svelte";
 
 import { Tab } from "$userTypes";
 
 let items = [
-    {tab: Tab.Pattern, component: Pattern},
+    {tab: Tab.File, component: File},
     {tab: Tab.Edit, component: Edit},
     {tab: Tab.View, component: View}
 ]

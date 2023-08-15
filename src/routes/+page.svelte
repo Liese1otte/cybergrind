@@ -17,9 +17,9 @@ import { base } from "$app/paths";
 <!-- mirroring fourth then switching maps then mirroring fourth again doesn't work lol -->
 <div class="website">
 	<div class="canvas-container">
-		<!-- <div class="widgets">
+		<div class="widgets">
 			<HeatMap />
-		</div> -->
+		</div>
 		<div class="canvas">
 			<Canvas toneMapping={0} colorSpace={"srgb-linear"}>
 				<MainScene />
@@ -58,5 +58,13 @@ div.menu-container {
 	min-width: 560px; // wtf
 	grid-column: 3 / span 1;
 	margin: 20px 20px 20px 10px;
+}
+
+div.widgets {
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	margin: 20px;
+	pointer-events: none;
 }
 </style>

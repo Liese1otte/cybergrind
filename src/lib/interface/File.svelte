@@ -106,6 +106,7 @@ div.import {
 	flex: 2;
 	display: flex;
 	flex-direction: column;
+	margin-bottom: 10px;
 }
 
 span.title {
@@ -154,6 +155,9 @@ input.file-name {
     margin-inline-end: 10px;
     font-size: 1.5rem;
     padding: 5px;
+	&:focus {
+		filter: brightness(75%);
+	}
 }
 
 button.confirm-export {

@@ -14,7 +14,7 @@ export type PrefabInstance = { i: number, j: number };
 export type EnemyPrefabInstance = PrefabInstance & { type: number };
 
 export const enum Tab {
-    Pattern = "pattern",
+    File = "file",
     Edit = "edit",
     View = "view"
 }

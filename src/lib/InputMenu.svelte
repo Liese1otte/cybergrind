@@ -18,24 +18,6 @@ import { currentMapId, MapType } from "$stores";
 	<div class="controls">
 		<InputControls />
 	</div>
-	<!-- <div class="control-menu">
-		<input type="checkbox" id="isRotating" bind:checked={$isGridRotating} />
-		<label for="isRotating">Rotate?</label>
-		<input type="checkbox" id="enableDamping" bind:checked={$enableDamping} />
-		<label for="enableDamping">Damping?</label>
-		<input type="checkbox" id="mipMapsEnabled" bind:checked={$mipMapsEnabled} />
-		<label for="enableDamping">Mipmaps? (Reload required)</label>
-		<button
-			class="camera-reset"
-			on:click={() => {
-				$cameraPosition = defaultCameraPosition;
-				$gridRotationAngle = 0;
-				$cameraTarget = defaultCameraTarget;
-			}}>Reset Camera</button
-		>
-		<input type="checkbox" id="showKillZone" bind:checked={$showKillZone} />
-		<label for="showKillZone">Kill Zone?</label>
-	</div> -->
 </div>
 
 <style lang="less">

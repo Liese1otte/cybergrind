@@ -13,6 +13,7 @@ let heatCanvas: HTMLCanvasElement;
 
 onMount(() => {
 	function redrawHeatCanvas(heightMap: number[][]): void {
+		if( heatCanvas == null) { return }
 		let heatContext = heatCanvas.getContext('2d') as CanvasRenderingContext2D;
 		for (let i = 0; i < heightMap.length; i++) {
 			for (let j = 0; j < heightMap[i].length; j++) {
@@ -34,33 +35,48 @@ function exportHeatMap(): void {
 	link.click();
 }
 
-let currentPatternName = "pattern";
+// use stores ffs lmao
+let currentPatternName = "heatMap";
 </script>
 
 <div class="heat-map">
-    <button class="expand" on:click={() => {expanded = !expanded}}></button>
-    {#if expanded}
+    <button class="expand" on:click={() => {expanded = !expanded}}>HEATMAP</button>
+	<div class={`content ${!expanded ? "hidden" : ""}`}>
         <div class="heat-canvas">
             <canvas width="128px" height="128px" bind:this={heatCanvas} />
         </div>
-        <button on:click={() => { exportHeatMap(); }}>Download</button>
-    {/if}
+        <button on:click={() => { exportHeatMap(); }}>DOWNLOAD</button>
+	</div>
 </div>
 
 <style lang="less">
 div.heat-map {
-    width: 5%;
-    aspect-ratio: 1 / 1;
+	width: fit-content;
+	min-width: 128px;
     border: 3px solid rgba(200, 200, 200, 1);
+	pointer-events: initial;
+	padding: 5px;
+	background: rgba(20, 20, 20, 1);
 }
 
-button.expand {
-    width: 5%;
-    height: 5%;
+button {
+    width: 100%;
+	margin: 0px;
+	padding: 5px;
+    font-size: 1.5rem;
+	background: none;
+	&:hover {
+        filter: brightness(75%);
+    }
+    cursor: pointer;
+	
 }
 
-canvas {
-    width: 128px;
-    aspect-ratio: 1 / 1;
+div.content {
+	overflow: hidden;
+}
+
+.hidden {
+	height: 0px;
 }
 </style>
