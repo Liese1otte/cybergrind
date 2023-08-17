@@ -32,6 +32,8 @@ onMount(() => {
 <svelte:head>
 	<title>Cybegrind 3D Editor</title>
 	<link rel="icon" type="image/x-icon" href="{base}/favicon.png" />
+	<meta name="description" content="Edit your patterns online with a live 3D recreation of the CyberGrind arena!" />
+	<meta charset="UTF-8">
 </svelte:head>
 
 {#if !mounted}
