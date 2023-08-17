@@ -12,7 +12,7 @@ function parseCGPRow(row: string): number[] {
 	];
 	for (let i = 0; i < row.length; i++) {
 		if (row[i] in prefabWithASymbolOf) {
-			outArray.push(prefabWithASymbolOf[row[i] as prefabSymbol]);
+			outArray.push(prefabWithASymbolOf[row[i] as PrefabSymbol]);
 			continue;
 		}
 		if (matchIndicies.includes(i)) {
@@ -59,7 +59,7 @@ export function getCGPStringFromMapArrays(arrays: [number[][], number[][]]): str
 		.map((r) => {
 			return r
 				.map((e) => {
-					return prefabWithAnIndexOf[e as prefabIndex];
+					return prefabWithAnIndexOf[e as PrefabIndex];
 				})
 				.join();
 		})
@@ -85,6 +85,6 @@ const prefabWithAnIndexOf = {
 	5: 'H'
 } as const;
 
-type prefabIndex = keyof typeof prefabWithAnIndexOf;
+type PrefabIndex = keyof typeof prefabWithAnIndexOf;
 
-type prefabSymbol = keyof typeof prefabWithASymbolOf;
+type PrefabSymbol = keyof typeof prefabWithASymbolOf;

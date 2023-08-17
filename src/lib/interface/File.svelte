@@ -38,7 +38,7 @@ function downloadCurrentPattern(): void {
 		'data:text/plain;charset=utf-8,' +
 			encodeURIComponent(getCGPStringFromMapArrays([$heightMap, $prefabMap]))
 	);
-	element.setAttribute('download', currentPatternName + '.cgp');
+	element.setAttribute('download', (currentPatternName ? currentPatternName : "myPattern") + '.cgp');
 
 	element.style.display = 'none';
 	document.body.appendChild(element);

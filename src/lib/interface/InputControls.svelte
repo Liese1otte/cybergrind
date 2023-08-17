@@ -4,28 +4,27 @@ import Edit from "$lib/interface/Edit.svelte";
 import View from "$lib/interface/View.svelte";
 
 import { Tab } from "$userTypes";
+import { activeTab } from "$stores";
 
 let items = [
     {tab: Tab.File, component: File},
     {tab: Tab.Edit, component: Edit},
     {tab: Tab.View, component: View}
 ]
-
-let activeTab: Tab = Tab.Edit;
 </script>
 
 <div class="input-controls">
     <ul class="tab-selector">
         {#each items as item}
-            <li class={item.tab == activeTab ? "active" : ""} >
-                <button on:click={() => {activeTab = item.tab}}>
+            <li class={item.tab == $activeTab ? "active" : ""} >
+                <button on:click={() => {$activeTab = item.tab}}>
                     <span>{item.tab.toUpperCase()}</span>
                 </button>
             </li>
         {/each}
     </ul>
     {#each items as item}
-        {#if activeTab == item.tab}
+        {#if $activeTab == item.tab}
             <div class="tab-container">
                 <svelte:component this={item.component} />
             </div>

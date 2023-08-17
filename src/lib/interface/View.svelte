@@ -26,7 +26,7 @@ function resetCameraPosition(): void {
 				$isGridRotating = !$isGridRotating;
 			}}
 		>
-			<span class="toggle-title">Arena Rotation</span>
+			<span class="toggle-title">ARENA ROTATION</span>
 			<span class={`toggle-value ${$isGridRotating ? "green" : "red"}`}
 				>{$isGridRotating}</span
 			>
@@ -37,16 +37,17 @@ function resetCameraPosition(): void {
 				$enableDamping = !$enableDamping;
 			}}
 		>
-			<span class="toggle-title">Camera Damping</span>
+			<span class="toggle-title">CAMERA DAMPING</span>
 			<span class={`toggle-value ${$enableDamping ? "green" : "red"}`}>{$enableDamping}</span>
 		</button>
 		<button
 			class="toggle"
 			on:click={() => {
 				$mipMapsEnabled = !$mipMapsEnabled;
+				window.location.reload();
 			}}
 		>
-			<span class="toggle-title">Enable Mipmaps</span>
+			<span class="toggle-title">ENABLE MIPMAPS</span>
 			<span class={`toggle-value ${$mipMapsEnabled ? "green" : "red"}`}
 				>{$mipMapsEnabled}</span
 			>
@@ -57,7 +58,7 @@ function resetCameraPosition(): void {
 				$showKillZone = !$showKillZone;
 			}}
 		>
-			<span class="toggle-title">Show Kill Zone</span>
+			<span class="toggle-title">SHOW KILL ZONE</span>
 			<span class={`toggle-value ${$showKillZone ? "green" : "red"}`}>{$showKillZone}</span>
 		</button>
 	</div>
@@ -95,6 +96,10 @@ button.reset-camera {
 	border: 3px solid rgba(200, 200, 200, 1);
 	font-size: 2rem;
 	grid-row: 4 / span 1;
+	&:hover {
+        filter: brightness(75%);
+    }
+    cursor: pointer;
 }
 
 .red {

@@ -3,6 +3,9 @@ import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 import { blankMap } from '$utils';
 
+import { MirrorState } from '$scripts/mirroring';
+import { Tab } from '$userTypes';
+
 // ### Persistent store setup ### //
 
 const enum Storage {
@@ -43,11 +46,15 @@ export const cameraTarget = persistent<cameraTarget>(
 	defaultCameraTarget
 );
 
+// ### Interface persistence ### // 
+
+export const activeTab = persistent(Storage.Session, "activeTab", Tab.Edit);
+
 // ### Display settings ### //
 
 export const mipMapsEnabled = persistent(Storage.Session, 'mipMapsEnabled', true);
 
-export const enableDamping = persistent(Storage.Session, 'enableDamping', false);
+export const enableDamping = persistent(Storage.Session, 'enableDamping', true);
 
 // ### Arena settings ### //
 
@@ -57,11 +64,13 @@ export const isGridRotating = persistent(Storage.Session, 'isGridRotating', fals
 
 export const gridRotationAngle = persistent(Storage.Session, 'gridRotationAngle', 0);
 
+export const mirrorState = persistent(Storage.Session, "mirrorState", MirrorState.None)
+
 // ### Map stores ### //
 
 const prefabCount = 6;
 
-type MapStore = Writable<number[][]> & {
+export type MapStore = Writable<number[][]> & {
 	updateMap: (index: number, increment: number) => void;
 	setMap: (index: number, value: number) => void;
 };
@@ -111,4 +120,23 @@ export const currentMapId = persistent<MapType>(Storage.Session, 'currentMapId',
 
 export function resolveMap(mapId: MapType): MapStore {
 	return mapId == MapType.Height ? heightMap : prefabMap;
+}
+
+const prefabWithAnIndexOf = {
+	0: '0',
+	1: 'n',
+	2: 'p',
+	3: 'J',
+	4: 's',
+	5: 'H'
+} as const;
+
+type PrefabIndex = keyof typeof prefabWithAnIndexOf;
+
+export function resolvePrefabs(prefabs: number[][]): string[][] {
+	return prefabs.map((r) => {
+		return r.map((e) => {
+			return prefabWithAnIndexOf[e as PrefabIndex];
+		});
+	});
 }

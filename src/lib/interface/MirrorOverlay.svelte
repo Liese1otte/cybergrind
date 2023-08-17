@@ -1,19 +1,17 @@
 <script lang="ts">
 import { mirror, Half, Fourth, MirrorState, type MirrorSelector } from '$scripts/mirroring';
-import { resolveMap, currentMapId } from '$stores';
-
-export let mirrorState: MirrorState;
+import { resolveMap, currentMapId, mirrorState } from '$stores';
 
 $: currentMap = resolveMap($currentMapId);
 
 function mirrorAction(selector: MirrorSelector): void {
 	$currentMap = mirror($currentMap, selector);
-	mirrorState = MirrorState.None;
+	$mirrorState = MirrorState.None;
 }
 </script>
 
 <div class="mirror-overlay">
-	{#if mirrorState == MirrorState.Fourth}
+	{#if $mirrorState == MirrorState.Fourth}
 		<button
 			class="mirror-selector fourth"
 			on:click={() => {
@@ -38,7 +36,7 @@ function mirrorAction(selector: MirrorSelector): void {
 				mirrorAction(Fourth.BottomRight);
 			}}
 		></button>
-	{:else if mirrorState == MirrorState.Horizontal}
+	{:else if $mirrorState == MirrorState.Horizontal}
 		<button
 			class="mirror-selector half-horizontal"
 			on:click={() => {
@@ -51,7 +49,7 @@ function mirrorAction(selector: MirrorSelector): void {
 				mirrorAction(Half.Bottom);
 			}}
 		></button>
-	{:else if mirrorState == MirrorState.Vertical}
+	{:else if $mirrorState == MirrorState.Vertical}
 		<button
 			class="mirror-selector half-vertical"
 			on:click={() => {

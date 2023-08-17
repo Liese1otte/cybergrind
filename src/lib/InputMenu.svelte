@@ -1,5 +1,5 @@
 <script lang="ts">
-import InputMatrix from "$lib/interface/InputMatrix.svelte";
+import Matrix from "$src/lib/interface/matrix/Matrix.svelte";
 import InputControls from "$lib/interface/InputControls.svelte";
 
 import { currentMapId, MapType } from "$stores";
@@ -9,11 +9,21 @@ import { currentMapId, MapType } from "$stores";
 
 <div class="background">
 	<div class="map-selection">
-		<button class="height" on:click={() => { $currentMapId = MapType.Height; }}>HEIGHTS</button>
-		<button class="prefab" on:click={() => { $currentMapId = MapType.Prefab; }}>PREFABS</button>
+		<button
+			class="height"
+			on:click={() => {
+				$currentMapId = MapType.Height;
+			}}>HEIGHTS</button
+		>
+		<button
+			class="prefab"
+			on:click={() => {
+				$currentMapId = MapType.Prefab;
+			}}>PREFABS</button
+		>
 	</div>
 	<div class="matrix">
-		<InputMatrix />
+		<Matrix />
 	</div>
 	<div class="controls">
 		<InputControls />
@@ -37,6 +47,10 @@ div.map-selection {
 		background: none;
 		border: 3px solid rgba(200, 200, 200, 1);
 		font-size: 2rem;
+		&:hover {
+			filter: brightness(75%);
+		}
+		cursor: pointer;
 	}
 	& :nth-child(1) {
 		margin-inline-end: 10px;
