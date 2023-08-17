@@ -1,5 +1,5 @@
 <script lang="ts">
-import { resolveMap, currentMapId } from "$src/stores/stores";
+import { resolveMap, currentMapId } from "$stores";
 
 export let index: number;
 

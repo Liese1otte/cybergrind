@@ -8,6 +8,8 @@ import HeatMap from "$lib/widgets/HeatMap.svelte";
 import { base } from "$app/paths";
 import { onMount } from "svelte";
 
+import "$styles/globals.css";
+
 function previewOnlineStatus(): boolean {
 	try {
 		let canvas = document.createElement("canvas");
@@ -30,7 +32,6 @@ onMount(() => {
 <svelte:head>
 	<title>Cybegrind 3D Editor</title>
 	<link rel="icon" type="image/x-icon" href="{base}/favicon.png" />
-	<link rel="stylesheet" type="text/css" href="src/styles/globals.css" />
 </svelte:head>
 
 {#if !mounted}
