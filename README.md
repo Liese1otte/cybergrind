@@ -1,4 +1,4 @@
-<h1 align=center>[Cybergrind 3D Pattern Editor](https://liese1otte.github.io/cybergrind/)</h1>
+<h1 align=center><a href=https://liese1otte.github.io/cybergrind/>Cybergrind 3D Pattern Editor</a></h1>
 
 <img src=https://github.com/Liese1otte/cybergrind/assets/94033753/4870fe7a-eb97-4179-bfff-0f83858aadfe width=100% />
 <div align=center><sub align=center>Made by Lorelei with 🤍 for the ULTRAKILL community</sub></div>
