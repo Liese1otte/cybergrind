@@ -26,14 +26,18 @@ let mounted = false;
 
 onMount(() => {
 	mounted = true;
-})
+});
 </script>
 
 <svelte:head>
 	<title>Cybegrind 3D Editor</title>
 	<link rel="icon" type="image/x-icon" href="{base}/favicon.png" />
-	<meta name="description" content="Edit your patterns online with a live 3D recreation of the CyberGrind arena!" />
-	<meta charset="UTF-8">
+	<meta
+		name="description"
+		content="Edit your patterns online with a live 3D recreation of the CyberGrind arena!"
+	/>
+	<meta charset="UTF-8" />
+	<meta content="https://user-images.githubusercontent.com/94033753/261272440-4870fe7a-eb97-4179-bfff-0f83858aadfe.png" property="og:image" />
 </svelte:head>
 
 {#if !mounted}
