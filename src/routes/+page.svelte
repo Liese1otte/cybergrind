@@ -38,6 +38,7 @@ onMount(() => {
 	/>
 	<meta charset="UTF-8" />
 	<meta content="https://user-images.githubusercontent.com/94033753/261272440-4870fe7a-eb97-4179-bfff-0f83858aadfe.png" property="og:image" />
+	<meta name="twitter:card" content="summary_large_image">
 </svelte:head>
 
 {#if !mounted}
