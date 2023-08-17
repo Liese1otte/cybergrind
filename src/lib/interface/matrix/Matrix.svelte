@@ -2,7 +2,7 @@
 import MirrorOverlay from "$lib/interface/MirrorOverlay.svelte";
 import { blankMap, col, row } from "$utils";
 import { heightMap, prefabMap, currentMapId, resolvePrefabs, MapType } from "$stores";
-import Cell from "./Cell.svelte";
+import Cell from "$lib/interface/matrix/Cell.svelte";
 
 function updateDisplayedMap(id: MapType): (number | string)[][] {
 	return id == MapType.Height ? $heightMap : resolvePrefabs($prefabMap);
