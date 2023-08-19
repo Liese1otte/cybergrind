@@ -10,9 +10,8 @@ import {
 	isGridRotating,
 	gridRotationAngle,
 	mipMapsEnabled,
-	resolveMap,
-	currentMapId,
-	showKillZone
+	showKillZone,
+	brushStroke
 } from "$stores";
 
 import { base } from "$app/paths";
@@ -76,10 +75,6 @@ useFrame(() => {
 	}
 });
 
-// ### Map ### //
-
-$: currentMap = resolveMap($currentMapId);
-
 // ### Dragging vs Clicking behaviour ### //
 
 const mouse = {
@@ -92,7 +87,7 @@ const mouse = {
 	},
 	up: (button: number, index: number) => {
 		if (!mouse.drag && button != 1) {
-			currentMap.updateMap(index, button == 0 ? 1 : -1);
+			brushStroke(index, button == 0 ? 1 : -1);
 		}
 	}
 };

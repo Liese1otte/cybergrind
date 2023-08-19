@@ -1,11 +1,9 @@
 <script lang="ts">
 import { MirrorState } from "$src/scripts/mirroring";
 import { blankMap } from "$src/scripts/utils";
-import { currentMapId, resolveMap } from "$stores";
+import { currentMap, mirrorState, brushSettings } from "$stores";
 
-import { mirrorState } from "$stores";
-
-$: currentMap = resolveMap($currentMapId);
+const brushModeNames = ["SET", "INCREMENT", "NONE"];
 </script>
 
 <div class="edit">
@@ -44,8 +42,8 @@ $: currentMap = resolveMap($currentMapId);
 		<div class="brush">
 			<span class="title">BRUSH:</span>
             <div class="inputs">
-                <button class="mode">NONE</button>
-                <input placeholder="VALUE" />
+                <button class="mode" on:click={() => {$brushSettings.mode = ($brushSettings.mode + 1) % 3}}>{brushModeNames[$brushSettings.mode]}</button>
+                <input placeholder="VALUE" type="number" bind:value={$brushSettings.value} />
             </div>
 		</div>
 	</div>

@@ -118,8 +118,39 @@ export const enum MapType {
 
 export const currentMapId = persistent<MapType>(Storage.Session, 'currentMapId', 0);
 
-export function resolveMap(mapId: MapType): MapStore {
-	return mapId == MapType.Height ? heightMap : prefabMap;
+
+export let currentMap = heightMap;
+
+currentMapId.subscribe((v) => {
+	currentMap = v == MapType.Height ? heightMap : prefabMap;
+});
+
+export const enum BrushMode {
+	Set,
+	Increment,
+	None
+}
+
+export const brushSettings = persistent(Storage.Session, "brushSettings", {mode: BrushMode.None, value: 0});
+
+let brushMode: BrushMode, brushValue: number;
+
+brushSettings.subscribe((v) => {
+	brushMode = v.mode; brushValue = v.value == null ? 1 : v.value;
+})
+
+export function brushStroke(index: number, modifier: 1 | -1): void {
+	switch (brushMode) {
+		case BrushMode.None:
+			currentMap.updateMap(index, 1 * modifier);
+			break;
+		case BrushMode.Increment:
+			currentMap.updateMap(index, brushValue * modifier);
+			break;
+		case BrushMode.Set:
+			currentMap.setMap(index, brushValue * modifier);
+			break;
+	}
 }
 
 const prefabWithAnIndexOf = {

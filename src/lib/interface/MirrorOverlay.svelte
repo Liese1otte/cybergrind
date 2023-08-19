@@ -1,8 +1,6 @@
 <script lang="ts">
 import { mirror, Half, Fourth, MirrorState, type MirrorSelector } from '$scripts/mirroring';
-import { resolveMap, currentMapId, mirrorState } from '$stores';
-
-$: currentMap = resolveMap($currentMapId);
+import { currentMap, mirrorState } from '$stores';
 
 function mirrorAction(selector: MirrorSelector): void {
 	$currentMap = mirror($currentMap, selector);
