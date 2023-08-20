@@ -1,6 +1,6 @@
 <script lang="ts">
 import { T, useFrame, useThrelte } from "@threlte/core";
-import { OrbitControls, useTexture } from "@threlte/extras";
+import { Environment, OrbitControls, useTexture } from "@threlte/extras";
 
 import type { OrbitControls as ThreeOrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import * as THREE from "three";
@@ -14,7 +14,11 @@ import { base } from "$app/paths";
 
 // ### Skybox setup (needs rework) ### //
 
-const skyboxTexture = useTexture(`${base}/textures/skybox.png`);
+const skyboxTexture = useTexture(`${base}/textures/skybox.png`).then((texture) => {
+	texture.mapping = THREE.EquirectangularReflectionMapping;
+	texture.magFilter = THREE.NearestFilter;
+	return texture;
+});
 
 let skyboxRotationAngle = 0;
 const skyboxRotationModifier = 0.00025;
@@ -25,7 +29,7 @@ useFrame(() => {
 
 // ### Camera persistence ### //
 
-const { camera } = useThrelte();
+const { camera} = useThrelte();
 
 let controls: ThreeOrbitControls;
 
@@ -46,16 +50,6 @@ window.onbeforeunload = () => {
 </T.PerspectiveCamera>
 
 <T.AmbientLight intensity={1} color="white" />
-
-<!-- ! needs rework -->
-{#await skyboxTexture then texture}
-	<T.Group rotation.y={skyboxRotationAngle}>
-		<T.Mesh>
-			<T.SphereGeometry args={[500, 32, 32]} />
-			<T.MeshStandardMaterial map={texture} side={THREE.BackSide} />
-		</T.Mesh>
-	</T.Group>
-{/await}
 
 <T.Group rotation.y={$gridRotationAngle}>
 	<Grid />

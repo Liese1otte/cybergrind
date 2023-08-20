@@ -23,3 +23,9 @@ button {
     outline: none;
     border: none;
 }
+
+@media (max-aspect-ratio: 1 / 1) {
+    html, body {
+        overflow: visible;
+    }
+}

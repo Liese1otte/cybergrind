@@ -9,6 +9,7 @@ import { base } from "$app/paths";
 import { onMount } from "svelte";
 
 import "$styles/globals.css";
+import { Environment } from "@threlte/extras";
 
 function previewOnlineStatus(): boolean {
 	try {
@@ -37,8 +38,11 @@ onMount(() => {
 		content="Edit your patterns online with a live 3D recreation of the CyberGrind arena!"
 	/>
 	<meta charset="UTF-8" />
-	<meta content="https://user-images.githubusercontent.com/94033753/261272440-4870fe7a-eb97-4179-bfff-0f83858aadfe.png" property="og:image" />
-	<meta name="twitter:card" content="summary_large_image">
+	<meta
+		content="https://user-images.githubusercontent.com/94033753/261272440-4870fe7a-eb97-4179-bfff-0f83858aadfe.png"
+		property="og:image"
+	/>
+	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
 {#if !mounted}
@@ -54,6 +58,8 @@ onMount(() => {
 		</div>
 		<div class="canvas">
 			<Canvas toneMapping={0} colorSpace={"srgb-linear"}>
+				<!-- TODO: color space fix -->
+				<Environment path={`${base}/textures/`} files={"skybox.png"} isBackground />
 				<MainScene />
 			</Canvas>
 		</div>
@@ -65,15 +71,13 @@ onMount(() => {
 
 <style lang="less">
 div.website {
-	display: grid;
-	grid-template-rows: 1fr;
-	grid-template-columns: 1fr 1fr 1fr;
+	display: flex;
 	height: 100%;
 }
 
 div.canvas-container {
+	flex: 2;
 	position: relative;
-	grid-column: 1 / span 2;
 	margin: 20px 10px 20px 20px;
 	border: 3px solid rgba(200, 200, 200, 1);
 	overflow: hidden;
@@ -88,8 +92,8 @@ div.canvas {
 }
 
 div.menu-container {
+	flex: 1;
 	min-width: 560px; // wtf
-	grid-column: 3 / span 1;
 	margin: 20px 20px 20px 10px;
 }
 
@@ -113,5 +117,21 @@ div.widgets {
 	width: 100%;
 	height: 100%;
 	background: rgba(20, 20, 20, 1);
+}
+
+@media (max-aspect-ratio: 1 / 1) {
+	div.website {
+		flex-direction: column;
+		overflow: visible;
+	}
+	div.canvas-container {
+		overflow: visible;
+		margin: 20px;
+		min-height: calc(100vh - 40px);
+	}
+	div.menu-container {
+		margin: 20px;
+		min-width: unset;
+	}
 }
 </style>
