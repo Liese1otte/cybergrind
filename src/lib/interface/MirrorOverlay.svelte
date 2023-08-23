@@ -3,6 +3,7 @@ import { mirror, Half, Fourth, MirrorState, type MirrorSelector } from '$scripts
 import { currentMap, mirrorState } from '$stores';
 
 function mirrorAction(selector: MirrorSelector): void {
+	console.log($currentMap, selector);
 	$currentMap = mirror($currentMap, selector);
 	$mirrorState = MirrorState.None;
 }
