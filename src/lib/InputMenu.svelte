@@ -3,6 +3,20 @@ import Matrix from "$src/lib/interface/matrix/Matrix.svelte";
 import InputControls from "$lib/interface/InputControls.svelte";
 
 import { currentMapId, MapType } from "$stores";
+
+// ### Hotkeys ### //
+
+function onKeyDown(e: KeyboardEvent): void {
+	if (e.target instanceof HTMLInputElement) { return }
+	switch (e.code) {
+		case "Digit1":
+			$currentMapId = MapType.Height;
+			break;
+		case "Digit2":
+			$currentMapId = MapType.Prefab;
+			break;
+	}
+}
 </script>
 
 <!-- refactoring when redoing ui -->
@@ -29,6 +43,8 @@ import { currentMapId, MapType } from "$stores";
 		<InputControls />
 	</div>
 </div>
+
+<svelte:window on:keypress={onKeyDown}/>
 
 <style lang="less">
 div.background {

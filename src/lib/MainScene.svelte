@@ -1,6 +1,6 @@
 <script lang="ts">
 import { T, useFrame, useThrelte } from "@threlte/core";
-import { Environment, OrbitControls, useTexture } from "@threlte/extras";
+import { OrbitControls, useTexture } from "@threlte/extras";
 
 import type { OrbitControls as ThreeOrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import * as THREE from "three";
@@ -8,24 +8,7 @@ import * as THREE from "three";
 import Grid from "$lib/scene/Grid.svelte";
 import Prefabs from "$lib/scene/Prefabs.svelte";
 
-import { cameraPosition, cameraTarget, enableDamping, gridRotationAngle } from "$stores";
-
-import { base } from "$app/paths";
-
-// ### Skybox setup (needs rework) ### //
-
-const skyboxTexture = useTexture(`${base}/textures/skybox.png`).then((texture) => {
-	texture.mapping = THREE.EquirectangularReflectionMapping;
-	texture.magFilter = THREE.NearestFilter;
-	return texture;
-});
-
-let skyboxRotationAngle = 0;
-const skyboxRotationModifier = 0.00025;
-
-useFrame(() => {
-	skyboxRotationAngle += skyboxRotationModifier;
-});
+import { cameraPosition, cameraTarget, enableDamping, gridRotationAngle, resetCamera } from "$stores";
 
 // ### Camera persistence ### //
 
@@ -37,6 +20,15 @@ window.onbeforeunload = () => {
 	$cameraTarget = controls.target.toArray();
 	$cameraPosition = $camera.position.toArray();
 };
+
+// ### Hotkeys ### //
+
+function onKeyDown(e: KeyboardEvent): void {
+	if (e.target instanceof HTMLInputElement) { return }
+	if (e.code == "KeyR") {
+		resetCamera();
+	}
+}
 </script>
 
 <T.PerspectiveCamera makeDefault position={$cameraPosition}>
@@ -55,3 +47,5 @@ window.onbeforeunload = () => {
 	<Grid />
 	<Prefabs />
 </T.Group>
+
+<svelte:window on:keydown={onKeyDown} />

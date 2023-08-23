@@ -46,6 +46,12 @@ export const cameraTarget = persistent<cameraTarget>(
 	defaultCameraTarget
 );
 
+export function resetCamera(): void {
+	cameraPosition.set(defaultCameraPosition);
+	cameraTarget.set(defaultCameraTarget);
+	gridRotationAngle.set(0);
+}
+
 // ### Interface persistence ### // 
 
 export const activeTab = persistent(Storage.Session, "activeTab", Tab.Edit);
@@ -116,14 +122,15 @@ export const enum MapType {
 	Prefab
 }
 
-export const currentMapId = persistent<MapType>(Storage.Session, 'currentMapId', 0);
-
-
 export let currentMap = heightMap;
+
+export const currentMapId = persistent<MapType>(Storage.Session, 'currentMapId', 0);
 
 currentMapId.subscribe((v) => {
 	currentMap = v == MapType.Height ? heightMap : prefabMap;
 });
+
+// ### Brush ### //
 
 export const enum BrushMode {
 	Set,

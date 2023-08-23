@@ -37,6 +37,15 @@ function exportHeatMap(): void {
 
 // use stores ffs lmao
 let currentPatternName = "heatMap";
+
+// ### Hotkeys ### //
+
+function onKeyDown(e: KeyboardEvent): void {
+	if (e.target instanceof HTMLInputElement) { return }
+	if (e.code == "KeyH") {
+		expanded = !expanded;
+	}
+}
 </script>
 
 <div class="heat-map">
@@ -48,6 +57,8 @@ let currentPatternName = "heatMap";
         <button on:click={() => { exportHeatMap(); }}>DOWNLOAD</button>
 	</div>
 </div>
+
+<svelte:window on:keydown={onKeyDown}/>
 
 <style lang="less">
 div.heat-map {

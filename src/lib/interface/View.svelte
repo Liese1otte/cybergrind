@@ -1,21 +1,11 @@
 <script lang="ts">
 import {
-	cameraPosition,
-	cameraTarget,
-	defaultCameraPosition,
-	defaultCameraTarget,
 	enableDamping,
-	gridRotationAngle,
 	isGridRotating,
 	mipMapsEnabled,
-	showKillZone
+	showKillZone,
+	resetCamera
 } from "$stores";
-
-function resetCameraPosition(): void {
-	$cameraPosition = defaultCameraPosition;
-	$gridRotationAngle = 0;
-	$cameraTarget = defaultCameraTarget;
-}
 </script>
 
 <div class="view">
@@ -62,7 +52,7 @@ function resetCameraPosition(): void {
 			<span class={`toggle-value ${$showKillZone ? "green" : "red"}`}>{$showKillZone}</span>
 		</button>
 	</div>
-	<button class="reset-camera" on:click={resetCameraPosition}> RESET CAMERA </button>
+	<button class="reset-camera" on:click={resetCamera}> RESET CAMERA </button>
 </div>
 
 <style lang="less">

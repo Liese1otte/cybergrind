@@ -11,7 +11,7 @@ import {
 	gridRotationAngle,
 	mipMapsEnabled,
 	showKillZone,
-	brushStroke
+	brushStroke,
 } from "$stores";
 
 import { base } from "$app/paths";

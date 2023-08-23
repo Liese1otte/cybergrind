@@ -12,23 +12,13 @@ import { onMount } from "svelte";
 import "$styles/globals.css";
 import { Environment } from "@threlte/extras";
 
-function previewOnlineStatus(): boolean {
-	try {
-		let canvas = document.createElement("canvas");
-		let context =
-			(!!window.WebGLRenderingContext && canvas.getContext("webgl")) ||
-			canvas.getContext("experimental-webgl");
-		return context == null ? false : true;
-	} catch (e) {
-		return false;
-	}
-}
-
 let mounted = false;
 
 onMount(() => {
 	mounted = true;
 });
+
+THREE.ColorManagement.enabled = true;
 </script>
 
 <svelte:head>
@@ -55,12 +45,11 @@ onMount(() => {
 			<HeatMap />
 		</div>
 		<div class="thing">
-			<span class="thingy">// PREVIEW: {previewOnlineStatus() ? "ONLINE" : "OFFLINE"}</span>
+			<span class="thingy">// PREVIEW</span>
 		</div>
 		<div class="canvas">
 			<Canvas toneMapping={1} colorSpace={"srgb-linear"}>
-				<!-- TODO: color space fix -->
-				<Environment path={`${base}/textures/`} files={"skybox.png"} isBackground />
+				<Environment path={`${base}/textures/`} files={"skybox.png"} isBackground encoding={THREE.sRGBEncoding} />
 				<MainScene />
 			</Canvas>
 		</div>
@@ -118,5 +107,9 @@ div.widgets {
 	width: 100%;
 	height: 100%;
 	background: rgba(20, 20, 20, 1);
+}
+
+span.thingy {
+	user-select: none;
 }
 </style>
