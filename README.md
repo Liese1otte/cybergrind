@@ -11,7 +11,7 @@
 - Preview your patterns online in real time using a camera in 3D space
 - Edit your patterns directly inside of the preview or on a classic 2D matrix
 
-<h2>Coming Soon</h2>
+<h2>Coming Soon (probably never as I'm bored but feel free to PR ig)</h2>
 
 - Support for custom cube and skybox textures
 - Undo / Redo functions
