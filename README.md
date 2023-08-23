@@ -15,7 +15,6 @@
 
 - Support for custom cube and skybox textures
 - Undo / Redo functions
-- Hotkeys
 
 <h2>Thanks</h2>
 
