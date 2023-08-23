@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Canvas } from "@threlte/core";
+import * as THREE from "three";
 
 import InputMenu from "$lib/InputMenu.svelte";
 import MainScene from "$lib/MainScene.svelte";
@@ -57,7 +58,7 @@ onMount(() => {
 			<span class="thingy">// PREVIEW: {previewOnlineStatus() ? "ONLINE" : "OFFLINE"}</span>
 		</div>
 		<div class="canvas">
-			<Canvas toneMapping={0} colorSpace={"srgb-linear"}>
+			<Canvas toneMapping={1} colorSpace={"srgb-linear"}>
 				<!-- TODO: color space fix -->
 				<Environment path={`${base}/textures/`} files={"skybox.png"} isBackground />
 				<MainScene />
@@ -117,21 +118,5 @@ div.widgets {
 	width: 100%;
 	height: 100%;
 	background: rgba(20, 20, 20, 1);
-}
-
-@media (max-aspect-ratio: 1 / 1) {
-	div.website {
-		flex-direction: column;
-		overflow: visible;
-	}
-	div.canvas-container {
-		overflow: visible;
-		margin: 20px;
-		min-height: calc(100vh - 40px);
-	}
-	div.menu-container {
-		margin: 20px;
-		min-width: unset;
-	}
 }
 </style>
